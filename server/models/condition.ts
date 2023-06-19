@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { type MaValues } from "./technicalAnalysis.js"
 import { type AdjStockDataSchema } from "./stockInfo.js";
 
@@ -11,8 +10,6 @@ function checkTaiexSituation(ma5:number, ma10:number, ma20:number) {
   }
   return 'volatile';
 }
-
-// const mappingKeySchema = z.enum(["ma", "kd", "investmentTrust", "taiex", "stopLoss", "stopProfit"]);
 
 export function checkCondition(
   stock: AdjStockDataSchema,
@@ -29,7 +26,6 @@ export function checkCondition(
   openPrice: number
   ) {
   const { method, symbol, value } = condition;
-  // const methods = Array.isArray(method) ? z.array(mappingKeySchema).parse(method) : mappingKeySchema.parse(method);
   const stockPrice = stock.close;
 
   const evaluateMaCondition = (_currentMethod: string, currentValue: number, currentSymbol: string) => {
@@ -46,17 +42,18 @@ export function checkCondition(
     return (currentSymbol === 'greater') ? kValue > currentValue : kValue < currentValue;
   };
 
+  interface ColumnInSQL {
+    [key: string]: string;
+  }
+
   const evaluateInvestorCondition = (currentMethod: string, currentValue: number, currentSymbol:string) => {
-    interface ColumnInSQL {
-      [key: string]: string;
-    }
     const columnInSQL : ColumnInSQL = {
       investmentTrust: 'investment_trust',
       foreignInvestors: 'foreign_investors',
       dealerSelf: 'dealer_self'
     };
-    const obj = columnInSQL[currentMethod];
-    const total = stock[obj];
+    // @ts-ignore
+    const total = stock[columnInSQL[currentMethod]];
     return (currentSymbol === 'greater') ? total > currentValue : total < currentValue;
   };
 
@@ -83,8 +80,12 @@ export function checkCondition(
     const spreadPrice = openPrice + openPrice * spreadPercentage;
     return (currentSymbol === 'greater') ? stockPrice > spreadPrice : stockPrice < spreadPrice;
   };
+  
+  interface Mapping {
+    [key: string]: Function;
+  }
 
-  const mapping = {
+  const mapping: Mapping = {
     ma: evaluateMaCondition,
     kd: evaluateKdCondition,
     investmentTrust: evaluateInvestorCondition,
@@ -94,12 +95,14 @@ export function checkCondition(
   };
 
   if (Array.isArray(method) && Array.isArray(value) && Array.isArray(symbol)) {
-    const results = method.map((currentMethod, index: number) => mapping[currentMethod](method[index], value[index], symbol[index]));
+    const results = method.map((currentMethod: string, index: number) => mapping[currentMethod](method[index], value[index], symbol[index]));
     if (position === 'none') {
       return results.every(result => result === true);
     }
     return results.some(result => result === true);
   }
-  
-  return mapping[method](method, value, symbol);
+
+  if( typeof method === 'string') return mapping[method](method, value, symbol);
+
+  // 沒有結果也要 throw error 了
 }
