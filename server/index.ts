@@ -1,5 +1,7 @@
 import express, { Express, Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
+
 import backtestingRouter from './routes/backtesting.js';
 
 dotenv.config();
@@ -9,6 +11,7 @@ const port = process.env.PORT;
 
 const router = Router();
 
+app.use(cors());
 app.use(express.json());
 app.use("/api",[
   backtestingRouter
