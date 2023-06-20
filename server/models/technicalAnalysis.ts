@@ -33,6 +33,38 @@ export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[
   return maValues;
 }
 
+export function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[], startDate: string) {
+  const maValues: MaValues = {};
+  const closePrices = data.map(item => item.close); 
+  const closeDate = data.map((ele) => ele.date);
+
+  for (const maPeriod of maPeriods) {
+    const currentMaValues = [];
+    let sum = 0;
+
+    for (let i = 0; i < closePrices.length; i++) {
+      const close = closePrices[i];
+      sum += close;
+
+      if (i >= maPeriod) {
+        sum -= closePrices[i - maPeriod];
+      }
+      if (new Date(closeDate[i]).getTime() < new Date(startDate).getTime()) {
+        continue;
+      }
+      if (i >= maPeriod - 1) {
+        const ma = sum / maPeriod;
+        currentMaValues.push(ma);
+      } else {
+        currentMaValues.push(null);
+      }
+    }
+    maValues[maPeriod] = currentMaValues;
+  }
+
+  return maValues;
+}
+
 function calculateRSV(data:AdjStockDataSchema[], index:number, period:number) {
   const currentClose = data[index].close;
   let lowestLow = currentClose;

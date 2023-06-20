@@ -1,7 +1,7 @@
 import { checkCondition } from "./condition.js";
 import { getKD } from "./technicalAnalysis.js";
 import { type MaValues } from "./technicalAnalysis.js"
-import { type AdjStockDataSchema, type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
+import { type AdjStockDataSchema } from "./stockInfo.js";
 
 export async function getBacktestingReport(
   startDate: string,
