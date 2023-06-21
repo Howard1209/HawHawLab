@@ -44,10 +44,10 @@ export type AdjStockDataSchema = {
   investors_total: number,
 }
 
-export async function getStockData (formattedDate:string, endDate:string) {
+export async function getStockData (formattedDate:string, endDate:string, stockId:string) {
   const [data] = await pool.query(`
-  select * from stock_info WHERE date >= '${formattedDate}' AND date <= '${endDate}'
-  `);
+  select * from stock_info WHERE date >= ? AND date <= ? AND stock_id = ?
+  `, [formattedDate, endDate, stockId]);
   const stockData = z.array(stockDataSchema).parse(data);
   // focus on time zone still not work
   const adjustedData = stockData.map((item) => {

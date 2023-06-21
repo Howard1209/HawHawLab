@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 
 export async function backtesting(req: Request, res: Response) {
 
-  const { startDate, endDate, type, ma, openCondition, closeCondition } = req.body;
+  const { startDate, endDate, stockId, type, ma, openCondition, closeCondition } = req.body;
 
   const maxMa = Math.max(...ma); // 先假定一定會有大盤的ma先設定[5, 10, 20]
   const lookupStartDate = formattedDate(startDate, maxMa);
   
-  const stockData = await getStockData(lookupStartDate, endDate);
+  const stockData = await getStockData(lookupStartDate, endDate, stockId);
   const maData = calculateMA(stockData, ma);
 
   

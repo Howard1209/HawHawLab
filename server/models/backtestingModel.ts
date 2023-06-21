@@ -82,6 +82,7 @@ export async function getBacktestingReport(
   const numberOfLosses = profits.filter(num => num <= 0).length;
 
   const report = {
+    candleData: stockDataByUserStartDate,
     perTrade: perTradeResult,
     successRate: Number(((numberOfGains / totalTrades) * 100).toFixed(2)),
     totalTradeTimes: totalTrades,
