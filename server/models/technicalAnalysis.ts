@@ -1,39 +1,10 @@
 import { type AdjStockDataSchema, type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
 
 export type MaValues = {
-  [period: number]: (number | null)[]
+  [period: number]: (number)[]
 };
 
-export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[]) {
-  const maValues: MaValues = {};
-  const closePrices = data.map(item => item.close); 
-
-  for (const maPeriod of maPeriods) {
-    const currentMaValues = [];
-    let sum = 0;
-
-    for (let i = 0; i < closePrices.length; i++) {
-      const close = closePrices[i];
-      sum += close;
-
-      if (i >= maPeriod) {
-        sum -= closePrices[i - maPeriod];
-      }
-
-      if (i >= maPeriod - 1) {
-        const ma = sum / maPeriod;
-        currentMaValues.push(ma);
-      } else {
-        currentMaValues.push(null);
-      }
-    }
-    maValues[maPeriod] = currentMaValues;
-  }
-
-  return maValues;
-}
-
-export function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[], startDate: string) {
+export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[], startDate: string) {
   const maValues: MaValues = {};
   const closePrices = data.map(item => item.close); 
   const closeDate = data.map((ele) => ele.date);
@@ -55,8 +26,6 @@ export function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchem
       if (i >= maPeriod - 1) {
         const ma = sum / maPeriod;
         currentMaValues.push(ma);
-      } else {
-        currentMaValues.push(null);
       }
     }
     maValues[maPeriod] = currentMaValues;

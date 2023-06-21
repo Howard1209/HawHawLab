@@ -1,13 +1,37 @@
 import { checkCondition } from "./condition.js";
 import { getKD } from "./technicalAnalysis.js";
 import { type MaValues } from "./technicalAnalysis.js"
-import { type AdjStockDataSchema } from "./stockInfo.js";
+
+export type StockDataSchema = {
+  [index: number]: number,
+  [index: string]: number | string,
+  5: number,
+  10: number,
+  20: number,
+  id: number,
+  stock_id: string,
+  date: string,
+  open: number,
+  high: number,
+  low: number,
+  close: number,
+  spread: number,
+  spreadPCT: number,
+  amplitudePCT: number,
+  trading_volume: number,
+  trading_turnover: number,
+  trading_money: number,
+  foreign_investors: number,
+  investment_trust: number,
+  dealer_self: number,
+  dealer_hedging: number,
+  investors_total: number,
+};
 
 export async function getBacktestingReport(
   startDate: string,
-  stockData: AdjStockDataSchema[],
+  stockData: StockDataSchema[],
   type: string,
-  maData: MaValues,
   openCondition: {
     method: string | string[],
     symbol: string | string[],
@@ -35,16 +59,11 @@ export async function getBacktestingReport(
   : usePriceCondition.includes(closeCondition.method);
   const kdArr = (openCondition.method === 'kd' || closeCondition.method === 'kd') ? getKD(stockData) : [];
 
-  for (let i = 0; i < stockData.length; i++) {
+  for (let i = 1; i < stockData.length; i++) {
     const stock = stockData[i];
-    const currentDate = new Date(stock.date).getTime();
-
-    if (currentDate < new Date(startDate).getTime()) {
-      continue;
-    }
-
+    
     // open condition 如果是盤後選股都應該是隔天買，依照盤後選股理論，但使用者可以選擇要隔天open or close 買入。
-    if (position === 'none' && checkCondition(stockData[i-1], openCondition, maData, i-1, kdArr[i-1], taiexMaData, position, openPrice)) {
+    if (position === 'none' && checkCondition(stockData[i-1], openCondition, i-1, kdArr[i-1], taiexMaData, position, openPrice)) {
       position = 'trading';
       openPrice = stock.open;
       entryDates.push({ openDay: stock.date, price: openPrice });
@@ -54,8 +73,8 @@ export async function getBacktestingReport(
     if (position === 'trading') {
       const isLastDay = i + 1 === stockData.length;
       const isCloseConditionMet = useOpenStockPriceInClose
-        ? checkCondition(stockData[i-1], closeCondition, maData, i-1, kdArr[i-1], taiexMaData, position, openPrice)
-        : checkCondition(stock, closeCondition, maData, i, kdArr[i], taiexMaData, position, openPrice);
+        ? checkCondition(stockData[i-1], closeCondition, i-1, kdArr[i-1], taiexMaData, position, openPrice)
+        : checkCondition(stock, closeCondition, i, kdArr[i], taiexMaData, position, openPrice);
 
       if (isCloseConditionMet || isLastDay) {
         position = 'none';

@@ -1,6 +1,5 @@
-import { type MaValues } from "./technicalAnalysis.js"
-import { type AdjStockDataSchema } from "./stockInfo.js";
-
+import { z } from 'zod';
+import { type StockDataSchema } from "./backtestingModel.js"; 
 
 function checkTaiexSituation(ma5:number, ma10:number, ma20:number) {
   if (ma5 > ma10 && ma10 > ma20) {
@@ -12,16 +11,15 @@ function checkTaiexSituation(ma5:number, ma10:number, ma20:number) {
 }
 
 export function checkCondition(
-  stock: AdjStockDataSchema,
+  stock: StockDataSchema,
   condition: {
     method : string | string[],
     symbol : string | string[],
     value : number | string | (number | string)[]
   },
-  maData: MaValues,
   index: number,
   kd: { k: number, d: number },
-  taiexMaData: MaValues,
+  taiexMaData: {[period: number]: (number)[]},
   position: string,
   openPrice: number
   ) {
@@ -29,7 +27,7 @@ export function checkCondition(
   const stockPrice = stock.close;
 
   const evaluateMaCondition = (_currentMethod: string, currentValue: number, currentSymbol: string) => {
-    const maValue = maData[currentValue][index];
+    const maValue = stock[currentValue];
     if (maValue) {
       return (currentSymbol === 'greater') ? stockPrice > maValue : stockPrice < maValue;
     }
@@ -52,8 +50,8 @@ export function checkCondition(
       foreignInvestors: 'foreign_investors',
       dealerSelf: 'dealer_self'
     };
-    // @ts-ignore
-    const total = stock[columnInSQL[currentMethod]];
+    const numberParser = z.number();
+    const total = numberParser.parse(stock[columnInSQL[currentMethod]]);
     return (currentSymbol === 'greater') ? total > currentValue : total < currentValue;
   };
 
