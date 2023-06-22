@@ -15,7 +15,7 @@ export function checkCondition(
   condition: {
     method : string | string[],
     symbol : string | string[],
-    value : number | string | (number | string)[]
+    value : number | number[]
   },
   index: number,
   kd: { k: number, d: number },
@@ -48,20 +48,21 @@ export function checkCondition(
     const columnInSQL : ColumnInSQL = {
       investmentTrust: 'investment_trust',
       foreignInvestors: 'foreign_investors',
-      dealerSelf: 'dealer_self'
+      dealerSelf: 'dealer_self',
+      investorsAll:'investors_total,'
     };
     const numberParser = z.number();
     const total = numberParser.parse(stock[columnInSQL[currentMethod]]);
     return (currentSymbol === 'greater') ? total > currentValue : total < currentValue;
   };
 
-  const evaluateTaiexCondition = (_currentMethod: string, currentValue: string, _currentSymbol: string) => {
+  const evaluateTaiexCondition = (_currentMethod: string, _currentValue: string, currentSymbol: string) => {
     const ma5 = taiexMaData[5][index];
     const ma10 = taiexMaData[10][index];
     const ma20 = taiexMaData[20][index];
     if (ma5 && ma10 && ma20) {
       const result = checkTaiexSituation(ma5, ma10, ma20);
-      return currentValue === result;  
+      return currentSymbol === result;  
     }
     // 之後要改成 throw error
     return false
@@ -79,14 +80,17 @@ export function checkCondition(
     return (currentSymbol === 'greater') ? stockPrice > spreadPrice : stockPrice < spreadPrice;
   };
   
-  interface Mapping {
+  interface MappingSchema {
     [key: string]: Function;
   }
 
-  const mapping: Mapping = {
+  const mapping: MappingSchema = {
     ma: evaluateMaCondition,
     kd: evaluateKdCondition,
     investmentTrust: evaluateInvestorCondition,
+    foreignInvestors:evaluateInvestorCondition,
+    dealerSelf: evaluateInvestorCondition,
+    investorsAll:evaluateInvestorCondition,
     taiex: evaluateTaiexCondition,
     stopLoss: stopLossCondition,
     stopProfit: stopProfitCondition,

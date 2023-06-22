@@ -35,12 +35,12 @@ export async function getBacktestingReport(
   openCondition: {
     method: string | string[],
     symbol: string | string[],
-    value: number | string | (number | string)[],
+    value: number |  number[],
   },
   closeCondition: {
     method: string | string[],
     symbol: string | string[],
-    value: number | string | (number | string)[],
+    value: number | number[],
   },
   taiexMaData: MaValues
   ) {
@@ -96,7 +96,7 @@ export async function getBacktestingReport(
     profit: profits[index]
   }));
 
-  const stockDataByUserStartDate = stockData.filter(item => item.date >= startDate); // 之後畫圖會用到
+  const stockDataByUserStartDate = stockData.filter(item => item.date >= startDate);
   const numberOfGains = profits.filter(num => num > 0).length;
   const numberOfLosses = profits.filter(num => num <= 0).length;
 
