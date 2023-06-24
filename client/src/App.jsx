@@ -1,7 +1,6 @@
 import { LineStyle, createChart } from "lightweight-charts";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
 import api from "./utils/api";
 
 function App() {
@@ -9,7 +8,6 @@ function App() {
   const navigateStrategy = () => { navigate('/strategy') };
 
   const chartContainerRef = useRef();
-  // const [data, setData] = useState([]);
   const [candlePrice, setCandlePrice] = useState(null);
   const [ma5Price, setMa5Price] = useState(null);
   const [ma10Price, setMa10Price] = useState(null);
@@ -19,7 +17,6 @@ function App() {
     const chart = createChart(chartContainerRef.current); 
 
     api.getTaiexData().then(result => {
-      // setData(result.adjTaiexData);
 
       const taiexData = result.adjTaiexData;
 
@@ -140,7 +137,6 @@ function App() {
       });  
   
     });
-
 
     const handleResize = () => {
       chart.applyOptions({

@@ -1,21 +1,22 @@
 const api = {
   hostname: 'http://localhost:8000/api',
-  async postData(){
+  async postData(data){
     const response = await fetch(`${this.hostname}/strategy`, {
       body: JSON.stringify({
-        "startDate": "2023-06-01",
-        "endDate": "2023-06-14",
-        "type": "long",
+        "startDate": data.startDate.value,
+        "endDate": data.endDate.value,
+        "stockId": data.stockId.value,
+        "type": data.type.value,
         "ma": [5, 10, 20],
         "openCondition":{
-          "method": ["ma","investmentTrust"],
-          "symbol": ["greater","greater"],
-          "value": [5, 100]
+          "method": data.openMethod.value,
+          "symbol": data.openSymbol.value,
+          "value": data.openValue.value
         },
         "closeCondition":{
-            "method": "ma",
-            "symbol": "less",
-            "value": 5
+          "method": data.closeMethod.value,
+          "symbol": data.closeSymbol.value,
+          "value": data.closeValue.value
         }    
       }),
       headers: new Headers({
