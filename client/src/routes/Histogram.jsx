@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 
 ChartJS.register(
   CategoryScale,
@@ -22,11 +23,9 @@ ChartJS.register(
   Legend,
 );
 
-// eslint-disable-next-line react/prop-types
 export default function Histogram({data}) {
 
   if (!Object.keys(data).length > 0) return;
-  // eslint-disable-next-line react/prop-types
   const perTrade= data.perTrade;
 
   const cumulativeProfit = perTrade.reduce((acc, item) => {
@@ -36,18 +35,15 @@ export default function Histogram({data}) {
     return acc;
   }, []);
   
-  console.log(cumulativeProfit);
   return(
     
     <div id="bar">
       <Chart data= {{
-        // eslint-disable-next-line react/prop-types
         labels: perTrade?.map((ele) => ele.closeDay),
         datasets: [
           {
             type: 'line',
             label: 'Cumulative profit',
-            // eslint-disable-next-line react/prop-types
             data: cumulativeProfit,
             borderColor: 'rgb(41, 150, 256)',
             backgroundColor: 'rgba(41, 150, 256, 0.5)',
@@ -55,9 +51,7 @@ export default function Histogram({data}) {
           {
             type: 'bar',
             label: 'Profit',
-            // eslint-disable-next-line react/prop-types
             data: perTrade?.map(ele => ele.profit),
-            // eslint-disable-next-line react/prop-types
             backgroundColor: perTrade?.map(ele => {
               if (ele.profit >= 0) {
                 return '#26a69a'
@@ -75,3 +69,14 @@ export default function Histogram({data}) {
     </div>
   )
 }
+
+Histogram.propTypes = {
+  data: PropTypes.shape({
+    perTrade: PropTypes.arrayOf(
+      PropTypes.shape({
+        closeDay: PropTypes.string,
+        profit: PropTypes.number,
+      })
+    ),
+  }).isRequired,
+};

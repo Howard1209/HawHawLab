@@ -30,7 +30,7 @@ export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[
     }
     maValues[maPeriod] = currentMaValues;
   }
-
+  
   return maValues;
 }
 
@@ -87,6 +87,7 @@ export function getKD(stockData:AdjStockDataSchema[]) {
     }
     kdValues.push({ k, d }); 
   }
+  console.log(kdValues);
   
   return kdValues;
 }

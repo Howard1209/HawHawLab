@@ -3,11 +3,10 @@ import { getKD } from "./technicalAnalysis.js";
 import { type MaValues } from "./technicalAnalysis.js"
 
 export type StockDataSchema = {
-  [index: number]: number,
   [index: string]: number | string,
-  5: number,
-  10: number,
-  20: number,
+  ma5: number,
+  ma10: number,
+  ma20: number,
   id: number,
   stock_id: string,
   date: string,
@@ -42,7 +41,8 @@ export async function getBacktestingReport(
     symbol: string | string[],
     value: number | number[],
   },
-  taiexMaData: MaValues
+  taiexMaData: MaValues,
+  kdArr: {k:number, d:number}[]
   ) {
   let position = 'none';
   let openPrice = 0;
@@ -57,8 +57,7 @@ export async function getBacktestingReport(
   const useOpenStockPriceInClose = Array.isArray(closeCondition.method)
   ? closeCondition.method.some((method) => usePriceCondition.includes(method))
   : usePriceCondition.includes(closeCondition.method);
-  const kdArr = (openCondition.method === 'kd' || closeCondition.method === 'kd') ? getKD(stockData) : [];
-
+  
   for (let i = 1; i < stockData.length; i++) {
     const stock = stockData[i];
     

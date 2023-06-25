@@ -9,14 +9,26 @@ const api = {
         "type": data.type.value,
         "ma": [5, 10, 20],
         "openCondition":{
-          "method": data.openMethod.value,
-          "symbol": data.openSymbol.value,
-          "value": data.openValue.value
+          "method": data.openMethod.value === "" ? 
+          Array.from(data.openMethod).map((obj) => obj.value):
+          data.openMethod.value,
+          "symbol": data.openSymbol.value === "" ? 
+          Array.from(data.openSymbol).map((obj) => obj.value):
+          data.openSymbol.value,
+          "value": data.openValue.value === "" ?
+          Array.from(data.openValue).map((obj) => obj.value):
+          data.openValue.value,
         },
         "closeCondition":{
-          "method": data.closeMethod.value,
-          "symbol": data.closeSymbol.value,
-          "value": data.closeValue.value
+          "method": data.closeMethod.value === "" ?
+          Array.from(data.closeMethod).map((obj) => obj.value):
+          data.closeMethod.value,
+          "symbol": data.closeSymbol.value === "" ?
+          Array.from(data.closeSymbol).map((obj) => obj.value):
+          data.closeSymbol.value,
+          "value": data.closeValue.value === ""?
+          Array.from(data.closeValue).map((obj) => obj.value):
+          data.closeValue.value
         }    
       }),
       headers: new Headers({

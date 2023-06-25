@@ -44,11 +44,19 @@ export type AdjStockDataSchema = {
   investors_total: number,
 }
 
-export async function getStockData (formattedDate:string, endDate:string, stockId:string) {
+export async function getStockData (startDate:string, endDate:string, stockId:string, maxMa:number) {
   const [data] = await pool.query(`
-  select * from stock_info WHERE date >= ? AND date <= ? AND stock_id = ?
-  `, [formattedDate, endDate, stockId]);
+  (
+    SELECT * FROM stock_info WHERE date >= ? AND date <= ? AND stock_id = ?
+  )
+  UNION ALL
+  (
+    SELECT * FROM stock_info WHERE date < ? AND stock_id = ? ORDER BY date DESC LIMIT ?
+  )
+  ORDER BY date
+  `,[startDate, endDate, stockId, startDate, stockId, maxMa]);
   const stockData = z.array(stockDataSchema).parse(data);
+  
   // focus on time zone still not work
   const adjustedData = stockData.map((item) => {
     const adjustedDate = new Date(item.date);
@@ -58,20 +66,8 @@ export async function getStockData (formattedDate:string, endDate:string, stockI
       date: adjustedDate.toISOString().split('T')[0],
     };
   });
-  return adjustedData;
-}
 
-export function formattedDate(startDate:string, ma:number) {
-  let count = 0;
-  let currentDate = dayjs(startDate);
-  while (count < ma) { 
-    currentDate = currentDate.subtract(1, 'days');
-    // check mon to fri
-    if (currentDate.day() >= 1 && currentDate.day() <= 5) {
-      count++;
-    }
-  }
-  return currentDate.format('YYYY-MM-DD');
+  return adjustedData;
 }
 
 const TaiexDataSchema = z.object({
@@ -92,10 +88,17 @@ export type AdjTaiexTaiexDataSchema = {
   close: number;
 }
 
-export async function getTaiexData (startDate:string, endDate:string) {
+export async function getTaiexData (startDate:string, endDate:string, maxMa:number) {
   const [data] = await pool.query(`
-  SELECT * FROM taiex WHERE date >= ? AND date <= ? ORDER BY date
-  ` , [startDate, endDate]);
+  (
+    SELECT * FROM taiex WHERE date >= ? AND date <= ?
+  )
+  UNION ALL
+  (
+    SELECT * FROM taiex WHERE date < ?  ORDER BY date DESC LIMIT ?
+  )
+  ORDER BY date
+  ` , [startDate, endDate, startDate, maxMa]);
   
   const taiexData = z.array(TaiexDataSchema).parse(data);
 

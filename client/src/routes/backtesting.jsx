@@ -3,6 +3,7 @@ import { LineStyle, createChart } from "lightweight-charts";
 import Split from 'react-split'
 import StrategyFrom from "../components/Form";
 import Histogram from "./Histogram";
+import Report from "./Report";
 
 export default function Backtesting() {
   const [data, setJsonData] = useState({});
@@ -75,17 +76,17 @@ export default function Backtesting() {
 
       const ma5Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj[5]
+        value: obj.ma5
       }));
 
       const ma10Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj[10]
+        value: obj.ma10
       }));
 
       const ma20Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj[20]
+        value: obj.ma20
       }));
       
       // Setting the border color for the vertical axis
@@ -163,18 +164,18 @@ export default function Backtesting() {
 
   return (
     <>
-    <div id="backtesting-container">
+    <div id="backtesting-container" className="h-[950px]">
       <Split
         sizes={[25, 75]}
         className="split"
         minSize={50}
       > 
-        <div className="form-area h-screen">
+        <div className="form-area h-[950px]">
           <StrategyFrom renderChart={renderChart}/>
         </div>
         <div className="">
           <p className=" mb-3 ">Backtesting Report</p>
-          <div ref={chartContainerRef} style={{position:'relative', height:'500px'}}>
+          <div ref={chartContainerRef} style={{position:'relative', height:'500px'}} className="ml-2 mr-2 border-2 border-gray-500 rounded-lg">
           { Object.keys(data).length > 0 &&
             <div style={{
               position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
@@ -182,9 +183,9 @@ export default function Backtesting() {
               <div>{data.candleData[0]?.stock_id}</div>
               <div className="flex">
                 <div className="mr-2">open: {candlePrice?.open}</div>
-                <div className="mr-2">open: {candlePrice?.close}</div>
-                <div className="mr-2">open: {candlePrice?.high}</div>
-                <div className="mr-2">open: {candlePrice?.low}</div>
+                <div className="mr-2">close: {candlePrice?.close}</div>
+                <div className="mr-2">hugh: {candlePrice?.high}</div>
+                <div className="mr-2">low: {candlePrice?.low}</div>
               </div>
               <div className="flex">
                 <div className="mr-2">ma5: {ma5Price?.value}</div>
@@ -195,17 +196,11 @@ export default function Backtesting() {
           }
 
           </div>
-          <div id="report-area" className="grid grid-cols-3 gap-1 h-[250px] mt-2">
-            <div className=" border-2 border-blue-500">
-              <p>Success rate: {data?.successRate}%</p>
-              <p>Total trade times: {data?.totalTradeTimes}</p>
-              <p>Gain times: {data?.numberOfGains}</p>
-              <p>Loss times: {data?.numberOfLosses}</p>
-              <p>Total profit: {data?.totalProfit}</p>
-              <p>Maximum Profit: {data?.maximumProfit}</p>
-              <p>Maximum Loss: {data?.maximumLoss}</p>
+          <div id="report-area" className="grid grid-cols-3 gap-3 h-fit mt-2">
+            <div className=" border-2 border-blue-500 rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
+              <Report data={data}/>
             </div>
-            <div className="border-2 border-green-500 col-span-2">
+            <div className="border-2 border-blue-500 col-span-2 rounded-lg mr-2">
               <Histogram data={data}/>
             </div>
           </div>  

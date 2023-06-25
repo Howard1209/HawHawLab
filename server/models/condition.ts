@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { type StockDataSchema } from "./backtestingModel.js"; 
 
-function checkTaiexSituation(ma5:number, ma10:number, ma20:number) {
+function checkMaSituation(ma5:number, ma10:number, ma20:number) {
   if (ma5 > ma10 && ma10 > ma20) {
-    return 'bullish';
+    return 'long';
   } else if (ma5 < ma10 && ma10 < ma20) {
-    return 'bearish'
+    return 'short'
   }
   return 'volatile';
 }
@@ -24,16 +24,22 @@ export function checkCondition(
   openPrice: number
   ) {
   const { method, symbol, value } = condition;
-  const stockPrice = stock.close;
+  let stockPrice = stock.close;
 
-  const evaluateMaCondition = (_currentMethod: string, currentValue: number, currentSymbol: string) => {
-    const maValue = stock[currentValue];
-    if (maValue) {
-      return (currentSymbol === 'greater') ? stockPrice > maValue : stockPrice < maValue;
-    }
-    // 之後要改成 throw error
-    return false
+  const evaluateMaCondition = (currentMethod: string, currentValue: string, currentSymbol: string) => {  
+      
+    const maValue = z.number().parse(stock[currentValue]);
+    stockPrice = z.number().parse(stock[currentMethod]);
+    return (currentSymbol === 'greater') ? stockPrice > maValue : stockPrice < maValue;
   };
+
+  const evaluateMaTypeCondition = (currentMethod: string, currentValue: string, currentSymbol: string) => {
+    const ma5 = stock.ma5;
+    const ma10 = stock.ma10;
+    const ma20 = stock.ma20;
+    const result = checkMaSituation(ma5, ma10, ma20);
+    return currentSymbol === result;
+  }
 
   const evaluateKdCondition = (_currentMethod: string, currentValue: number, currentSymbol: string) => {
     const kValue = kd.k;
@@ -60,40 +66,30 @@ export function checkCondition(
     const ma5 = taiexMaData[5][index];
     const ma10 = taiexMaData[10][index];
     const ma20 = taiexMaData[20][index];
-    if (ma5 && ma10 && ma20) {
-      const result = checkTaiexSituation(ma5, ma10, ma20);
-      return currentSymbol === result;  
-    }
-    // 之後要改成 throw error
-    return false
+    const result = checkMaSituation(ma5, ma10, ma20);
+    return currentSymbol === result;  
   };
 
-  const stopLossCondition = (_currentMethod: string, currentValue: number, currentSymbol:string) => {
-    const spreadPercentage = currentValue / 100;
-    const spreadPrice = openPrice - openPrice * spreadPercentage;
-    return (currentSymbol === 'greater') ? stockPrice > spreadPrice : stockPrice < spreadPrice;
-  };
-
-  const stopProfitCondition = (_currentMethod: string, currentValue: number, currentSymbol:string) => {
-    const spreadPercentage = currentValue / 100;
-    const spreadPrice = openPrice + openPrice * spreadPercentage;
-    return (currentSymbol === 'greater') ? stockPrice > spreadPrice : stockPrice < spreadPrice;
+  const spreadCondition = (_currentMethod: string, currentValue: string, currentSymbol:string) => {
+    const userSpreadPCT = parseFloat(currentValue);
+    const stockSpreadPCT = stock.spreadPCT;
+    return (currentSymbol === 'greater') ? stockSpreadPCT > userSpreadPCT : stockSpreadPCT < userSpreadPCT;
   };
   
   interface MappingSchema {
     [key: string]: Function;
   }
-
+  
   const mapping: MappingSchema = {
-    ma: evaluateMaCondition,
+    close: evaluateMaCondition,
+    ma:evaluateMaTypeCondition,
     kd: evaluateKdCondition,
     investmentTrust: evaluateInvestorCondition,
     foreignInvestors:evaluateInvestorCondition,
     dealerSelf: evaluateInvestorCondition,
     investorsAll:evaluateInvestorCondition,
     taiex: evaluateTaiexCondition,
-    stopLoss: stopLossCondition,
-    stopProfit: stopProfitCondition,
+    spreadPCT: spreadCondition,
   };
 
   if (Array.isArray(method) && Array.isArray(value) && Array.isArray(symbol)) {
@@ -103,8 +99,7 @@ export function checkCondition(
     }
     return results.some(result => result === true);
   }
+  const zodMethod = z.string().parse(method);
+  return mapping[zodMethod](method, value, symbol);
 
-  if( typeof method === 'string') return mapping[method](method, value, symbol);
-
-  // 沒有結果也要 throw error 了
 }
