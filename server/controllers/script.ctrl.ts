@@ -12,7 +12,7 @@ export default async function backtestingScript(req: Request, res: Response){
   const endIndex = code.indexOf("// The trigger you want to set up, i can be empty;");
   const dimTxt = code.substring(0, endIndex);
   if (dimTxt === '') {
-    res.status(400).json({message: 'You made changes to condition area.'});
+    res.status(400).json({error: 'You made changes to condition area.'});
     return
   }
 
@@ -36,14 +36,12 @@ export default async function backtestingScript(req: Request, res: Response){
   //   console.log('刪除檔案成功');
   // });
 
-  const startMarker = "// The trigger you want to set up, i can be empty;\n";
-  const endMarker = "// Condition area\n";
-  const startTxt = code.indexOf(startMarker) + startMarker.length;
-  const endTxt = code.indexOf(endMarker);
-  const triggerText = code.substring(startTxt, endTxt);
-
-  
   const {startDate, endDate, stockId, ma, type} = JSON.parse(promise);
+  if (startDate > endDate){
+    res.status(400).json({error: 'The start date is greater than the end date.'});
+    return
+  }
+
   const maxMa = Math.max(...ma); 
 
   const stockData = await getStockData(startDate, endDate, stockId, maxMa);
@@ -58,6 +56,11 @@ export default async function backtestingScript(req: Request, res: Response){
     return { ...ele, ma5: taiexMaData[5][index], ma10: taiexMaData[10][index], ma20: taiexMaData[20][index]};
   });
 
+  const startMarker = "// The trigger you want to set up, i can be empty;\n";
+  const endMarker = "// Condition area\n";
+  const startTxt = code.indexOf(startMarker) + startMarker.length;
+  const endTxt = code.indexOf(endMarker);
+  const triggerText = code.substring(startTxt, endTxt);
   
   const stockInfoText = `const stockInfo = ${JSON.stringify(stockInfo)};\n`+
   `const taiexInfo = ${JSON.stringify(taiexInfo)};\n`+
@@ -67,10 +70,10 @@ export default async function backtestingScript(req: Request, res: Response){
   const execTxt = code.substring(startIndex);
 
   if (execTxt === '') {
-    res.status(400).json({message: 'You have a type error in condition area.'});
+    res.status(400).json({message: 'You have an error in condition area.'});
     return
   }
-  console.log(execTxt);
+
   const exec = 'textExec.js';
   fs.writeFileSync(exec, stockInfoText + triggerText + execDimText + execTxt + closeTxt);  
   const result:string = await new Promise((resolve, reject) => {
@@ -101,7 +104,5 @@ export default async function backtestingScript(req: Request, res: Response){
     profitRecordsByDate
   };
 
-  console.log(report);
-  
   res.status(200).json({report});  
 }

@@ -24,7 +24,7 @@ export default function Report({data}){
       <div>{data?.totalProfit}</div>
     </div>
     <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300">
-      <div className="border-r-4 mr-3 pl-2">TMaximum Profit</div>
+      <div className="border-r-4 mr-3 pl-2">Maximum Profit</div>
       <div>{data?.maximumProfit}</div>
     </div>
     <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">

@@ -23,21 +23,21 @@ ChartJS.register(
   Legend,
 );
 
-Histogram.propTypes = {
+HistogramInScript.propTypes = {
   data: PropTypes.shape({
-    perTrade: PropTypes.arrayOf(
+    profitRecordsByDate: PropTypes.arrayOf(
       PropTypes.shape({
-        closeDay: PropTypes.string,
+        date: PropTypes.string,
         profit: PropTypes.number,
       })
     ),
   }).isRequired,
 };
 
-export default function Histogram({data}) {
+export default function HistogramInScript({data}) {
 
   if (!Object.keys(data).length > 0) return;
-  const perTrade= data.perTrade;
+  const perTrade = data.profitRecordsByDate;
 
   const cumulativeProfit = perTrade.reduce((acc, item) => {
     const previousSum = acc.length > 0 ? acc[acc.length - 1] : 0;
@@ -45,12 +45,13 @@ export default function Histogram({data}) {
     acc.push(updatedSum);
     return acc;
   }, []);
+
   
   return(
     
     <div id="bar">
       <Chart data= {{
-        labels: perTrade?.map((ele) => ele.closeDay),
+        labels: perTrade?.map((ele) => ele.date),
         datasets: [
           {
             type: 'line',
