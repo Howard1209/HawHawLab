@@ -41,6 +41,16 @@ const api = {
   async getTaiexData(){
     const response = await fetch(`${this.hostname}/taiex`);
     return await response.json();
+  },
+  async postScript(code){
+    const response = await fetch((`${this.hostname}/script`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({code})
+    });
+    return await response.json();
   }
 };
 
