@@ -119,41 +119,71 @@ interface Transaction {
   price: number;
 }
 
-export function calculateProfitLoss(transactions: Transaction[]) {
+export function calculateProfitLoss(transactions: Transaction[], type:string) {
   let realizedProfitLoss = 0;
   let remainingQty = 0;
   let fifoQueue = [];
   const profitRecords = [];
   const profitRecordsByDate = [];
 
-  for (const transaction of transactions) {
-    if (transaction.type === 'buy') {
-      remainingQty += transaction.qty;
-      fifoQueue.push(transaction);
-    } else if (transaction.type === 'sell') {
-      let sellQty = transaction.qty;
-      let profit = 0;
-      while (sellQty > 0) {
-        const earliestBuy = fifoQueue[0];
-        if (earliestBuy.qty <= sellQty) {
-          const buyPrice = earliestBuy.price;
-          profit += (transaction.price - buyPrice) * earliestBuy.qty * 1000;
-          sellQty -= earliestBuy.qty;
-          remainingQty -= earliestBuy.qty;
-          fifoQueue.shift();
-        } else {
-          const buyPrice = earliestBuy.price;
-          profit += (transaction.price - buyPrice) * sellQty * 1000;
-          earliestBuy.qty -= sellQty;
-          remainingQty -= sellQty;
-          sellQty = 0;
+  if (type === 'long') {
+    for (const transaction of transactions) {
+      if (transaction.type === 'buy') {
+        remainingQty += transaction.qty;
+        fifoQueue.push(transaction);
+      } else if (transaction.type === 'sell') {
+        let sellQty = transaction.qty;
+        let profit = 0;
+        while (sellQty > 0) {
+          const earliestBuy = fifoQueue[0];
+          if (earliestBuy.qty <= sellQty) {
+            const buyPrice = earliestBuy.price;
+            profit += (transaction.price - buyPrice) * earliestBuy.qty * 1000;
+            sellQty -= earliestBuy.qty;
+            remainingQty -= earliestBuy.qty;
+            fifoQueue.shift();
+          } else {
+            const buyPrice = earliestBuy.price;
+            profit += (transaction.price - buyPrice) * sellQty * 1000;
+            earliestBuy.qty -= sellQty;
+            remainingQty -= sellQty;
+            sellQty = 0;
+          }
         }
+        realizedProfitLoss += profit;
+        profitRecords.push(profit);
+        profitRecordsByDate.push({date:transaction.date, profit});
       }
-      realizedProfitLoss += profit;
-      profitRecords.push(profit);
-      profitRecordsByDate.push({date:transaction.date, profit});
-    }
+    }  
+  } else {
+    for (const transaction of transactions) {
+      if (transaction.type === 'sell') {
+        remainingQty += transaction.qty;
+        fifoQueue.push(transaction);
+      } else if (transaction.type === 'buy') {
+        let sellQty = transaction.qty;
+        let profit = 0;
+        while (sellQty > 0) {
+          const earliestBuy = fifoQueue[0];
+          if (earliestBuy.qty <= sellQty) {
+            const buyPrice = earliestBuy.price;
+            profit += (buyPrice - transaction.price) * earliestBuy.qty * 1000;
+            sellQty -= earliestBuy.qty;
+            remainingQty -= earliestBuy.qty;
+            fifoQueue.shift();
+          } else {
+            const buyPrice = earliestBuy.price;
+            profit += (buyPrice - transaction.price) * sellQty * 1000;
+            earliestBuy.qty -= sellQty;
+            remainingQty -= sellQty;
+            sellQty = 0;
+          }
+        }
+        realizedProfitLoss += profit;
+        profitRecords.push(profit);
+        profitRecordsByDate.push({date:transaction.date, profit});
+      }
+    }  
   }
-
   return { realizedProfitLoss, profitRecords, profitRecordsByDate };
 }

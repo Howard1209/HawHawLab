@@ -87,7 +87,8 @@ export default async function backtestingScript(req: Request, res: Response){
   });
 
   const { transactions }= JSON.parse(result);
-  const { realizedProfitLoss, profitRecords, profitRecordsByDate } = calculateProfitLoss(transactions);
+  
+  const { realizedProfitLoss, profitRecords, profitRecordsByDate } = calculateProfitLoss(transactions, type);
   const numberOfGains = profitRecords.filter(num => num > 0).length;
   const numberOfLosses = profitRecords.filter(num => num <= 0).length;
 

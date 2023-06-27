@@ -17,11 +17,11 @@ for (let i = 1; i < stockInfo.length; i++) {
 
   const action ={
     buy: (price, qty) => {
-      shares += qty;
+      type === 'long' ? shares += qty : shares -= qty;
       transactions.push({ date: stock.date, type: 'buy', qty, price });
     },
     sell: (price, qty) => {
-      shares -= qty;
+      type === 'long' ? shares -= qty: shares += qty;
       transactions.push({ date: stock.date, type: 'sell', qty, price });
       totalTrades++;
     }
@@ -30,8 +30,12 @@ for (let i = 1; i < stockInfo.length; i++) {
 
 export const closeTxt = `
 const isLastDay = i + 1  === stockInfo.length;
-if (isLastDay && shares > 0) {
-  action['sell'](stock.close, shares);
+if (isLastDay && shares !== 0) {
+  if (type === 'long'){
+    action['sell'](stock.close, shares);
+  } else {
+    action['buy'](stock.close, shares);
+  }
 }
 }
 console.log(JSON.stringify({transactions}));
