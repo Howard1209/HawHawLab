@@ -1,3 +1,4 @@
+import { z } from 'zod'; 
 import { type AdjStockDataSchema, type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
 
 export type MaValues = {
@@ -85,10 +86,44 @@ export function getKD(stockData:AdjStockDataSchema[]) {
       k = (previousK * 2 / 3) + (currentRSV * 1 / 3);
       d = (previousD * 2 / 3) + (k * 1 / 3);
     }
-    kdValues.push({ k, d }); 
+    kdValues.push({ k, d, date: stockData[i].date }); 
   }
-  console.log(kdValues);
   
   return kdValues;
 }
 
+
+
+export function calculateMovingAverages(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], periods:number[]) {
+  const result = [];
+
+  for (let i = 0; i < data.length; i++) {
+    if (i >= Math.max(...periods) - 1) {
+      const maValues:{ [key:string]:number } = {};
+
+      for (const period of periods) {
+        const maNumber = z.number().parse(period)
+        maValues[`ma${maNumber}`] = newCalculateMA(data, i, period);
+      }
+
+      const entry = {
+        date: data[i].date,
+        ...maValues,
+      };
+
+      result.push(entry);
+    }
+  }
+
+  return result;
+}
+
+function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], currentIndex:number, period:number) {
+  let sum = 0;
+
+  for (let i = currentIndex; i > currentIndex - period; i--) {
+    sum += data[i].close;
+  }
+
+  return sum / period;
+}

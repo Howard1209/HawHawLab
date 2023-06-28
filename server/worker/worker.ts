@@ -14,6 +14,7 @@ for (let i = 1; i < stockInfo.length; i++) {
   const preStock = stockInfo[i-1];
   const taiex = taiexInfo[i];
   const preTaiex = taiexInfo[i-1];
+  const kd = kdData[i];
 
   const action ={
     buy: (price, qty) => {
@@ -38,6 +39,6 @@ if (isLastDay && shares !== 0) {
   }
 }
 }
-console.log(JSON.stringify({transactions}));
+module.exports = {transactions};
 `;
 
