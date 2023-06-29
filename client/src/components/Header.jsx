@@ -4,7 +4,7 @@ import { MdAttachMoney } from "react-icons/md";
 
 const Header = () => {
   return(
-    <header className="App-header p-2 flex items-center bg-[#1D1D1E] rounded ">
+    <header className="App-header p-2 h-12 flex items-center bg-[#1D1D1E] rounded ">
       <p className="text-[#BABCBC]">HawHaw</p>
       <MdAttachMoney className="text-[#E7893C] text-3xl"/>
       <p className="text-[#BABCBC]">Lab</p>

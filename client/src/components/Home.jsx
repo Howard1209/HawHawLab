@@ -3,8 +3,8 @@ import { HomeChart } from "./HomeChart";
 
 const Landing = () => {
   return(
-    <div id='page' className='flex h-full w-full p-2 gap-1
-    bg-gradient-to-tr	from-[#72313b] via-[#141415] to-[#07503a]'>
+    <div id='page' className='flex h-[calc(100vh-48px)] w-full p-2 gap-1
+    bg-gradient-to-tr	from-[#72313b] via-[#141415] to-[#07503a] rounded-md'>
       <div className=" w-[33%] mt-40 pl-16">
         <div className="mb-5 text-3xl text-[#EEEEEE] ">Science!  Simple!</div>
         <p className="text-base font-light text-stone-400 ">
