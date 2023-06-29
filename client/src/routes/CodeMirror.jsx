@@ -17,7 +17,7 @@ const kd = true; // setting period = 9;
 const type = 'long'; // long or short
 
 // Do not revise module.exports = 
-module.exports = {startDate, endDate, stockId, ma, type};
+module.exports = {startDate, endDate, stockId, ma, type, kd};
 
 // The trigger you want to set up, it can be empty;
 
@@ -195,6 +195,7 @@ export default function Script() {
             theme={vscodeDark}
             extensions={[javascript()]}
             onChange={(value) => setCode(value)}
+            className="text-base font-thin"
           />
           <div className="border-2 bg-green-500 text-center" onClick={submitCode}>Start Backtesting</div>
         </div>
