@@ -18,15 +18,27 @@ for (let i = 1; i < stockInfo.length; i++) {
 
   const action ={
     buy: (price, qty) => {
-      type === 'long' ? shares += qty : shares -= qty;
-      transactions.push({ date: stock.date, type: 'buy', qty, price });
+      if (type === 'short' && shares > 0) {
+        shares -= qty;
+        transactions.push({ date: stock.date, type: 'buy', qty, price });
+      }
+      if (type === 'long') {
+        shares += qty;
+        transactions.push({ date: stock.date, type: 'buy', qty, price });  
+      }
     },
     sell: (price, qty) => {
-      type === 'long' ? shares -= qty: shares += qty;
-      transactions.push({ date: stock.date, type: 'sell', qty, price });
-      totalTrades++;
+      if (type === 'long' && shares > 0) {
+        shares -= qty;
+        transactions.push({ date: stock.date, type: 'sell', qty, price });
+        return;
+      }
+      if (type === 'short') {
+        shares += qty;
+        transactions.push({ date: stock.date, type: 'sell', qty, price });  
+      }
     }
-  };
+  };  
 `;
 
 export const closeTxt = `

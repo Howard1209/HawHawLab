@@ -19,7 +19,7 @@ const type = 'long'; // long or short
 // Do not revise module.exports = 
 module.exports = {startDate, endDate, stockId, ma, type};
 
-// The trigger you want to set up, i can be empty;
+// The trigger you want to set up, it can be empty;
 
 // You can use Stock, preStock, taiex, preTaiex these object
 // Condition area

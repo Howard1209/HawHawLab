@@ -130,10 +130,10 @@ export function calculateProfitLoss(transactions: Transaction[], type:string) {
     for (const transaction of transactions) {
       if (transaction.type === 'buy') {
         remainingQty += transaction.qty;
-        fifoQueue.push(transaction);
+        fifoQueue.push(transaction);        
       } else if (transaction.type === 'sell') {
         let sellQty = transaction.qty;
-        let profit = 0;
+        let profit = 0;        
         while (sellQty > 0) {
           const earliestBuy = fifoQueue[0];
           if (earliestBuy.qty <= sellQty) {
@@ -141,15 +141,16 @@ export function calculateProfitLoss(transactions: Transaction[], type:string) {
             profit += (transaction.price - buyPrice) * earliestBuy.qty * 1000;
             sellQty -= earliestBuy.qty;
             remainingQty -= earliestBuy.qty;
-            fifoQueue.shift();
+            fifoQueue.shift();            
           } else {
             const buyPrice = earliestBuy.price;
             profit += (transaction.price - buyPrice) * sellQty * 1000;
             earliestBuy.qty -= sellQty;
             remainingQty -= sellQty;
-            sellQty = 0;
+            sellQty = 0;            
           }
-        }
+          
+        }        
         realizedProfitLoss += profit;
         profitRecords.push(profit);
         profitRecordsByDate.push({date:transaction.date, profit});

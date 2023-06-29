@@ -4,12 +4,12 @@ import { getStockData, getTaiexData, calculateProfitLoss } from '../models/stock
 import { calculateMovingAverages, getKD } from '../models/technicalAnalysis.js';
 import { execDimText, closeTxt } from '../worker/worker.js'
 
-
 export default async function backtestingScript(req: Request, res: Response){
   const {code} = req.body;
   
   const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;");
   const dimTxt = code.substring(0, endIndex);
+  
   if (dimTxt === '') {
     res.status(400).json({error: 'You made changes to condition area.'});
     return
@@ -26,6 +26,11 @@ export default async function backtestingScript(req: Request, res: Response){
 
   if (startDate > endDate){
     res.status(400).json({error: 'The start date is greater than the end date.'});
+    return
+  }
+  
+  if (type !== 'long' && type !== 'short'){
+    res.status(400).json({error: 'The type is error'});
     return
   }
   
@@ -72,8 +77,9 @@ export default async function backtestingScript(req: Request, res: Response){
   const vmExec = new NodeVM();
   const scriptExec = new VMScript(stockInfoText + triggerText + execDimText + execTxt + closeTxt);
   const { transactions } = vmExec.run(scriptExec);
-  
+
   const { realizedProfitLoss, profitRecords, profitRecordsByDate } = calculateProfitLoss(transactions, type);
+
   const numberOfGains = profitRecords.filter(num => num > 0).length;
   const numberOfLosses = profitRecords.filter(num => num <= 0).length;
 
