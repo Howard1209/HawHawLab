@@ -3,7 +3,9 @@ import { LineStyle, createChart } from "lightweight-charts";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-import Split from 'react-split'
+import Split from 'react-split';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import HistogramInScript from "../components/BarChart";
 import Report from "./Report";
 import api from "../utils/api";
@@ -16,7 +18,7 @@ const ma = [5, 10, 20];
 const kd = true; // setting period = 9;
 const type = 'long'; // long or short
 
-// Do not revise module.exports = 
+// Do not revise module.exports
 module.exports = {startDate, endDate, stockId, ma, type, kd};
 
 // The trigger you want to set up, it can be empty;
@@ -31,10 +33,11 @@ export default function Script() {
 
   const submitCode = async() => {
     const result = await api.postScript(code);
-    if (result.report) {
-      setJsonData(result.report);
+    if (result.error) {
+      toast.error(result.error);
+      return;
     }
-    console.log(result)
+    setJsonData(result.report);
   }
 
   const chartContainerRef = useRef();
@@ -182,56 +185,107 @@ export default function Script() {
 
   return (
     <>
-    <div className="bg-gray-300 min-h-screen">
-      <Split
-          sizes={[40, 60]}
-          className="split"
-          minSize={50}
-      >
-        <div id="codeMirror-area" className=" min-h-screen">
-          <CodeMirror
-            value={code}
-            height="866px"
-            theme={vscodeDark}
-            extensions={[javascript()]}
-            onChange={(value) => setCode(value)}
-            className="text-base font-thin"
-          />
-          <div className="border-2 bg-green-500 text-center" onClick={submitCode}>Start Backtesting</div>
-        </div>
-        <div id="chart-area">
-          <p className=" mb-3 ">Backtesting Report</p>
-          <div ref={chartContainerRef} style={{position:'relative', height:'470px'}} className="ml-2 mr-2 border-2 border-gray-500 rounded-lg">
-          { Object.keys(data).length > 0 &&
-            <div style={{
-              position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
-              }}>
-              <div>{data.candleData[0]?.stock_id}</div>
-              <div className="flex">
-                <div className="mr-2">open: {candlePrice?.open}</div>
-                <div className="mr-2">close: {candlePrice?.close}</div>
-                <div className="mr-2">hugh: {candlePrice?.high}</div>
-                <div className="mr-2">low: {candlePrice?.low}</div>
-              </div>
-              <div className="flex">
-                <div className="mr-2">ma5: {ma5Price?.value}</div>
-                <div className="mr-2">ma10: {ma10Price?.value}</div>
-                <div className="mr-2">ma20: {ma20Price?.value}</div>
-              </div>
+      <div className="mt-2 border border-[#1D1D1E] rounded-md">
+        <Split
+            sizes={[23, 77]}
+            className="split h-[calc(100vh-56px)]"
+            minSize={50}
+        >
+          <div id="codeMirror-area">
+            <div className="h-[calc(85%s)]">
+              <CodeMirror
+                value={code}
+                theme={vscodeDark}
+                height="580px"
+                extensions={[javascript()]}
+                onChange={(value) => setCode(value)}
+                className="text-sm"
+              />
             </div>
-          }
+            <div className="mt-5 flex">
+              <button
+                type="button"
+                onClick={submitCode}
+                className="bg-[#343435] cursor-pointer text-[#E7893C] hover:text-[#30DEAB]
+                  px-2 py-1 text-center mx-auto rounded-xl transition-all hover:scale-105">
+                  Start Backtesting
+              </button>
+            </div>
           </div>
-          <div id="report-area" className="grid grid-cols-3 gap-3 h-[376px] mt-2">
-            <div className=" border-2 border-blue-500 rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
-              <Report data={data}/>
+          <div id="chart-area" className="border border-red-300 text-[#EEE]">
+            <p className="pl-3">Backtesting Report</p>
+            <div ref={chartContainerRef} style={{position:'relative'}} className=" mx-2 border border-[#BABABC] rounded-lg h-[55%]">
+              { Object.keys(data).length > 0 &&
+              <div style={{
+                position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
+                }}>
+                <div>{data.candleData[0]?.stock_id}</div>
+                <div className="flex">
+                  <div className="mr-2">open: {candlePrice?.open}</div>
+                  <div className="mr-2">close: {candlePrice?.close}</div>
+                  <div className="mr-2">hugh: {candlePrice?.high}</div>
+                  <div className="mr-2">low: {candlePrice?.low}</div>
+                </div>
+                <div className="flex">
+                  <div className="mr-2">ma5: {ma5Price?.value}</div>
+                  <div className="mr-2">ma10: {ma10Price?.value}</div>
+                  <div className="mr-2">ma20: {ma20Price?.value}</div>
+                </div>
+              </div>
+              }
             </div>
-            <div className="border-2 border-blue-500 col-span-2 rounded-lg mr-2">
-              <HistogramInScript data={data}/>
-            </div>
-          </div>  
+            <div id="report-area" className="grid grid-cols-3 gap-2 mt-2 h-[40%]">
+              <div className=" border border-[#BABABC] rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
+                <Report data={data}/>
+              </div>
+              <div className="border border-[#BABABC] col-span-2 rounded-lg mr-2">
+                <HistogramInScript data={data}/>
+              </div>
+            </div>  
+          </div>
+        </Split>
+      </div>
+      <div ref={chartContainerRef} style={{position:'relative'}} className=" mx-2 border border-[#BABABC] rounded-lg h-[55%]">
+        { Object.keys(data).length > 0 &&
+        <div style={{
+          position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
+          }}>
+          <div>{data.candleData[0]?.stock_id}</div>
+          <div className="flex">
+            <div className="mr-2">open: {candlePrice?.open}</div>
+            <div className="mr-2">close: {candlePrice?.close}</div>
+            <div className="mr-2">hugh: {candlePrice?.high}</div>
+            <div className="mr-2">low: {candlePrice?.low}</div>
+          </div>
+          <div className="flex">
+            <div className="mr-2">ma5: {ma5Price?.value}</div>
+            <div className="mr-2">ma10: {ma10Price?.value}</div>
+            <div className="mr-2">ma20: {ma20Price?.value}</div>
+          </div>
         </div>
-      </Split>
-    </div>
+        }
+      </div>
+      <div id="report-area" className="grid grid-cols-3 gap-2 mt-2 h-[40%]">
+        <div className=" border border-[#BABABC] rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
+          <Report data={data}/>
+        </div>
+        <div className="border border-[#BABABC] col-span-2 rounded-lg mr-2">
+          <HistogramInScript data={data}/>
+        </div>
+      </div>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

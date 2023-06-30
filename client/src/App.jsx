@@ -1,15 +1,17 @@
+import { useState } from "react";
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { Outlet } from 'react-router-dom';
 
 function App() {
+  const [open, setOpen] = useState(true);
 
   return (
     <section className='flex gap-1'>
-      <Sidebar/>
-      <div className=' w-full text-xl text-gray-900 font-semibold'>
+      <Sidebar open={open} setOpen={setOpen} />
+      <div className='w-full'>
         <Header/>
-        <Outlet/>
+        <Outlet context={[open]}/>
       </div>
     </section>
   )

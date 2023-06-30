@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { VscBeaker, VscVmActive } from "react-icons/vsc";
@@ -7,7 +7,7 @@ import { GoPlusCircle } from "react-icons/go";
 import { Link } from "react-router-dom";
 
 
-const Sidebar = () => {
+const Sidebar = ({ open, setOpen }) => {
   const menus =[
     {name:"Home",link:'/',icon: MdOutlineDashboard},
     {name:"My strategy",link:'/',icon: VscBeaker},
@@ -16,21 +16,20 @@ const Sidebar = () => {
     {name:"大盤市況",link:'/taiex',icon: VscVmActive},
     {name:"dashboard",link:'/',icon: MdOutlineDashboard}
   ];
-  const [open, setOpen] = useState(true);
 
   return(
     <>
-      <div className={`bg-[#1D1D1E] min-h-screen ${open ? 'w-48':'w-16'} duration-500 text-[#BABCBC] px-4 rounded`}>
+      <div className={`bg-[#1D1D1E] min-h-screen ${open ? 'w-48':'w-16'} duration-500 text-[#BABCBC] px-4 rounded z-50`}>
         <div className='py-3 flex justify-end'>
         
-          <HiMenuAlt3 size={26} className='cursor-pointer' onClick={()=>setOpen(!open)}/>
+          <HiMenuAlt3 size={26} id="sidebarButton" className='cursor-pointer' onClick={()=>setOpen(!open)}/>
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">
         {menus?.map((menu,i) =>(
           <Link
             to={menu?.link}
             key={i}
-            className="group flex items-center text-sm gap-3.5 fort-medium p-2 hover:text-[#30DEAB] rounded-md">
+            className="group flex items-center text-sm gap-3.5 fort-medium p-2 hover:text-[#30DEAB] transition-all hover:scale-105 rounded-md">
             <div>
               {React.createElement(menu?.icon,{size:'20'})}
             </div>

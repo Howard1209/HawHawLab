@@ -1,12 +1,19 @@
 import { LineStyle, createChart } from "lightweight-charts";
 import { useEffect, useRef } from "react";
+import { useOutletContext  } from "react-router-dom";
 import api from "../utils/api";
 
 export function HomeChart() {
   const chartContainerRef = useRef();
+  const chartRef = useRef();
+
+  const [open] = useOutletContext();
+
+  console.log('open', open);
 
   useEffect(() => {
-    const chart = createChart(chartContainerRef.current); 
+    chartRef.current = createChart(chartContainerRef.current);
+    const chart = chartRef.current;
 
     api.getTaiexData().then(result => {
 
@@ -126,6 +133,15 @@ export function HomeChart() {
       window.removeEventListener("resize", handleResize);
     };
   }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      chartRef.current.applyOptions({
+        width: open ? chartContainerRef.current.clientWidth-64 : chartContainerRef.current.clientWidth+64,
+      });
+    };
+    handleResize();
+  }, [open])
 
   return (
     <>

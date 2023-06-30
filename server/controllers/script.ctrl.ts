@@ -18,7 +18,7 @@ export default async function backtestingScript(req: Request, res: Response){
   const vmDim = new NodeVM();
   const scriptDim = new VMScript(dimTxt);
   const {startDate, endDate, stockId, ma, type} = vmDim.run(scriptDim);
-
+  
   if (! startDate && endDate && stockId && ma && type) {
     res.status(400).json({error: 'You need to fill in the following information: startDate, endDate, stockId, ma, type.'});
     return
@@ -58,7 +58,10 @@ export default async function backtestingScript(req: Request, res: Response){
   const startTxt = code.indexOf(startMarker) + startMarker.length;
   const endTxt = code.indexOf(endMarker);
   const triggerText = code.substring(startTxt, endTxt);
-
+  if (code.substring(endTxt) === "// Condition area\n") {
+    res.status(400).json({error: 'The Condition area is empty'});
+    return
+  }
   const kdTxt = kdData ? `const kdData = ${JSON.stringify(kdData)}\n`:'';
   
   const stockInfoText = `const stockInfo = ${JSON.stringify(stockInfo)};\n`+
@@ -66,7 +69,7 @@ export default async function backtestingScript(req: Request, res: Response){
   `const type = ${JSON.stringify(type)};\n`;
     
 
-  const startIndex = code.indexOf("// Condition area\n") + "// Condition area\n".length;
+  const startIndex = code.indexOf("// Condition area") + "// Condition area".length;
   const execTxt = code.substring(startIndex);
 
   if (execTxt === '') {
@@ -77,7 +80,7 @@ export default async function backtestingScript(req: Request, res: Response){
   const vmExec = new NodeVM();
   const scriptExec = new VMScript(stockInfoText + triggerText + execDimText + execTxt + closeTxt);
   const { transactions } = vmExec.run(scriptExec);
-
+  
   const { realizedProfitLoss, profitRecords, profitRecordsByDate } = calculateProfitLoss(transactions, type);
 
   const numberOfGains = profitRecords.filter(num => num > 0).length;

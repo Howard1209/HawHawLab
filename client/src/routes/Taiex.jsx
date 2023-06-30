@@ -12,7 +12,7 @@ function TaiexChart() {
   const [ma5Price, setMa5Price] = useState(null);
   const [ma10Price, setMa10Price] = useState(null);
   const [ma20Price, setMa20Price] = useState(null);
-
+  
   useEffect(() => {
     const chart = createChart(chartContainerRef.current); 
 
@@ -52,7 +52,6 @@ function TaiexChart() {
           vertLines: { color: '#444' },
           horzLines: { color: '#444' },
         },
-
         width: chartContainerRef.current.clientWidth,
         height: 500,
         crosshair: {
@@ -143,10 +142,7 @@ function TaiexChart() {
         width: chartContainerRef.current.clientWidth,
       });
     };
-
-
     window.addEventListener("resize",handleResize);
-
 
     return () => {
       chart.remove();

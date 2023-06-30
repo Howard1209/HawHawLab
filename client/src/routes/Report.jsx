@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 export default function Report({data}){
   return(
     <>
-    <div className="grid grid-cols-2 mt-2 mb-1 border-b-2 border-red-300 pb-1">
-      <div className="border-r-4 mr-3 pl-2">Success rate</div>
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+      <div className="border-r-4 mr-3 pl-2">{data? 'Success rate': ''}</div>
       <div>{data?.successRate}%</div>
     </div>
     <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
