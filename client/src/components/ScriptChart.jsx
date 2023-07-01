@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { LineStyle, createChart } from "lightweight-charts";
 import HistogramInScript from "./BarChart";
 import Report from "../routes/Report";
-
+import PropTypes from 'prop-types';
 
 export default function ScriptChart({data}){
   
@@ -17,6 +17,7 @@ export default function ScriptChart({data}){
     if (Object.keys(data).length > 0) {
       const chart = createChart(chartContainerRef.current, {
         autoSize: true,
+        height:'500px',
         layout: {
           background: { color: '#222' },
           textColor: '#DDD',
@@ -152,8 +153,7 @@ export default function ScriptChart({data}){
 
   return(
     <>
-      <p className="pl-3">Backtesting Report</p>
-      <div ref={chartContainerRef} style={{position:'relative'}} className=" mx-2 border border-[#BABABC] rounded-lg h-[55%]">
+      <div ref={chartContainerRef} style={{position:'relative'}} className=" border border-[#BABABC] rounded-lg h-[450px]">
         { Object.keys(data).length > 0 &&
         <div style={{
           position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
@@ -174,13 +174,27 @@ export default function ScriptChart({data}){
         }
       </div>
       <div id="report-area" className="grid grid-cols-3 gap-2 mt-2 h-[40%]">
-        <div className=" border border-[#BABABC] rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
+        <div className=" border border-[#BABABC] rounded-lg pl-2 pr-2 pt-3 place-content-center">
           <Report data={data}/>
         </div>
-        <div className="border border-[#BABABC] col-span-2 rounded-lg mr-2">
+        <div className="border border-[#BABABC] col-span-2 rounded-lg">
           <HistogramInScript data={data}/>
         </div>
       </div>  
     </>
   )
 }
+
+ScriptChart.propTypes = {
+  data: PropTypes.shape({
+    successRate: PropTypes.number,
+    totalTradeTimes: PropTypes.number,
+    numberOfGains: PropTypes.number,
+    numberOfLosses: PropTypes.number,
+    totalProfit: PropTypes.number,
+    maximumProfit: PropTypes.number,
+    maximumLoss: PropTypes.number,
+    candleData: PropTypes.array,
+    perTrade: PropTypes.array,
+  }).isRequired,
+};

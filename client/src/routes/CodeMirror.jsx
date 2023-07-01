@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import Split from 'react-split';
 import { ToastContainer, toast } from 'react-toastify';
+import { DiJavascript1 } from "react-icons/di"
 import 'react-toastify/dist/ReactToastify.css';
-import ScriptChart from "../components/ScriptChart"
+import ScriptDoc from "../components/ScriptDoc"
 import api from "../utils/api";
 
 const explain = `// 請修改以下 variable 的 value
@@ -28,6 +29,26 @@ module.exports = {startDate, endDate, stockId, ma, type, kd};
 export default function Script() {
   const [code, setCode] = useState(explain);
   const [data, setJsonData] = useState({});
+  const codeRef = useRef(null);
+
+
+
+  function sendCode(value){
+    if (codeRef.current) {
+      const cmLines = document.getElementsByClassName('cm-line');
+      const activeLine = document.getElementsByClassName('cm-activeLine')[0];
+      let activeLineIndex = -1;
+      for (let i = 0; i < cmLines.length; i++) {
+        if (cmLines[i] === activeLine) {
+          activeLineIndex = i;
+          break;
+        }
+      }
+      const text = code.split('\n');
+      text.splice((activeLineIndex + 1), 0, value);
+      setCode(text.join('\n'));
+    }
+  }
 
   const submitCode = async() => {
     const result = await api.postScript(code);
@@ -42,19 +63,39 @@ export default function Script() {
     <>
       <div className="mt-2 border border-[#1D1D1E] rounded-md">
         <Split
-            sizes={[23, 77]}
-            className="split h-[calc(100vh-56px)]"
-            minSize={50}
-        >
+          sizes={[27, 73]}
+          className="split h-[calc(100vh-56px)]"
+          minSize={260}
+          
+          >
           <div id="codeMirror-area">
-            <div className="h-[calc(85%s)]">
+            <div id="filename" className="flex mb-1">
+              <div>
+                <input type="text" placeholder="Untitled" className="text-center w-40 mr-2 bg-[#505051] rounded-md"/>
+              </div>
+              <div className="bg-[#343435] rounded-lg">
+                <button type="button" className="mx-2 text-[#30DEAB]">Save</button>
+              </div>
+              <div className="ml-auto mr-1">
+                <DiJavascript1 className="text-[#E7893C] text-2xl"/>
+              </div>
+            </div>
+            <div className="">
               <CodeMirror
+                ref={codeRef}
+                id="codemirror"
                 value={code}
                 theme={vscodeDark}
-                height="580px"
+                options={{
+                  lineNumbers: true,
+                  autofocus: true,
+                }}
+                height="500px"
                 extensions={[javascript()]}
-                onChange={(value) => setCode(value)}
-                className="text-sm"
+                onChange={(value) =>{
+                  setCode(value);
+                }}
+                className="text-sm border-2 rounded-md border-[#1D1D1E] shadow-[0_2px_10px]"
               />
             </div>
             <div className="mt-5 flex">
@@ -67,8 +108,8 @@ export default function Script() {
               </button>
             </div>
           </div>
-          <div id="chart-area" className="border border-red-300 text-[#EEE]">
-            <ScriptChart data = {data}/>
+          <div id="chart-area" className="">
+            <ScriptDoc data = {data} sendCode={sendCode} />
           </div>
         </Split>
       </div>

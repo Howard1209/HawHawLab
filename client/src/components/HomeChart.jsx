@@ -9,8 +9,6 @@ export function HomeChart() {
 
   const [open] = useOutletContext();
 
-  console.log('open', open);
-
   useEffect(() => {
     chartRef.current = createChart(chartContainerRef.current);
     const chart = chartRef.current;

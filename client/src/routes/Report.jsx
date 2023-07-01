@@ -3,31 +3,31 @@ import PropTypes from 'prop-types';
 export default function Report({data}){
   return(
     <>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2">{data? 'Success rate': ''}</div>
       <div>{data?.successRate}%</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2">Total trade times</div>
       <div>{data?.totalTradeTimes}</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2 ">Gain times</div>
       <div>{data?.numberOfGains}</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2">Loss times</div>
       <div>{data?.numberOfLosses}</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2">Total profit</div>
       <div>{data?.totalProfit}</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C]">
       <div className="border-r-4 mr-3 pl-2">Maximum Profit</div>
       <div>{data?.maximumProfit}</div>
     </div>
-    <div className="grid grid-cols-2 mb-1 border-b-2 border-red-300 pb-1">
+    <div className="grid grid-cols-2 mb-1 border-b-2 border-[#E7893C] pb-1">
       <div className="border-r-4 mr-3 pl-2">Maximum Loss</div>
       <div>{data?.maximumLoss}</div>
     </div>

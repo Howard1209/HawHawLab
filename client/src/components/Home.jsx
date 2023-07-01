@@ -1,7 +1,11 @@
 import { MdOutlineNotStarted } from "react-icons/md";
 import { HomeChart } from "./HomeChart";
+import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
+  const navigate = useNavigate();
+  const navigateStrategy = () => { navigate('/codemirror') };
+
   return(
     <div id='page' className='flex h-[calc(100vh-48px)] p-2 gap-1
     bg-gradient-to-tr	from-[#72313b] via-[#141415] to-[#07503a] rounded-md'>
@@ -15,7 +19,7 @@ const Landing = () => {
             <MdOutlineNotStarted size={24}  className="mx-1 text-[#FF5972] absolute inline-flex animate-ping"/>
             <MdOutlineNotStarted size={24} className="mx-1 text-[#FF5972] relative "/>
           </div>
-          <div className="group mr-1 text-[#FFFFFF] cursor-pointer">GET STARTED</div>
+          <div onClick={navigateStrategy} className="group mr-1 text-[#FFFFFF] cursor-pointer">GET STARTED</div>
         </div>
       </div>
       <div className="w-[67%] text-white px-6 pt-16 h-fit">

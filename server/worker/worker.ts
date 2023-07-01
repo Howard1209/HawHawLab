@@ -15,6 +15,7 @@ for (let i = 1; i < stockInfo.length; i++) {
   const taiex = taiexInfo[i];
   const preTaiex = taiexInfo[i-1];
   const kd = kdData[i];
+  const preKD = kdData[i-1];
 
   const action ={
     buy: (price, qty) => {

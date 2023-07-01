@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/" element={ <App /> } >
         <Route path="/" element= { <Landing />} />
         <Route path="/taiex" element= { <TaiexChart />} />
-        <Route path="/strategy" element={ <Backtesting /> } />
+        <Route path="/form" element={ <Backtesting /> } />
         <Route path="/codeMirror" element={ <Script /> } />
       </Route>
     </Routes>
