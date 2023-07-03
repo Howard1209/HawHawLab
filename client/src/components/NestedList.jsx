@@ -9,40 +9,40 @@ function NestedList({sendCode}){
 
 
   const stock = [
-    {key: 'Open Price', value: `const open = ${type?'stock':'preStock'}.open;`},
-    {key: 'Close Price', value: `const close = ${type?'stock':'preStock'}.close;`},
-    {key: 'High Price', value: `const high = ${type?'stock':'preStock'}.high;`},
-    {key: 'Low Price', value: `const low = ${type?'stock':'preStock'}.low;`},
-    {key: 'Price Spread', value: `const spread = ${type?'stock':'preStock'}.spread;`},
-    {key: 'Rate of price spread', value: `const low = ${type?'stock':'preStock'}.spreadPCT;`},
-    {key: 'Volume', value: `const volume = ${type?'stock':'preStock'}.trading_volume;`},
+    {key: 'Open Price', value: `const ${type?'open':'preOpen'} = ${type?'stock':'preStock'}.open;`},
+    {key: 'Close Price', value: `const ${type?'close':'preClose'} = ${type?'stock':'preStock'}.close;`},
+    {key: 'High Price', value: `const ${type?'high':'preHigh'} = ${type?'stock':'preStock'}.high;`},
+    {key: 'Low Price', value: `const ${type?'low':'preLow'} = ${type?'stock':'preStock'}.low;`},
+    {key: 'Price Spread', value: `const ${type?'spread':'preSpread'} = ${type?'stock':'preStock'}.spread;`},
+    {key: 'Rate of price spread', value: `const ${type?'spreadPct':'preSpreadPct'} = ${type?'stock':'preStock'}.spreadPCT;`},
+    {key: 'Volume', value: `const ${type?'volume':'preVolume'} = ${type?'stock':'preStock'}.trading_volume;`},
 
   ];
   
   const invertors = [
-    {key: 'Foreign Investors', value: `const foreignInvestors = ${type?'stock':'preStock'}.foreign_investors;`},
-    {key: 'Investment Trust', value: `const investmentTrust = ${type?'stock':'preStock'}.investment_trust;`},
-    {key: 'Dealer Self', value: `const dealerSelf = ${type?'stock':'preStock'}.dealer_self;`},
+    {key: 'Foreign Investors', value: `const ${type?'foreignInvestors':'preForeignInvestors'}  = ${type?'stock':'preStock'}.foreign_investors;`},
+    {key: 'Investment Trust', value: `const ${type?'investmentTrust':'preInvestmentTrust'} = ${type?'stock':'preStock'}.investment_trust;`},
+    {key: 'Dealer Self', value: `const ${type?'dealerSelf':'preDealerSelf'} = ${type?'stock':'preStock'}.dealer_self;`},
   ];
   
   const taiex = [
-      {key: 'Open Index', value: `const open = ${type?'taiex':'preTaiex'}.open;`},
-      {key: 'Close Index', value: `const close = ${type?'taiex':'preTaiex'}.close;`},
-      {key: 'High Index', value: `const high = ${type?'taiex':'preTaiex'}.high;`},
-      {key: 'Low Index', value: `const low = ${type?'taiex':'preTaiex'}.low;`},
+      {key: 'Open Index', value: `const ${type?'openTaiex':'preOpenTaiex'} = ${type?'taiex':'preTaiex'}.open;`},
+      {key: 'Close Index', value: `const ${type?'closeTaiex':'preCloseTaiex'} = ${type?'taiex':'preTaiex'}.close;`},
+      {key: 'High Index', value: `const ${type?'highTaiex':'preHighTaiex'} = ${type?'taiex':'preTaiex'}.high;`},
+      {key: 'Low Index', value: `const ${type?'lowTaiex':'preLowTaiex'} = ${type?'taiex':'preTaiex'}.low;`},
   ];
 
   const technical_indicators = [
-    {key: 'MA5', value: `const open = ${type?'stock':'preStock'}.ma5;`},
-    {key: 'MA10', value: `const close = ${type?'stock':'preStock'}.ma10;`},
-    {key: 'MA20', value: `const high = ${type?'stock':'preStock'}.ma20;`},
-    {key: 'KD', value: `const low = ${type?'kd':'preKD'}.k;`},
+    {key: 'MA5', value: `const ${type?'ma5':'preMa5'} = ${type?'stock':'preStock'}.ma5;`},
+    {key: 'MA10', value: `const ${type?'ma10':'preMa10'} = ${type?'stock':'preStock'}.ma10;`},
+    {key: 'MA20', value: `const ${type?'ma20':'preMa20'} = ${type?'stock':'preStock'}.ma20;`},
+    {key: 'KD', value: `const ${type?'kd':'preKd'} = ${type?'kd':'preKD'}.k;`},
 
   ];
 
   return(
     <>
-    <div className='flex gap-2 justify-center '>
+    <div className='flex gap-2'>
       <div className=' mt-1 rounded-md'>
         <div className={`flex items-center justify-center ${type?'text-[#E7893C]':'text-[#BABCBC]'} h-[36px] w-[100px]
          bg-[#1D1D1E] border border-[#1D1D1E] rounded-t-md hover:text-[#E7893C]

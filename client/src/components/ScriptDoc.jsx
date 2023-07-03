@@ -1,14 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import ScriptChart from "../components/ScriptChart"
 import NestedList from './NestedList';
 import PropTypes from 'prop-types';
 
 // eslint-disable-next-line react/prop-types
-export default function ScriptDoc({data, sendCode}) {
-  const [tabSelected, setTabSelected] = useState({
-    currentTab: 1,
-    noTabs: 3,
-  })
+export default function ScriptDoc({data, sendCode, setProportion, tabSelected,setTabSelected}) {
   const wrapperRef = useRef(null)
 
   const handleKeyDown = e => {
@@ -60,10 +56,9 @@ export default function ScriptDoc({data, sendCode}) {
 
   return (
     <>
-      {/*<!-- Component: Basic lg sized tab full width --> */}
       <section className="max-w-full" aria-multiselectable="false">
         <ul
-          className="flex items-center border-b border-[#505051] h-7 mx-3 bg-[#1D1D1E] rounded-t-lg"
+          className="flex items-center border-b border-[#505051] h-7 mx-2 bg-[#1D1D1E] rounded-t-lg"
           role="tablist"
           ref={wrapperRef}
         >
@@ -72,7 +67,7 @@ export default function ScriptDoc({data, sendCode}) {
               className={`-mb-px inline-flex h-7 w-full items-center justify-center gap-2 whitespace-nowrap rounded-t border-b-2 px-6 text-sm font-medium tracking-wide transition duration-300 hover:bg-[#434344] hover:stroke-zinc-600 focus-visible:outline-none disabled:cursor-not-allowed ${
                 tabSelected.currentTab === 1
                   ? "border-[#30DEAB] stroke-zinc-500 text-[#30DEAB] hover:border-zinc-600  hover:text-zinc-600 focus:border-[#30DEAB] focus:stroke-zinc-700 focus:text-[#30DEAB] disabled:border-slate-500"
-                  : "justify-self-center border-transparent stroke-slate-700 text-slate-700 hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
+                  : "justify-self-center border-transparent stroke-[#505051] text-[#505051] hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
               }`}
               id="tab-label-1a"
               role="tab"
@@ -83,7 +78,10 @@ export default function ScriptDoc({data, sendCode}) {
               aria-selected={`${
                 tabSelected.currentTab === 1 ? "true" : "false"
               }`}
-              onClick={() => setTabSelected({ ...tabSelected, currentTab: 1 })}
+              onClick={() => {
+                setTabSelected({ ...tabSelected, currentTab: 1 });
+                setProportion([20,80])
+              }}
             >
               <span>Report</span>
             </button>
@@ -93,7 +91,7 @@ export default function ScriptDoc({data, sendCode}) {
               className={`-mb-px inline-flex h-7 w-full items-center justify-center gap-2 whitespace-nowrap rounded-t border-b-2 px-6 text-sm font-medium tracking-wide transition duration-300 hover:bg-[#434344] hover:stroke-zinc-600 focus-visible:outline-none disabled:cursor-not-allowed ${
                 tabSelected.currentTab === 2
                   ? "border-[#30DEAB] stroke-zinc-500 text-[#30DEAB] hover:border-zinc-600  hover:text-zinc-600 focus:border-[#30DEAB] focus:stroke-zinc-700 focus:text-[#30DEAB] disabled:border-slate-500"
-                  : "justify-self-center border-transparent stroke-slate-700 text-slate-700 hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
+                  : "justify-self-center border-transparent stroke-[#505051] text-[#505051] hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
               }`}
               id="tab-label-2a"
               role="tab"
@@ -104,9 +102,12 @@ export default function ScriptDoc({data, sendCode}) {
               aria-selected={`${
                 tabSelected.currentTab === 2 ? "true" : "false"
               }`}
-              onClick={() => setTabSelected({ ...tabSelected, currentTab: 2 })}
+              onClick={() => {
+                setTabSelected({ ...tabSelected, currentTab: 2 });
+                setProportion([70,30])
+              }}
             >
-              <span>插入語法</span>
+              <span>Grammar</span>
             </button>
           </li>
           <li className="flex-1" role="presentation ">
@@ -114,7 +115,7 @@ export default function ScriptDoc({data, sendCode}) {
               className={`-mb-px inline-flex h-7 w-full items-center justify-center gap-2 whitespace-nowrap rounded-t border-b-2 px-6 text-sm font-medium tracking-wide transition duration-300 hover:bg-[#434344] hover:stroke-zinc-600 focus-visible:outline-none disabled:cursor-not-allowed ${
                 tabSelected.currentTab === 3
                   ? "border-[#30DEAB] stroke-zinc-500 text-[#30DEAB] hover:border-zinc-600  hover:text-zinc-600 focus:border-[#30DEAB] focus:stroke-zinc-700 focus:text-[#30DEAB] disabled:border-slate-500"
-                  : "justify-self-center border-transparent stroke-slate-700 text-slate-700 hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
+                  : "justify-self-center border-transparent stroke-[#505051] text-[#505051] hover:border-[#30DEAB] hover:text-[#30DEAB] focus:border-zinc-600 focus:stroke-zinc-600 focus:text-zinc-600 disabled:text-slate-500"
               }`}
               id="tab-label-3a"
               role="tab"
@@ -133,7 +134,7 @@ export default function ScriptDoc({data, sendCode}) {
         </ul>
         <div className="">
           <div
-            className={`p-4 text-sm ${
+            className={`m-2 text-sm ${
               tabSelected.currentTab === 1 ? "" : "hidden"
             }`}
             id="tab-panel-1c"
@@ -172,7 +173,6 @@ export default function ScriptDoc({data, sendCode}) {
           </div>
         </div>
       </section>
-      {/*<!-- End Basic lg sized tab full width --> */}
     </>
   )
 }
@@ -189,4 +189,10 @@ ScriptDoc.propTypes = {
     candleData: PropTypes.array,
     perTrade: PropTypes.array,
   }).isRequired,
+  setProportion: PropTypes.func,
+  tabSelected: PropTypes.shape({
+    currentTab: PropTypes.number,
+    noTabs: PropTypes.number,
+  }).isRequired,
+  setTabSelected: PropTypes.func
 }

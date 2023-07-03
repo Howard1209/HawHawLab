@@ -45,20 +45,21 @@ export default function HistogramInScript({data}) {
     acc.push(updatedSum);
     return acc;
   }, []);
-
   
   return(
-    
-    <div id="bar">
-      <Chart data= {{
+    <div id="bar" className='bg-[#1D1D1E] h-[100%]'>
+      <Chart 
+      data= {{
         labels: perTrade?.map((ele) => ele.date),
         datasets: [
           {
             type: 'line',
             label: 'Cumulative profit',
             data: cumulativeProfit,
-            borderColor: 'rgb(41, 150, 256)',
-            backgroundColor: 'rgba(41, 150, 256, 0.5)',
+            borderColor: '#E7893C',
+            // backgroundColor: 'rgba(231, 137, 60, 0.5)',
+            tension: 0.4,
+            borderWidth:2
           },
           {
             type: 'bar',
@@ -72,12 +73,16 @@ export default function HistogramInScript({data}) {
             }),
           },
         ],
-        option: {
-          layout: {
-            autoPadding: true
+      }}
+      options={{
+        maintainAspectRatio:false,
+        elements:{
+          point:{
+            radius:1
           }
         }
-      }} />
+      }}
+      />
     </div>
   )
 }

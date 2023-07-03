@@ -7,7 +7,7 @@ import { execDimText, closeTxt } from '../worker/worker.js'
 export default async function backtestingScript(req: Request, res: Response){
   const {code} = req.body;
   
-  const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;");
+  const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;\n");
   const dimTxt = code.substring(0, endIndex);
   
   if (dimTxt === '') {
@@ -17,6 +17,7 @@ export default async function backtestingScript(req: Request, res: Response){
   
   const vmDim = new NodeVM();
   const scriptDim = new VMScript(dimTxt);
+
   const {startDate, endDate, stockId, ma, type} = vmDim.run(scriptDim);
   
   if (! startDate && endDate && stockId && ma && type) {
@@ -58,10 +59,11 @@ export default async function backtestingScript(req: Request, res: Response){
   const startTxt = code.indexOf(startMarker) + startMarker.length;
   const endTxt = code.indexOf(endMarker);
   const triggerText = code.substring(startTxt, endTxt);
-  if (code.substring(endTxt) === "// Condition area\n") {
+  if (code.substring(endTxt) === "// Condition area") {
     res.status(400).json({error: 'The Condition area is empty'});
     return
   }
+  
   const kdTxt = kdData ? `const kdData = ${JSON.stringify(kdData)}\n`:'';
   
   const stockInfoText = `const stockInfo = ${JSON.stringify(stockInfo)};\n`+
@@ -85,7 +87,7 @@ export default async function backtestingScript(req: Request, res: Response){
 
   const numberOfGains = profitRecords.filter(num => num > 0).length;
   const numberOfLosses = profitRecords.filter(num => num <= 0).length;
-
+  
   const report = {
     candleData: stockInfo,
     perTrade: transactions,

@@ -19,7 +19,6 @@ const type = 'long'; // long or short
 
 // Do not revise module.exports
 module.exports = {startDate, endDate, stockId, ma, type, kd};
-
 // The trigger you want to set up, it can be empty;
 
 // You can use Stock, preStock, taiex, preTaiex these object
@@ -29,10 +28,13 @@ module.exports = {startDate, endDate, stockId, ma, type, kd};
 export default function Script() {
   const [code, setCode] = useState(explain);
   const [data, setJsonData] = useState({});
+  const [proportion, setProportion] = useState([40, 60])
+  const [tabSelected, setTabSelected] = useState({
+    currentTab: 1,
+    noTabs: 3,
+  })
+
   const codeRef = useRef(null);
-
-
-
   function sendCode(value){
     if (codeRef.current) {
       const cmLines = document.getElementsByClassName('cm-line');
@@ -56,22 +58,24 @@ export default function Script() {
       toast.error(result.error);
       return;
     }
+    setProportion([20,80]);
+    setTabSelected({ ...tabSelected, currentTab: 1 });
     setJsonData(result.report);
   }
 
   return (
     <>
-      <div className="mt-2 border border-[#1D1D1E] rounded-md">
+      <div className="mt-2 rounded-md h-[calc(100vh-56px)] ">
         <Split
-          sizes={[27, 73]}
-          className="split h-[calc(100vh-56px)]"
+          sizes={proportion}
+          className={`split`}
           minSize={260}
           
           >
-          <div id="codeMirror-area">
-            <div id="filename" className="flex mb-1">
+          <div id="codeMirror-area" className="h-100%">
+            <div id="filename" className="flex mb-2">
               <div>
-                <input type="text" placeholder="Untitled" className="text-center w-40 mr-2 bg-[#505051] rounded-md"/>
+                <input type="text" placeholder="Untitled" className="text-center w-40 h-fit mr-2 bg-[#505051] rounded-md"/>
               </div>
               <div className="bg-[#343435] rounded-lg">
                 <button type="button" className="mx-2 text-[#30DEAB]">Save</button>
@@ -80,25 +84,25 @@ export default function Script() {
                 <DiJavascript1 className="text-[#E7893C] text-2xl"/>
               </div>
             </div>
-            <div className="">
+            <div className="border-[#1D1D1E] rounded-lg shadow-[0_2px_10px] text-sm">
               <CodeMirror
                 ref={codeRef}
                 id="codemirror"
+                height="auto"
+                maxHeight="588px"
                 value={code}
                 theme={vscodeDark}
                 options={{
                   lineNumbers: true,
                   autofocus: true,
                 }}
-                height="500px"
                 extensions={[javascript()]}
                 onChange={(value) =>{
                   setCode(value);
                 }}
-                className="text-sm border-2 rounded-md border-[#1D1D1E] shadow-[0_2px_10px]"
               />
             </div>
-            <div className="mt-5 flex">
+            <div className="mt-3 flex">
               <button
                 type="button"
                 onClick={submitCode}
@@ -108,8 +112,9 @@ export default function Script() {
               </button>
             </div>
           </div>
-          <div id="chart-area" className="">
-            <ScriptDoc data = {data} sendCode={sendCode} />
+          <div id="chart-area" className="min-w-[350px] max-h-full">
+            <ScriptDoc data={data}
+             sendCode={sendCode} setProportion={setProportion} tabSelected={tabSelected} setTabSelected={setTabSelected}/>
           </div>
         </Split>
       </div>

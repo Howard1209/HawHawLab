@@ -12,7 +12,7 @@ function App() {
   return (
     <section className='flex gap-1'>
       <Sidebar open={open} setOpen={setOpen} location={location} />
-      <div className='w-full'>
+      <div className={open? 'w-[calc(100vw-192px)]': 'w-[calc(100vw-64px)]'}>
         <Header/>
         <Outlet context={[open]}/>
       </div>
