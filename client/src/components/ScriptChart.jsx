@@ -217,8 +217,9 @@ export default function ScriptChart({data}){
               <span style={{color:candlePrice?.close-candlePrice?.open>=0?'#26a69a':'#FF2647'}}>{candlePrice?.close}</span>
             </div>
             <div className="mr-2">
-              <span>V </span>
-              <span className="text-[#E7893C]">{volume?.value/1000}k</span>
+              <span> V </span>
+              <span className="text-[#E7893C]">{volume?.value/1000}</span>
+              <span>k</span>
             </div>
           </div>
           <div className="flex text-[#BABCBC]">

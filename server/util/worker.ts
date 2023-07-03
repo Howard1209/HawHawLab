@@ -1,4 +1,4 @@
-export const execDimText =
+export const execLoopText =
 `let shares = 0;
 let openPrice = 0;
 let closePrice = 0;
@@ -15,7 +15,7 @@ for (let i = 1; i < stockInfo.length; i++) {
   const taiex = taiexInfo[i];
   const preTaiex = taiexInfo[i-1];
   const kd = kdData[i];
-  const preKD = kdData[i-1];
+  const preKd = kdData[i-1];
 
   const action ={
     buy: (price, qty) => {
@@ -52,6 +52,6 @@ if (isLastDay && shares !== 0) {
   }
 }
 }
-module.exports = {transactions};
+exports = {transactions};
 `;
 

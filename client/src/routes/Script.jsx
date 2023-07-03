@@ -14,11 +14,10 @@ const startDate = '2023-06-01';
 const endDate = '2023-06-14';
 const stockId = '2330';
 const ma = [5, 10, 20];
-const kd = true; // setting period = 9;
 const type = 'long'; // long or short
 
-// Do not revise module.exports
-module.exports = {startDate, endDate, stockId, ma, type, kd};
+// Do not revise exports
+exports = {startDate, endDate, stockId, ma, type};
 // The trigger you want to set up, it can be empty;
 
 // You can use Stock, preStock, taiex, preTaiex these object
@@ -33,13 +32,13 @@ export default function Script() {
     currentTab: 1,
     noTabs: 3,
   })
-
   const codeRef = useRef(null);
+
   function sendCode(value){
     if (codeRef.current) {
       const cmLines = document.getElementsByClassName('cm-line');
-      const activeLine = document.getElementsByClassName('cm-activeLine')[0];
-      let activeLineIndex = -1;
+      const activeLine = document.querySelector('.cm-activeLine');
+      let activeLineIndex = 0;
       for (let i = 0; i < cmLines.length; i++) {
         if (cmLines[i] === activeLine) {
           activeLineIndex = i;
@@ -55,6 +54,7 @@ export default function Script() {
   const submitCode = async() => {
     const result = await api.postScript(code);
     if (result.error) {
+      console.log(result.error);
       toast.error(result.error);
       return;
     }

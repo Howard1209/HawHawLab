@@ -4,7 +4,7 @@ import App from './App';
 import './index.css';
 import TaiexChart from './routes/Taiex';
 import Backtesting from './routes/backtesting';
-import Script from "./routes/CodeMirror";
+import Script from "./routes/Script";
 import Landing from './components/Home';
 
 
