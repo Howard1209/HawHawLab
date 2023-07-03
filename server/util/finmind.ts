@@ -4,7 +4,7 @@ import pool from '../models/databasePool.js';
 
 const stockId = '2330';
 const startDate = '2021-11-01';
-const endDate = '2023-06-14';
+const endDate = '2023-07-04';
 
 const priceResult = await axios.get('https://api.finmindtrade.com/api/v4/data?', {
   params: {
