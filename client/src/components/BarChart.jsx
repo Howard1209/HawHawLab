@@ -1,27 +1,30 @@
 import {
   Chart as ChartJS,
-  CategoryScale,
   LinearScale,
+  CategoryScale,
   BarElement,
   PointElement,
   LineElement,
-  Title,
-  Tooltip,
   Legend,
+  Tooltip,
+  LineController,
+  BarController,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 
 ChartJS.register(
-  CategoryScale,
   LinearScale,
+  CategoryScale,
   BarElement,
   PointElement,
   LineElement,
-  Title,
-  Tooltip,
   Legend,
+  Tooltip,
+  LineController,
+  BarController
 );
+
 
 HistogramInScript.propTypes = {
   data: PropTypes.shape({
