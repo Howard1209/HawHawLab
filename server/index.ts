@@ -17,9 +17,9 @@ app.use("/api",[
   backtestingRouter
 ]);
 
-app.use(express.static("../client/dist"));
+app.use(express.static("../../client/dist"));
 
-const __dirname = path.resolve('../client/dist/index.html');
+const __dirname = path.resolve('../../client/dist/index.html');
 app.get("*", (req , res) => {
   res.sendFile(__dirname)
 });
