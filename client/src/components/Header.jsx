@@ -3,24 +3,37 @@ import ReactDOM from "react-dom"
 import { GoPerson } from "react-icons/go";
 import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
 import { useForm } from "react-hook-form"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import api from "../utils/api";
 
 const Header = () => {
+  const [isShowing, setIsShowing] = useState(false);
+  const wrapperRef = useRef(null);
+  const [isRegister, setIsRegister] = useState(false);
+  const [username, setUsername] = useState('Sign In')
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
-  const sentLogin = (data) => console.log(data);
 
-  const [isShowing, setIsShowing] = useState(false);
-  const wrapperRef = useRef(null);
-  const [isRegister, setIsRegister] = useState(false);
+  const sentLogin = async (data) => {
+    console.log(typeof data, data);
+    const result = isRegister? await api.postSignUp(data): await api.postSignIn(data);
+    if (result.error) {
+      console.log(result.error);
+      // toast.error(result.error);
+      return;
+    }
+    console.log('success', result.data);
+    window.localStorage.setItem('access_token', result.data.access_token);
+    setUsername(result.data.user.name);
+  };
 
   const changeToLogin = () => setIsRegister(false);
-  const changeToRegister = () => {
-    console.log('test');
-    setIsRegister(true);
-  };
+  const changeToRegister = () => setIsRegister(true);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -97,7 +110,7 @@ const Header = () => {
       <div onClick={() => setIsShowing(true)} className="flex rounded-3xl w-32 mr-1 ml-auto h-8 items-center justify-center
       bg-[#343435] text-[#BABCBC] cursor-pointer hover:text-[#30DEAB]">
         <GoPerson className="mr-2" size={23}/>
-        <span className="text-base">Sign in</span>
+        <span className="text-base">{username}</span>
       </div>
 
       {isShowing && typeof document !== "undefined"
@@ -145,24 +158,24 @@ const Header = () => {
                   <div id="content-4a" className="flex-1">
                     <div className="flex flex-col gap-6">
                     {isRegister &&
-                        <div className="relative">
-                          <input
-                            {...register("username", {required:'This is required.'})}
-                            type="text"
-                            name="name"
-                            placeholder="Username"
-                            className="peer relative h-10 w-full rounded border bg-[#1d1d1e] px-4 text-sm text-slate-500 placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
-                          />
-                          <label
-                            htmlFor="email"
-                            className="absolute left-2 -top-2 z-[1] px-2 text-xs bg-[#1d1d1e] text-slate-400 transition-all before:absolute before:top-0 before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-[#1d1d1e] before:transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-required:after:text-pink-500 peer-required:after:content-['\00a0*'] peer-invalid:text-pink-500 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-zinc-500 peer-invalid:peer-focus:text-pink-500 peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent"
-                          >
-                            Username
-                          </label>
-                          <small className="absolute flex w-full justify-between px-4 py-1 text-xs text-slate-400 transition peer-invalid:text-pink-500">
-                            {errors.email ?<span className="text-[#FF5972]">{errors.email?.message}</span>:<span>Type your name</span>}
-                          </small>
-                        </div>
+                      <div className="relative">
+                        <input
+                          {...register("name", {required:'This is required.'})}
+                          type="text"
+                          name="name"  
+                          placeholder="Username"
+                          className="peer relative h-10 w-full rounded border bg-[#1d1d1e] px-4 text-sm text-[#EEE] placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+                        />
+                        <label
+                          htmlFor="email"
+                          className="absolute left-2 -top-2 z-[1] px-2 text-xs bg-[#1d1d1e] text-slate-400 transition-all before:absolute before:top-0 before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-[#1d1d1e] before:transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-required:after:text-pink-500 peer-required:after:content-['\00a0*'] peer-invalid:text-pink-500 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-zinc-500 peer-invalid:peer-focus:text-pink-500 peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent"
+                        >
+                          Username
+                        </label>
+                        <small className="absolute flex w-full justify-between px-4 py-1 text-xs text-slate-400 transition peer-invalid:text-pink-500">
+                          {errors.name ?<span className="text-[#FF5972]">{errors.name?.message}</span>:<span>Type your name</span>}
+                        </small>
+                      </div>
                       }
 
                       {/*                <!-- Input field --> */}
@@ -172,7 +185,7 @@ const Header = () => {
                           type="email"
                           name="email"
                           placeholder="your email"
-                          className="peer relative h-10 w-full rounded border bg-[#1d1d1e] px-4 text-sm text-slate-500 placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+                          className="peer relative h-10 w-full rounded border bg-[#1d1d1e] px-4 text-sm text-[#EEE] placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                         />
                         <label
                           htmlFor="email"
@@ -192,7 +205,7 @@ const Header = () => {
                           type="password"
                           name="password"
                           placeholder="your password"
-                          className="peer relative h-10 w-full rounded border bg-[#1d1d1e] border-slate-200 px-4 pr-12 text-sm text-slate-500 placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+                          className="peer relative h-10 w-full rounded border bg-[#1d1d1e] border-slate-200 px-4 pr-12 text-sm text-[#EEE] placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                         />
                         <label
                           htmlFor="password"
@@ -209,7 +222,10 @@ const Header = () => {
                   {/*        <!-- Modal actions --> */}
                   <div className="flex justify-center gap-2 mt-3">
                     <button type="submit" className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded bg-zinc-500 px-5 text-sm font-medium tracking-wide text-white transition duration-300 hover:bg-zinc-600 hover:text-[#30DEAB] focus:bg-zinc-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-zinc-300 disabled:bg-zinc-300 disabled:shadow-none">
+                    {isRegister?
+                      <span>Sign up</span>:
                       <span>Login</span>
+                    }
                     </button>
                   </div>
                 </form>

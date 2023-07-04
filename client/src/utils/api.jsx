@@ -53,6 +53,26 @@ const api = {
       body: JSON.stringify({code})
     });
     return await response.json();
+  },
+  async postSignUp(data){
+    const response = await fetch((`${this.hostname}/user/signup`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    return await response.json();
+  },
+  async postSignIn(data){
+    const response = await fetch((`${this.hostname}/user/signin`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    return await response.json();
   }
 };
 

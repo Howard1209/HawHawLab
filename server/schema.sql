@@ -30,8 +30,8 @@ CREATE TABLE `stock_info` (
 
 CREATE TABLE `users` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
-  `username` varchar(255),
-  `email` varchar(255),
+  `name` varchar(50),
+  `email` varchar(50),
   `password` varchar(255)
 );
 
