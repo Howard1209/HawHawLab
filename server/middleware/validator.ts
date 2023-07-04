@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { validationResult, ValidationError } from "express-validator";
+import { ValidationError, validationResult } from "express-validator";
 
 export function handleResult(req: Request, res: Response, next: NextFunction) {
   const errorFormatter = ({ location, msg, param }: ValidationError) => {
