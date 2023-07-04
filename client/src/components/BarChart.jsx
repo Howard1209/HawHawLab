@@ -38,7 +38,6 @@ HistogramInScript.propTypes = {
 };
 
 export default function HistogramInScript({data}) {
-
   if (!Object.keys(data).length > 0) return;
   const perTrade = data.profitRecordsByDate;
 
@@ -48,9 +47,11 @@ export default function HistogramInScript({data}) {
     acc.push(updatedSum);
     return acc;
   }, []);
-  
+
   return(
-    <div id="bar" className='bg-[#1D1D1E] h-[100%]'>
+    <div id="bar"
+      className='bg-[#1D1D1E] h-[100%]'
+    >
       <Chart 
       data= {{
         labels: perTrade?.map((ele) => ele.date),
@@ -83,6 +84,9 @@ export default function HistogramInScript({data}) {
           point:{
             radius:1
           }
+        },
+        animations:{
+          duration: 2000
         }
       }}
       />

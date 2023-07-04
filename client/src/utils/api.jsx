@@ -73,7 +73,16 @@ const api = {
       body: JSON.stringify(data)
     });
     return await response.json();
-  }
+  },
+  async getProfile(jwtToken) {
+    const response = await fetch(`${this.hostname}/user/profile`, {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    });
+    return await response.json();
+  },
 };
 
 export default api;

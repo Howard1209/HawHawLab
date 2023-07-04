@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { GoPerson } from "react-icons/go";
 import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
 import { useForm } from "react-hook-form"
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from "../utils/api";
 
@@ -20,17 +20,35 @@ const Header = () => {
   } = useForm()
 
   const sentLogin = async (data) => {
-    console.log(typeof data, data);
     const result = isRegister? await api.postSignUp(data): await api.postSignIn(data);
     if (result.error) {
       console.log(result.error);
       // toast.error(result.error);
       return;
     }
-    console.log('success', result.data);
     window.localStorage.setItem('access_token', result.data.access_token);
     setUsername(result.data.user.name);
+    setIsShowing(false);
   };
+
+
+  useEffect(() => {
+    const jwtToken = window.localStorage.getItem('access_token');
+    if (!jwtToken) {
+      return
+    }
+    async function getProfile(jwtToken){
+      const result = await api.getProfile(jwtToken);
+      if (result.errors) {
+        console.log(result.errors);
+        window.localStorage.removeItem('access_token')
+        // toast.error(result.error);
+        return;  
+      }
+      setUsername(result.data.name)
+    }
+    getProfile(jwtToken);
+  },[]);
 
   const changeToLogin = () => setIsRegister(false);
   const changeToRegister = () => setIsRegister(true);

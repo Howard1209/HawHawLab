@@ -1,12 +1,22 @@
 import { MdOutlineNotStarted } from "react-icons/md";
-import { HomeChart } from "./HomeChart";
+import { HomeChart } from "../components/HomeChart";
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const navigateStrategy = () => { navigate('/codemirror') };
+  const navigateStrategy = () => {
+    const jwtToken = window.localStorage.getItem('access_token');
+    if (!jwtToken) {
+      toast.error('Please login first');
+      return;
+    }
+    navigate('/codemirror')
+  };
 
   return(
+    <>
     <div id='page' className='flex h-[calc(100vh-48px)] p-2 gap-1
     bg-gradient-to-tr	from-[#72313b] via-[#141415] to-[#07503a] rounded-md'>
       <div className=" w-[33%] mt-40 pl-16">
@@ -26,6 +36,19 @@ const Landing = () => {
         <HomeChart/>
       </div>
     </div>
+    <ToastContainer
+    position="top-center"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
+  </>
   )
 }
 

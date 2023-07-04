@@ -44,3 +44,15 @@ export async function findUser(email: string) {
   const users = z.array(UserSchema).parse(results[0]);
   return users[0];
 }
+
+export async function findUserById(id: string) {
+  const results = await pool.query(
+    `
+    SELECT * FROM users
+    WHERE id = ?
+  `,
+    [id]
+  );
+  const users = z.array(UserSchema).parse(results[0]);
+  return users[0];
+}

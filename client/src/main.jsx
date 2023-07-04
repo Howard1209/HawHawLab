@@ -5,7 +5,7 @@ import './index.css';
 import TaiexChart from './routes/Taiex';
 import Backtesting from './routes/backtesting';
 import Script from "./routes/Script";
-import Landing from './components/Home';
+import Landing from './routes/Home';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

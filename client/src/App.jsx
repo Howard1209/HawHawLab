@@ -4,7 +4,6 @@ import Sidebar from './components/Sidebar';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 
-
 function App() {
   const [open, setOpen] = useState(true);
   let location = useLocation();

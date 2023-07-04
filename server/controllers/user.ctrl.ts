@@ -70,3 +70,17 @@ export async function signIn(req: Request, res: Response) {
     res.status(500).json({ errors: "sign in failed" });
   }
 }
+
+export async function getProfile(req: Request, res: Response) {
+  try {
+    const userId = res.locals.userId;
+    const user = await userModel.findUserById(userId);
+    res.status(200).json({ data: user });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.status(500).json({ error: "get profile failed" });
+  }
+}

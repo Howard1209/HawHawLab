@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
@@ -8,6 +8,7 @@ import { DiJavascript1 } from "react-icons/di"
 import 'react-toastify/dist/ReactToastify.css';
 import ScriptDoc from "../components/ScriptDoc"
 import api from "../utils/api";
+import { useNavigate } from 'react-router-dom';
 
 const explain = `// 請修改以下 variable 的 value
 const startDate = '2023-06-01';
@@ -32,6 +33,7 @@ export default function Script() {
     currentTab: 1,
     noTabs: 3,
   })
+  const navigate = useNavigate();
   const codeRef = useRef(null);
 
   function sendCode(value){
@@ -62,6 +64,14 @@ export default function Script() {
     setTabSelected({ ...tabSelected, currentTab: 1 });
     setJsonData(result.report);
   }
+
+  useEffect(()=>{
+    const jwtToken = window.localStorage.getItem('access_token');
+    if (!jwtToken) {
+      window.alert('please login first');
+      navigate(-1);
+    }
+  },[navigate])
 
   return (
     <>
