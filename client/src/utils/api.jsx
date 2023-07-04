@@ -1,5 +1,7 @@
+const url = import.meta.env.VITE_REACT_MODE==='production'?'http://localhost:8000/api':'https://hawhawlab.com/api'
+
 const api = {
-  hostname: 'http://localhost:8000/api',
+  hostname: url,
   async postData(data){
     const response = await fetch(`${this.hostname}/strategy`, {
       body: JSON.stringify({
