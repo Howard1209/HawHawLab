@@ -58,7 +58,7 @@ export default function ScriptDoc({data, sendCode, setProportion, tabSelected,se
     <>
       <section className="max-w-full" aria-multiselectable="false">
         <ul
-          className="flex items-center border-b border-[#505051] h-7 mx-2 bg-[#1D1D1E] rounded-t-lg"
+          className="flex items-center border-b border-[#505051] h-7 mr-2 bg-[#1D1D1E] rounded-t-lg"
           role="tablist"
           ref={wrapperRef}
         >
@@ -134,7 +134,7 @@ export default function ScriptDoc({data, sendCode, setProportion, tabSelected,se
         </ul>
         <div className="">
           <div
-            className={`m-2 text-sm ${
+            className={`mt-2 mr-2 text-sm ${
               tabSelected.currentTab === 1 ? "" : "hidden"
             }`}
             id="tab-panel-1c"

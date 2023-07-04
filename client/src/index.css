@@ -13,13 +13,6 @@ body {
     background-color: #141415;
 }
 
-#backtesting-container {
-    padding: 0;
-    margin: 0;
-    /* Add a background color to match the chart */
-    background-color: #fff;
-  }
-
 .split {
     display: flex;
     flex-direction: row;

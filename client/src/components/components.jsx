@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { RxPlusCircled, RxMinusCircled } from "react-icons/rx";
 
 export function OpenCombination(){
   const [val, setVal] = useState([]);
@@ -19,14 +20,15 @@ export function OpenCombination(){
 
   return(
     <>
-    <p className="mt-2 mb-2 h-6">Open combination: 
-      <button onClick={() => handleAdd()} type="button" className=" ml-2  w-6 h-6 text-center rounded-lg bg-emerald-500">+</button>
-    </p>
+    <div className="flex items-center">
+      <div className="mt-2 mb-2 h-6">Open combination: </div>
+      <RxPlusCircled onClick={() => handleAdd()} className="cursor-pointer text-xl text-[#30DEAB] text-center ml-2 transition-all hover:scale-110"/>
+    </div>
     {val.map((data, i) => {
       return(
         <>
-        <div key={i} className="mb-1">
-          <select name="openMethod" className="bg-blue-200 w-20 h-6 text-center mr-1">
+        <div key={i} className="mb-1 flex items-center">
+          <select name="openMethod" className="bg-[#343435] w-20 h-6 text-center mr-1">
             <option value="close">Close</option>
             <option value="ma">MA</option>
             <option value="taiex">Taiex</option>
@@ -35,14 +37,14 @@ export function OpenCombination(){
             <option value="foreignInvestors">外資</option>
             <option value="spreadPCT">漲跌幅</option>
           </select>
-          <select name="openSymbol" className="bg-blue-200 w-28 h-6 text-center mr-1">
+          <select name="openSymbol" className="bg-[#343435] w-28 h-6 text-center mr-1">
             <option value="greater">Greater than</option>
             <option value="less">Less than</option>
             <option value="long">Long</option>
             <option value="short">Short</option>
           </select>
-          <input name="openValue" value={data} onChange={e=>handleChange(e,i)} placeholder="pending" className="bg-blue-200 w-20 h-6 text-center"/>
-          <button type="button" onClick={() => handleDelete(i)} className=" text-center ml-2  w-6 h-6 rounded-lg bg-rose-500">x</button>
+          <input name="openValue" value={data} onChange={e=>handleChange(e,i)} placeholder="type" className="bg-[#343435] w-20 h-6 text-center"/>
+          <RxMinusCircled onClick={() => handleDelete(i)} className=" cursor-pointer text-xl mt-1 ml-2 text-[#FF5972] transition-all hover:scale-110"/>
         </div> 
         </> 
       )
@@ -69,14 +71,15 @@ export function CloseCombination(){
   };
   return(
     <>
-    <p className="mt-2 mb-2 h-6">Close combination: 
-      <button onClick={() => handleAdd()} type="button" className=" ml-2  w-6 h-6 text-center rounded-lg bg-emerald-500">+</button>
-    </p>
+    <div className="flex items-center">
+      <div className="mt-2 mb-2 h-6">Close combination: </div>
+      <RxPlusCircled onClick={() => handleAdd()} className="cursor-pointer text-xl text-[#30DEAB] text-center ml-2 transition-all hover:scale-110"/>
+    </div>
     {val.map((data, i) => {
       return(
         <>
-        <div key={i} className="mb-1">
-          <select name="closeMethod" className="bg-red-200 w-20 h-6 text-center mr-1">
+        <div key={i} className="mb-1 flex items-center">
+          <select name="closeMethod" className="bg-[#343435] w-20 h-6 text-center mr-1">
           <option value="close">Close</option>
           <option value="ma">MA</option>
           <option value="taiex">Taiex</option>
@@ -85,12 +88,12 @@ export function CloseCombination(){
           <option value="foreignInvestors">外資</option>
           <option value="spreadPCT">漲跌幅</option>
           </select>
-          <select name="closeSymbol" className="bg-red-200 w-28 h-6 text-center mr-1">
+          <select name="closeSymbol" className="bg-[#343435] w-28 h-6 text-center mr-1">
             <option value="less">Less than</option>
             <option value="greater">Greater than</option>
           </select>
-          <input name="closeValue" value={data} onChange={e=>handleChange(e,i)} placeholder="pending" className="bg-red-200 w-20 h-6 text-center"/>
-          <button type="button" onClick={() => handleDelete(i)} className=" text-center ml-2  w-6 h-6 rounded-lg bg-rose-500">x</button>
+          <input name="closeValue" value={data} onChange={e=>handleChange(e,i)} placeholder="pending" className="bg-[#343435] w-20 h-6 text-center"/>
+          <RxMinusCircled type="button" onClick={() => handleDelete(i)} className=" cursor-pointer text-xl mt-1 ml-2 text-[#FF5972] transition-all hover:scale-110"/>
         </div>
         </>
       )

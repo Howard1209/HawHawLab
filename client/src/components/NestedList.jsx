@@ -58,7 +58,7 @@ function NestedList({sendCode}){
         </div>
       </div>
       <Accordion.Root
-        className="w-[250px] rounded-md shadow-[0_2px_10px] mt-1"
+        className="w-[250px] rounded-md shadow-[0_2px_10px] mt-1 duration-300"
         type="single"
         defaultValue="item-1"
         collapsible

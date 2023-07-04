@@ -22,7 +22,7 @@ export default function Backtesting() {
       const chart = createChart(chartContainerRef.current, {
         autoSize: true,
         layout: {
-          background: { color: '#222' },
+          background: { color: '#1d1d1e' },
           textColor: '#DDD',
         },
         grid: {
@@ -164,18 +164,17 @@ export default function Backtesting() {
 
   return (
     <>
-    <div id="backtesting-container" className="h-[950px]">
+    <div id="backtesting-container" className="mt-2 rounded-md h-[calc(100vh-56px)] text-[#BABCBC]">
       <Split
-        sizes={[25, 75]}
+        sizes={[30, 70]}
         className="split"
         minSize={50}
       > 
-        <div className="form-area h-[950px]">
+        <div className="form-area ml-1 bg-[#1D1D1E] rounded-lg pl-1">
           <StrategyFrom renderChart={renderChart}/>
         </div>
-        <div className="">
-          <p className=" mb-3 ">Backtesting Report</p>
-          <div ref={chartContainerRef} style={{position:'relative', height:'500px'}} className="ml-2 mr-2 border-2 border-gray-500 rounded-lg">
+        <div className="min-w-[350px] h-[calc(100vh-56px)] max-w-full">
+          <div ref={chartContainerRef} style={{position:'relative'}} className="h-[65%] mr-2 bg-[#1d1d1e] border border-[#1d1d1e] rounded-lg">
           { Object.keys(data).length > 0 &&
             <div style={{
               position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
@@ -197,10 +196,10 @@ export default function Backtesting() {
 
           </div>
           <div id="report-area" className="grid grid-cols-3 gap-3 h-fit mt-2">
-            <div className=" border-2 border-blue-500 rounded-lg ml-2 pl-2 pr-2 pt-3 place-content-center">
+            <div className="bg-[#1d1d1e] rounded-lg pl-2 pr-2 pt-3 place-content-center">
               <Report data={data}/>
             </div>
-            <div className="border-2 border-blue-500 col-span-2 rounded-lg mr-2">
+            <div className="bg-[#1d1d1e] col-span-2 rounded-lg mr-2">
               <Histogram data={data}/>
             </div>
           </div>  
