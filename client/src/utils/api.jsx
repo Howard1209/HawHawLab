@@ -1,4 +1,4 @@
-const url = import.meta.env.VITE_REACT_MODE==='production'?'http://localhost:8000/api':'https://hawhawlab.com/api'
+const url = import.meta.env.VITE_REACT_MODE==='production'?'https://hawhawlab.com/api':'http://localhost:8000/api';
 
 const api = {
   hostname: url,
