@@ -20,9 +20,9 @@ app.use("/api",[
 app.use(express.static("../../client/dist"));
 
 const __dirname = path.resolve('../../client/dist/index.html');
-// app.get("*", (req , res) => {
-//   res.sendFile(__dirname)
-// });
+app.get("*", (req , res) => {
+  res.sendFile(__dirname)
+});
 
 
 app.get('/', (req: Request, res: Response) => {
