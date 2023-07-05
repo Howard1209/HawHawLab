@@ -3,7 +3,6 @@ import ScriptChart from "../components/ScriptChart"
 import NestedList from './NestedList';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/prop-types
 export default function ScriptDoc({data, sendCode, setProportion, tabSelected,setTabSelected}) {
   const wrapperRef = useRef(null)
 
@@ -189,6 +188,7 @@ ScriptDoc.propTypes = {
     candleData: PropTypes.array,
     perTrade: PropTypes.array,
   }).isRequired,
+  sendCode: PropTypes.func,
   setProportion: PropTypes.func,
   tabSelected: PropTypes.shape({
     currentTab: PropTypes.number,

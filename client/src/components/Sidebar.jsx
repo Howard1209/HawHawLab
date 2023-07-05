@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { VscBeaker, VscVmActive } from "react-icons/vsc";
 import { AiOutlineAreaChart } from "react-icons/ai";
 import { GoPlusCircle } from "react-icons/go";
+import { TbLogout } from "react-icons/tb"
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { loginState, usernameState} from '../atom/Atom';
+
 
 const Sidebar = ({ open, setOpen, location }) => {
   const menus =[
@@ -16,6 +21,25 @@ const Sidebar = ({ open, setOpen, location }) => {
     {name:"大盤市況",link:'/taiex',icon: VscVmActive},
     {name:"dashboard",link:'/test',icon: MdOutlineDashboard}
   ];
+  const [isLogin , setIsLogin] = useRecoilState(loginState);
+  const setUsername = useSetRecoilState(usernameState);
+
+  const navigate = useNavigate();
+  const sentLogout = () => {
+    localStorage.removeItem('access_token');
+    setUsername('Sign In');
+    navigate('/');
+  };
+
+
+  useEffect(()=>{
+    const jwt = window.localStorage.getItem('access_token');
+    if (jwt === null) {
+      setIsLogin(false)
+      return
+    }
+    setIsLogin(true)
+  },[setIsLogin])
 
   return(
     <>
@@ -52,7 +76,20 @@ const Sidebar = ({ open, setOpen, location }) => {
           </Link>
           ))
         }
-        </div>
+        {isLogin &&
+          <div className="text-[#BABCBC] flex items-center text-sm gap-3.5 fort-medium p-2 cursor-pointer
+          hover:text-[#E7893C] transition-all hover:scale-105 rounded-md"
+          onClick={sentLogout}
+          >
+            <div>
+              <TbLogout size={20}/>
+            </div>
+            <h2 className={`whitespace-pre duration-500 
+              ${!open && 'opacity-0 translate-x-28 overflow-hidden'
+              }`}>Log out</h2>
+          </div>         
+        }
+        </div>        
       </div>
     </>
 

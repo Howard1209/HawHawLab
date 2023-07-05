@@ -3,15 +3,18 @@ import ReactDOM from "react-dom"
 import { GoPerson } from "react-icons/go";
 import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
 import { useForm } from "react-hook-form"
-// import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { loginState, usernameState} from '../atom/Atom';
 import api from "../utils/api";
 
 const Header = () => {
   const [isShowing, setIsShowing] = useState(false);
   const wrapperRef = useRef(null);
   const [isRegister, setIsRegister] = useState(false);
-  const [username, setUsername] = useState('Sign In')
+  const [username, setUsername] = useRecoilState(usernameState)
+  const setIsLogin = useSetRecoilState(loginState);
 
   const {
     register,
@@ -21,13 +24,14 @@ const Header = () => {
 
   const sentLogin = async (data) => {
     const result = isRegister? await api.postSignUp(data): await api.postSignIn(data);
-    if (result.error) {
-      console.log(result.error);
-      // toast.error(result.error);
+    if (result.errors) {
+      console.log(result.errors);
+      toast.error(result.errors);
       return;
     }
     window.localStorage.setItem('access_token', result.data.access_token);
     setUsername(result.data.user.name);
+    setIsLogin(true);
     setIsShowing(false);
   };
 
@@ -35,6 +39,7 @@ const Header = () => {
   useEffect(() => {
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
+      setIsRegister(false);
       return
     }
     async function getProfile(jwtToken){
@@ -42,13 +47,13 @@ const Header = () => {
       if (result.errors) {
         console.log(result.errors);
         window.localStorage.removeItem('access_token')
-        // toast.error(result.error);
+        toast.error(result.error);
         return;  
       }
       setUsername(result.data.name)
     }
     getProfile(jwtToken);
-  },[]);
+  },[setUsername]);
 
   const changeToLogin = () => setIsRegister(false);
   const changeToRegister = () => setIsRegister(true);
@@ -66,6 +71,9 @@ const Header = () => {
   }, [wrapperRef])
 
   useEffect(() => {
+    if (username !== 'Sign In') {
+      return;
+    }
     let html = document.querySelector("html")
 
     if (html) {
@@ -117,22 +125,26 @@ const Header = () => {
         html.style.overflowY = "visible"
       }
     }
-  }, [isShowing])
+  }, [isShowing, username])
 
   return(
+    <>
     <header className="App-header text-xl p-2 h-12 flex items-center bg-[#1D1D1E]
     rounded font-semibold w-[calc(100vw-178px)]z-50">
       <p className="text-[#BABCBC]">HawHaw</p>
       <MdAttachMoney className="text-[#E7893C] text-3xl"/>
       <p className="text-[#BABCBC]">Lab</p>
-      <div onClick={() => setIsShowing(true)} className="flex rounded-3xl w-32 mr-1 ml-auto h-8 items-center justify-center
+      <div onClick={() => {
+        setIsShowing(true);
+      }} className="flex rounded-3xl w-32 mr-1 ml-auto h-8 items-center justify-center
       bg-[#343435] text-[#BABCBC] cursor-pointer hover:text-[#30DEAB]">
         <GoPerson className="mr-2" size={23}/>
         <span className="text-base">{username}</span>
       </div>
 
-      {isShowing && typeof document !== "undefined"
-        ? ReactDOM.createPortal(
+      {isShowing && typeof document !== "undefined" && username === 'Sign In'
+        && ReactDOM.createPortal(
+            <>
             <div
               className="fixed top-0 left-0 z-20 flex h-screen w-screen items-center justify-center bg-[#141415]/30 backdrop-blur-sm"
               aria-labelledby="header-4a content-4a"
@@ -140,14 +152,12 @@ const Header = () => {
               tabIndex="-1"
               role="dialog"
             >
-              {/*    <!-- Modal --> */}
               <div
                 ref={wrapperRef}
                 className="flex max-h-[90vh] max-w-sm flex-col gap-4 overflow-hidden rounded bg-[#1D1D1E] p-6 text-slate-500 shadow-3xl shadow-[#141415]"
                 id="modal"
                 role="document"
               >
-                {/*        <!-- Modal header --> */}
                 <header id="header-4a" className="flex items-center">
                   <h3 className="flex-1 text-lg font-medium text-[#30DEAB]">
                     {isRegister?'Join us!':'Welcome back!'}
@@ -169,7 +179,6 @@ const Header = () => {
                     </span>
                   </button>
                 </header>
-                {/*        <!-- Modal body --> */}
                 <form 
                   onSubmit={handleSubmit(sentLogin)}
                 >
@@ -195,8 +204,6 @@ const Header = () => {
                         </small>
                       </div>
                       }
-
-                      {/*                <!-- Input field --> */}
                       <div className="relative mt-4">
                         <input
                           {...register("email", {required:'This is required.'})}
@@ -211,12 +218,10 @@ const Header = () => {
                         >
                           Your email
                         </label>
-                        {/* {errors.email && <small>{errors.email?.message}</small>} */}
                         <small className="absolute flex w-full justify-between px-4 py-1 text-xs text-slate-400 transition peer-invalid:text-pink-500">
                           {errors.email ?<span className="text-[#FF5972]">{errors.email?.message}</span>:<span>Type your email address</span>}
                         </small>
                       </div>
-                      {/*                <!-- Input field --> */}
                       <div className="relative my-4">
                         <input
                           {...register("password", {required:'This is required.', minLength:{value:6, message:'Min length is 6'}})}
@@ -237,7 +242,6 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                  {/*        <!-- Modal actions --> */}
                   <div className="flex justify-center gap-2 mt-3">
                     <button type="submit" className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded bg-zinc-500 px-5 text-sm font-medium tracking-wide text-white transition duration-300 hover:bg-zinc-600 hover:text-[#30DEAB] focus:bg-zinc-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-zinc-300 disabled:bg-zinc-300 disabled:shadow-none">
                     {isRegister?
@@ -255,11 +259,14 @@ const Header = () => {
                   }
                 </small>
               </div>
-            </div>,
+            </div>
+          </>
+          ,
             document.body
           )
-        : null}
+        }
     </header>
+  </>
   )
 }
 

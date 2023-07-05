@@ -3,7 +3,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import Split from 'react-split';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { DiJavascript1 } from "react-icons/di"
 import 'react-toastify/dist/ReactToastify.css';
 import ScriptDoc from "../components/ScriptDoc"
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 const explain = `// 請修改以下 variable 的 value
 const startDate = '2023-06-01';
-const endDate = '2023-06-14';
+const endDate = '2023-07-01';
 const stockId = '2330';
 const ma = [5, 10, 20];
 const type = 'long'; // long or short
@@ -128,18 +128,6 @@ export default function Script() {
           </div>
         </Split>
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   );
 }
