@@ -84,3 +84,18 @@ export async function getProfile(req: Request, res: Response) {
     res.status(500).json({ error: "get profile failed" });
   }
 }
+
+export async function saveStrategy(req: Request, res: Response) {
+  try {
+    const {id, title, code} = req.body;    
+    await userModel.createStrategy(id, title, code);
+    res.status(200).json('Save strategy success');
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.status(500).json({ error: "Save strategy failed" });
+  }
+  
+}

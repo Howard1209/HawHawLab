@@ -28,6 +28,7 @@ const Sidebar = ({ open, setOpen, location }) => {
   const sentLogout = () => {
     localStorage.removeItem('access_token');
     setUsername('Sign In');
+    setIsLogin(false);
     navigate('/');
   };
 

@@ -45,14 +45,34 @@ export async function findUser(email: string) {
   return users[0];
 }
 
+const UserProfileSchema = z.object({
+  id: z.number(),
+  email: z.string(),
+  name: z.string(),
+});
+
 export async function findUserById(id: string) {
   const results = await pool.query(
     `
-    SELECT * FROM users
+    SELECT id, name, email FROM users
     WHERE id = ?
   `,
     [id]
   );
-  const users = z.array(UserSchema).parse(results[0]);
+  const users = z.array(UserProfileSchema).parse(results[0]);
   return users[0];
+}
+
+export async function createStrategy(id:string, title:string, code:string) {
+  const results = await pool.query(
+    `
+    INSERT INTO strategy (title, body, user_id)
+    VALUES(?, ?, ?)
+  `,
+    [title, code, id]
+  );  
+  if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
+    return results[0].insertId;
+  }
+  throw new Error("create user failed");
 }

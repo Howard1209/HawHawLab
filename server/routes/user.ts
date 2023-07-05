@@ -1,6 +1,6 @@
 import { Router, Response, Request } from "express";
 import { body } from "express-validator";
-import { signUp, signIn, getProfile } from "../controllers/user.ctrl.js"
+import { signUp, signIn, getProfile, saveStrategy } from "../controllers/user.ctrl.js"
 import * as validator from "../middleware/validator.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -25,5 +25,12 @@ router.route("/user/signin").post([
 ]);
 
 router.route("/user/profile").get([authenticate, getProfile]);
+
+router.route("/user/saveStrategy").post([
+  body('title').exists().notEmpty().trim(),
+  body('code').exists().notEmpty(),
+  validator.handleResult,
+  saveStrategy
+]);
 
 export default router;

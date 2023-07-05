@@ -83,6 +83,16 @@ const api = {
     });
     return await response.json();
   },
+  async saveStrategy(strategyInfo) {
+    const response = await fetch((`${this.hostname}/user/saveStrategy`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify(strategyInfo)
+    });
+    return await response.json();
+  }
 };
 
 export default api;

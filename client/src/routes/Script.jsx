@@ -56,13 +56,33 @@ export default function Script() {
   const submitCode = async() => {
     const result = await api.postScript(code);
     if (result.error) {
-      console.log(result.error);
       toast.error(result.error);
       return;
     }
     setProportion([20,80]);
     setTabSelected({ ...tabSelected, currentTab: 1 });
     setJsonData(result.report);
+  }
+
+  const saveCode = async(code) => {
+    const jwtToken = localStorage.getItem('access_token');
+    const {data} = await api.getProfile(jwtToken);
+    const title = document.getElementById('strategyName').value;
+    if (title==='') {
+      toast.error('Please name your strategy');
+      return
+    }
+    const strategyInfo = {
+      id: data.id,
+      title,
+      code
+    }
+    const result = await api.saveStrategy(strategyInfo);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success('Create success');
   }
 
   useEffect(()=>{
@@ -85,10 +105,10 @@ export default function Script() {
           <div id="codeMirror-area" className="h-100%">
             <div id="filename" className="flex mb-2">
               <div>
-                <input type="text" placeholder="Untitled" className="text-center w-40 h-fit mr-2 bg-[#505051] rounded-md"/>
+                <input id="strategyName" type="text" placeholder="Untitled" className="text-center text-[#EEE] w-40 h-fit mr-2 bg-[#505051] rounded-md"/>
               </div>
               <div className="bg-[#343435] rounded-lg">
-                <button type="button" className="mx-2 text-[#30DEAB]">Save</button>
+                <button onClick={()=>saveCode(code)} type="button" className="mx-2 text-[#30DEAB]">Save</button>
               </div>
               <div className="ml-auto mr-1">
                 <DiJavascript1 className="text-[#E7893C] text-2xl"/>
