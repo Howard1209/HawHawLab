@@ -2,6 +2,7 @@ import { ResultSetHeader } from "mysql2";
 import { z } from "zod";
 import * as argon2 from "argon2";
 import pool from "./databasePool.js";
+import exp from "constants";
 
 function instanceOfSetHeader(object: any): object is ResultSetHeader {
   return "insertId" in object;
@@ -64,7 +65,7 @@ export async function findUserById(id: string) {
 }
 
 export async function createStrategy(
-  id:string, title:string, code:string, successRate:number,
+  userId:string, title:string, code:string, successRate:number,
   totalProfit:number, maximumLoss:number, maximumProfit:number
   ) {
   const results = await pool.query(
@@ -72,7 +73,7 @@ export async function createStrategy(
     INSERT INTO strategy (title, code, user_id, success_rate, total_profit, maximum_loss, maximum_profit)
     VALUES(?, ?, ?, ?, ?, ?, ?)
   `,
-    [title, code, id, successRate, totalProfit, maximumLoss, maximumProfit]
+    [title, code, userId, successRate, totalProfit, maximumLoss, maximumProfit]
   );  
   if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
     return results[0].insertId;
@@ -92,7 +93,7 @@ const StrategySchema = z.object({
   update_time:z.date(),
 });
 
-export async function getStrategy(userId:number) {
+export async function getAllStrategy(userId:number) {
   const results = await pool.query(
     `
     SELECT * FROM strategy
@@ -112,4 +113,40 @@ export async function deleteStrategy(id:number) {
     `,
     [id]
   );
+}
+
+export async function searchStrategy(id:number) {
+  const results = await pool.query(
+    `
+    SELECT * FROM strategy
+    WHERE id = ?
+    `,
+    [id]
+  );  
+  const code = z.array(StrategySchema).parse(results[0]);
+  return code[0];
+}
+
+export async function updateStrategy(
+  id: number, code: string, successRate: number,
+  totalProfit: number, maximumLoss: number, maximumProfit: number
+) {
+  const results = await pool.query(
+    `
+    UPDATE strategy
+    SET
+      code = ?,
+      success_rate = ?,
+      total_profit = ?,
+      maximum_loss = ?,
+      maximum_profit = ?
+    WHERE
+      id = ?
+    `,
+    [code, successRate, totalProfit, maximumLoss, maximumProfit, id]
+  );
+  if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
+    return results[0].insertId;
+  }
+  throw new Error("create strategy failed");
 }

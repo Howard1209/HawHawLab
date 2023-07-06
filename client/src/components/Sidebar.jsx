@@ -16,7 +16,7 @@ const Sidebar = ({ open, setOpen, location }) => {
   const menus =[
     {name:"Home",link:'/',icon: MdOutlineDashboard},
     {name:"My strategy",link:'/myStrategy',icon: VscBeaker},
-    {name:"Create strategy",link:'/codeMirror',icon: GoPlusCircle},
+    {name:"Create strategy",link:'/script',icon: GoPlusCircle},
     {name:"Stock info",link:'/info',icon: AiOutlineAreaChart},
     {name:"大盤市況",link:'/taiex',icon: VscVmActive},
     {name:"dashboard",link:'/test',icon: MdOutlineDashboard}

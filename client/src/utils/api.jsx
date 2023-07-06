@@ -112,6 +112,27 @@ const api = {
       body: JSON.stringify({id})
     });
     return await response.json();
+  },
+  async searchStrategy(id) {
+    const response = await fetch((`${this.hostname}/user/searchStrategy`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({id})
+    });
+    return await response.json();
+  },
+  async updateStrategy(updateInfo) {
+    const response = await fetch((`${this.hostname}/user/updateStrategy`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify(updateInfo)
+    });
+    return await response.json();
+
   }
 };
 

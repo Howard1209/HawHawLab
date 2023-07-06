@@ -11,6 +11,7 @@ import api from "../utils/api";
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { usernameState} from '../atom/Atom';
+import { useSearchParams } from "react-router-dom";
 
 const explain = `// 請修改以下 variable 的 value
 const startDate = '2023-06-01';
@@ -28,7 +29,8 @@ exports = {startDate, endDate, stockId, ma, type};
 `;
 
 export default function Script() {
-  const [code, setCode] = useState(explain);
+  let [searchParams] = useSearchParams();
+  const [code, setCode] = useState('');
   const [data, setJsonData] = useState({});
   const [report, setReport] = useState({});
   const setUsername = useSetRecoilState(usernameState)
@@ -76,25 +78,40 @@ export default function Script() {
   }
 
   const saveCode = async(code) => {
-    const jwtToken = localStorage.getItem('access_token');
-    const {data} = await api.getProfile(jwtToken);
     const title = document.getElementById('strategyName').value;
     if (title==='') {
       toast.error('Please name your strategy');
       return
     }
-    const strategyInfo = {
-      id: data.id,
-      title,
-      code,
-      report
+    const jwtToken = localStorage.getItem('access_token');
+    const {data} = await api.getProfile(jwtToken);
+    const strategyId = searchParams.get('id');
+    
+    if (strategyId === null) {
+      const strategyInfo = {
+        userId: data.id,
+        title,
+        code,
+        report
+      }
+      const result = await api.saveStrategy(strategyInfo);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }  
+    } else {
+      const updateInfo = {
+        id : strategyId,
+        code,
+        report
+      }
+      const result = await api.updateStrategy(updateInfo);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }  
     }
-    const result = await api.saveStrategy(strategyInfo);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Create success');
+    toast.success('Save strategy success');
   }
 
   useEffect(()=>{
@@ -102,9 +119,21 @@ export default function Script() {
     if (!jwtToken) {
       toast.error('please login first');
       setUsername('Sign In');
-      navigate(-1);
+      navigate('/');
+      return
     }
-  },[navigate, setUsername])
+    const strategyId = searchParams.get('id');
+    if (strategyId === null) {
+      setCode(explain);
+      return
+    }
+    api.searchStrategy(strategyId).then(result => {
+      const {code, title} = result.strategy;
+      setCode(code);
+      document.getElementById('strategyName').value = title;
+    })
+
+  },[navigate, searchParams, setUsername])
 
   return (
     <>

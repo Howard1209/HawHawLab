@@ -12,7 +12,7 @@ const Landing = () => {
       toast.error('Please login first');
       return;
     }
-    navigate('/codemirror')
+    navigate('/script')
   };
 
   return(
