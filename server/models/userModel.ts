@@ -103,3 +103,13 @@ export async function getStrategy(userId:number) {
   const strategy = z.array(StrategySchema).parse(results[0])    
   return strategy;
 }
+
+export async function deleteStrategy(id:number) {
+  const results = await pool.query(
+    `
+    DELETE FROM strategy
+    WHERE id = ?
+    `,
+    [id]
+  );
+}

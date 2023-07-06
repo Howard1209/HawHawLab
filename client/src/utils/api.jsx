@@ -102,6 +102,16 @@ const api = {
       body: JSON.stringify({userId})
     });
     return await response.json();
+  },
+  async deleteStrategy(id) {
+    const response = await fetch((`${this.hostname}/user/deleteStrategy`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({id})
+    });
+    return await response.json();
   }
 };
 

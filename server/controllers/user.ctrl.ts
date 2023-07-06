@@ -105,9 +105,7 @@ export async function saveStrategy(req: Request, res: Response) {
 export async function getStrategy(req: Request, res: Response) {
   try {    
     const {userId} = req.body;
-    const strategy = await userModel.getStrategy(userId);
-    console.log(strategy);
-      
+    const strategy = await userModel.getStrategy(userId);      
     res.status(200).json({strategy});
   } catch (err) {
     if (err instanceof Error) {
@@ -116,4 +114,10 @@ export async function getStrategy(req: Request, res: Response) {
     }
     res.status(500).json({ error: "Save strategy failed" });
   }
+}
+
+export async function deleteStrategy(req: Request, res: Response) {
+  const { id } = req.body;
+  await userModel.deleteStrategy(id);
+  res.status(200).json({message:'delete Success'});
 }

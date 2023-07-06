@@ -7,10 +7,20 @@ import { HiOutlineScale } from "react-icons/hi";
 import { toast } from 'react-toastify';
 import api from "../utils/api";
 
-
 const MyStrategy = () => {
   const userId = useRecoilValue(userIdState);
   const [strategy, setStrategy] = useState([]);
+
+  const deleteStrategy = async(id) => {
+    const result = await api.deleteStrategy(id);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success('Delete success');
+    getStrategy(userId)
+  }
+
   const getStrategy = async(userId) => {
     const result = await api.getStrategy(userId);
     if (result.error) {
@@ -46,7 +56,9 @@ const MyStrategy = () => {
                 <FaCodepen/>
                 <span className="ml-1">Edit</span>
               </button>
-              <RiDeleteBin5Line className="text-xl cursor-pointer hover:text-red-600"/>
+              <RiDeleteBin5Line
+              onClick={()=>deleteStrategy(ele.id)}
+              className="text-xl cursor-pointer hover:text-red-600"/>
             </div>
           </div>
           <div className="ml-20 flex text-center">
