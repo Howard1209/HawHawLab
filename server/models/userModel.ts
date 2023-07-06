@@ -53,7 +53,7 @@ const UserProfileSchema = z.object({
 
 export async function findUserById(id: string) {
   const results = await pool.query(
-    `
+  `
     SELECT id, name, email FROM users
     WHERE id = ?
   `,
@@ -63,16 +63,43 @@ export async function findUserById(id: string) {
   return users[0];
 }
 
-export async function createStrategy(id:string, title:string, code:string) {
+export async function createStrategy(
+  id:string, title:string, code:string, successRate:number,
+  totalProfit:number, maximumLoss:number, maximumProfit:number
+  ) {
   const results = await pool.query(
     `
-    INSERT INTO strategy (title, body, user_id)
-    VALUES(?, ?, ?)
+    INSERT INTO strategy (title, code, user_id, success_rate, total_profit, maximum_loss, maximum_profit)
+    VALUES(?, ?, ?, ?, ?, ?, ?)
   `,
-    [title, code, id]
+    [title, code, id, successRate, totalProfit, maximumLoss, maximumProfit]
   );  
   if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
     return results[0].insertId;
   }
-  throw new Error("create user failed");
+  throw new Error("create strategy failed");
+}
+
+const StrategySchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  code: z.string(),
+  user_id: z.number(),
+  success_rate: z.number(),
+  total_profit: z.number(),
+  maximum_loss: z.number(),
+  maximum_profit: z.number(),
+  update_time:z.date(),
+});
+
+export async function getStrategy(userId:number) {
+  const results = await pool.query(
+    `
+    SELECT * FROM strategy
+    WHERE user_id = ?
+    `,
+    [userId]
+  );  
+  const strategy = z.array(StrategySchema).parse(results[0])    
+  return strategy;
 }

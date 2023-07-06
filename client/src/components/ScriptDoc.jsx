@@ -3,7 +3,7 @@ import ScriptChart from "../components/ScriptChart"
 import NestedList from './NestedList';
 import PropTypes from 'prop-types';
 
-export default function ScriptDoc({data, sendCode, setProportion, tabSelected,setTabSelected}) {
+export default function ScriptDoc({data, setReport, sendCode, setProportion, tabSelected, setTabSelected}) {
   const wrapperRef = useRef(null)
 
   const handleKeyDown = e => {
@@ -142,7 +142,7 @@ export default function ScriptDoc({data, sendCode, setProportion, tabSelected,se
             aria-labelledby="tab-label-1c"
             tabIndex="-1"
           >
-            <ScriptChart data={data}/>
+            <ScriptChart data={data} setReport={setReport}/>
           </div>
           <div
             className={`p-4 text-sm ${
@@ -188,6 +188,7 @@ ScriptDoc.propTypes = {
     candleData: PropTypes.array,
     perTrade: PropTypes.array,
   }).isRequired,
+  setReport: PropTypes.func,
   sendCode: PropTypes.func,
   setProportion: PropTypes.func,
   tabSelected: PropTypes.shape({

@@ -5,8 +5,8 @@ import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { loginState, usernameState} from '../atom/Atom';
+import { useRecoilState, useSetRecoilState} from 'recoil';
+import { loginState, usernameState, userIdState} from '../atom/Atom';
 import api from "../utils/api";
 
 const Header = () => {
@@ -14,6 +14,7 @@ const Header = () => {
   const wrapperRef = useRef(null);
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useRecoilState(usernameState)
+  const setUserId = useSetRecoilState(userIdState);
   const setIsLogin = useSetRecoilState(loginState);
 
   const {
@@ -31,6 +32,7 @@ const Header = () => {
     }
     window.localStorage.setItem('access_token', result.data.access_token);
     setUsername(result.data.user.name);
+    setUserId(result.data.user.id)
     setIsLogin(true);
     setIsShowing(false);
   };
@@ -50,10 +52,11 @@ const Header = () => {
         toast.error(result.error);
         return;  
       }
-      setUsername(result.data.name)
+      setUsername(result.data.name);
+      setUserId(result.data.id);
     }
     getProfile(jwtToken);
-  },[setUsername]);
+  },[setUserId, setUsername]);
 
   const changeToLogin = () => setIsRegister(false);
   const changeToRegister = () => setIsRegister(true);

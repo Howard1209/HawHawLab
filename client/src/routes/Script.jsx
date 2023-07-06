@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ScriptDoc from "../components/ScriptDoc"
 import api from "../utils/api";
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { usernameState} from '../atom/Atom';
 
 const explain = `// 請修改以下 variable 的 value
 const startDate = '2023-06-01';
@@ -28,6 +30,8 @@ exports = {startDate, endDate, stockId, ma, type};
 export default function Script() {
   const [code, setCode] = useState(explain);
   const [data, setJsonData] = useState({});
+  const [report, setReport] = useState({});
+  const setUsername = useSetRecoilState(usernameState)
   const [proportion, setProportion] = useState([40, 60])
   const [tabSelected, setTabSelected] = useState({
     currentTab: 1,
@@ -62,6 +66,13 @@ export default function Script() {
     setProportion([20,80]);
     setTabSelected({ ...tabSelected, currentTab: 1 });
     setJsonData(result.report);
+    const {successRate, totalProfit, maximumLoss, maximumProfit} = result.report;
+    setReport({
+      successRate,
+      totalProfit,
+      maximumLoss,
+      maximumProfit,
+    });
   }
 
   const saveCode = async(code) => {
@@ -75,7 +86,8 @@ export default function Script() {
     const strategyInfo = {
       id: data.id,
       title,
-      code
+      code,
+      report
     }
     const result = await api.saveStrategy(strategyInfo);
     if (result.error) {
@@ -88,10 +100,11 @@ export default function Script() {
   useEffect(()=>{
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
-      window.alert('please login first');
+      toast.error('please login first');
+      setUsername('Sign In');
       navigate(-1);
     }
-  },[navigate])
+  },[navigate, setUsername])
 
   return (
     <>
@@ -142,8 +155,8 @@ export default function Script() {
               </button>
             </div>
           </div>
-          <div id="chart-area" className="min-w-[350px] max-h-full duration-300">
-            <ScriptDoc data={data}
+          <div id="chart-area" className="min-w-[350px] max-h-full duration-100">
+            <ScriptDoc data={data} setReport={setReport}
              sendCode={sendCode} setProportion={setProportion} tabSelected={tabSelected} setTabSelected={setTabSelected}/>
           </div>
         </Split>

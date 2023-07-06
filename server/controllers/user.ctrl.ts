@@ -87,8 +87,11 @@ export async function getProfile(req: Request, res: Response) {
 
 export async function saveStrategy(req: Request, res: Response) {
   try {
-    const {id, title, code} = req.body;    
-    await userModel.createStrategy(id, title, code);
+    const {id, title, code, report} = req.body;    
+    
+    await userModel.createStrategy(
+      id, title, code, report.successRate|0, report.totalProfit|0, report.maximumLoss|0, report.maximumProfit|0
+    );
     res.status(200).json('Save strategy success');
   } catch (err) {
     if (err instanceof Error) {
@@ -97,5 +100,20 @@ export async function saveStrategy(req: Request, res: Response) {
     }
     res.status(500).json({ error: "Save strategy failed" });
   }
-  
+}
+
+export async function getStrategy(req: Request, res: Response) {
+  try {    
+    const {userId} = req.body;
+    const strategy = await userModel.getStrategy(userId);
+    console.log(strategy);
+      
+    res.status(200).json({strategy});
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.status(500).json({ error: "Save strategy failed" });
+  }
 }

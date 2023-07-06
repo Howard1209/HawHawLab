@@ -1,6 +1,6 @@
 import { Router, Response, Request } from "express";
 import { body } from "express-validator";
-import { signUp, signIn, getProfile, saveStrategy } from "../controllers/user.ctrl.js"
+import { signUp, signIn, getProfile, saveStrategy, getStrategy } from "../controllers/user.ctrl.js"
 import * as validator from "../middleware/validator.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -32,5 +32,7 @@ router.route("/user/saveStrategy").post([
   validator.handleResult,
   saveStrategy
 ]);
+
+router.route("/user/getStrategy").post(getStrategy);
 
 export default router;

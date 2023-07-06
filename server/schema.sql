@@ -38,8 +38,13 @@ CREATE TABLE `users` (
 CREATE TABLE `strategy` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `title` varchar(255),
-  `body` text COMMENT 'Content of the post',
-  `user_id` integer
+  `code` text COMMENT 'Content of the post',
+  `user_id` integer,
+  `success_rate` integer DEFAULT 0,
+  `total_profit` integer DEFAULT 0,
+  `maximum_loss` integer DEFAULT 0,
+  `maximum_profit` integer DEFAULT 0,
+  `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 ALTER TABLE `strategy` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

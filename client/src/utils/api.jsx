@@ -92,6 +92,16 @@ const api = {
       body: JSON.stringify(strategyInfo)
     });
     return await response.json();
+  },
+  async getStrategy(userId) {
+    const response = await fetch((`${this.hostname}/user/getStrategy`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({userId})
+    });
+    return await response.json();
   }
 };
 
