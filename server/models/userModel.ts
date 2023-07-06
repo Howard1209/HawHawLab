@@ -2,7 +2,6 @@ import { ResultSetHeader } from "mysql2";
 import { z } from "zod";
 import * as argon2 from "argon2";
 import pool from "./databasePool.js";
-import exp from "constants";
 
 function instanceOfSetHeader(object: any): object is ResultSetHeader {
   return "insertId" in object;

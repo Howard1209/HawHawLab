@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from "path";
 import backtestingRouter from './routes/backtesting.js';
 import userRouter from "./routes/user.js";
+import webScrapingRouter from "./routes/webScraping.js"
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api",[
   backtestingRouter,
   userRouter,
+  webScrapingRouter
 ]);
 
 app.use(express.static("../../client/dist"));
@@ -23,7 +25,6 @@ const __dirname = path.resolve('../../client/dist/index.html');
 app.get("*", (req , res) => {
   res.sendFile(__dirname)
 });
-
 
 // app.get('/', (req: Request, res: Response) => {
 //   res.send('Express + TypeScript Server');

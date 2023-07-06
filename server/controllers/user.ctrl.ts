@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { z } from "zod";
 import * as argon2 from "argon2";
 import * as userModel from "../models/userModel.js";
 import signJWT, { EXPIRE_TIME } from "../util/signJWT.js";

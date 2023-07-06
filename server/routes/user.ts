@@ -4,7 +4,6 @@ import { signUp, signIn, getProfile, saveStrategy, getAllStrategy, deleteStrateg
 import * as validator from "../middleware/validator.js";
 import authenticate from "../middleware/authenticate.js";
 
-
 const router = Router();
 
 router
