@@ -45,15 +45,21 @@ const MyStrategy = () => {
     setStrategy(formattedStrategy);
   }
   useEffect(()=>{
+    const jwtToken = window.localStorage.getItem('access_token');
+    if (!jwtToken) {
+      toast.error('Please login first');
+      navigate('/');
+      return
+    }
     getStrategy(userId)
-  },[userId])
+  },[navigate, userId])
 
   return(
     <>
     <div id="strategyContainer"
       className="text-[#EEE] h-[calc(100vh-48px)] p-2"
     >
-      <div className="text-3xl text-[#E7893C] text-center mt-3">My Strategy</div>
+      <div className="text-3xl text-[#E7893C] text-center py-2">My Strategy</div>
       <div className=" max-h-[calc(100vh-97px)] overflow-auto">
       {strategy.length > 0 && strategy?.map((ele,i) => (
          <div key={i} className="flex items-center mt-6 bg-[#1D1D1E] rounded-xl px-5 py-2 w-fit mx-auto">

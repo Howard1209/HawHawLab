@@ -15,11 +15,11 @@ import { loginState, usernameState} from '../atom/Atom';
 const Sidebar = ({ open, setOpen, location }) => {
   const menus =[
     {name:"Home",link:'/',icon: MdOutlineDashboard},
-    {name:"My strategy",link:'/myStrategy',icon: VscBeaker},
-    {name:"Create strategy",link:'/script',icon: GoPlusCircle},
-    {name:"Stock info",link:'/info',icon: AiOutlineAreaChart},
-    {name:"大盤市況",link:'/taiex',icon: VscVmActive},
-    {name:"dashboard",link:'/test',icon: MdOutlineDashboard}
+    {name:"My Strategy",link:'/myStrategy',icon: VscBeaker},
+    {name:"Create Strategy",link:'/script',icon: GoPlusCircle},
+    {name:"Stock Info",link:'/info',icon: AiOutlineAreaChart},
+    {name:"Market Info",link:'/taiex',icon: VscVmActive},
+    {name:"Dashboard",link:'/test',icon: MdOutlineDashboard}
   ];
   const [isLogin , setIsLogin] = useRecoilState(loginState);
   const setUsername = useSetRecoilState(usernameState);

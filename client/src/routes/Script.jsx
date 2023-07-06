@@ -117,7 +117,7 @@ export default function Script() {
   useEffect(()=>{
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
-      toast.error('please login first');
+      toast.error('Please login first');
       setUsername('Sign In');
       navigate('/');
       return

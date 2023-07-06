@@ -5,8 +5,8 @@ import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRecoilState, useSetRecoilState} from 'recoil';
-import { loginState, usernameState, userIdState} from '../atom/Atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { loginState, usernameState, userIdState } from '../atom/Atom';
 import api from "../utils/api";
 
 const Header = () => {
