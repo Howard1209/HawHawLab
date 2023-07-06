@@ -98,6 +98,7 @@ export async function getAllStrategy(userId:number) {
     `
     SELECT * FROM strategy
     WHERE user_id = ?
+    ORDER BY update_time DESC
     `,
     [userId]
   );  
