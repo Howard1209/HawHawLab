@@ -12,7 +12,7 @@ const priceResult = await axios.get('https://api.finmindtrade.com/api/v4/data?',
     data_id: stockId,
     start_date: startDate,
     end_date: endDate,
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRlIjoiMjAyMy0wNi0xNSAxMToxNTowNCIsInVzZXJfaWQiOiJoYXdoYXdsYWIiLCJpcCI6IjU5LjEyMC4xMS4xMjUifQ.lypMre1LD7nJIi9WTMJPGfkYV9jRV43W4-g6R0XkdWs'
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRlIjoiMjAyMy0wNy0wNyAyMDoyMDoxMiIsInVzZXJfaWQiOiJoYXdoYXdsYWIiLCJpcCI6IjU5LjEyMC4xMS4xMjUifQ.Eut5RQoo1MoIHteHy5NXK_UDvlk3TUsNE7tdAsatrpI'
   }
 })
 

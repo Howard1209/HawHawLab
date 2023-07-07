@@ -24,11 +24,6 @@ function insertData(url: string) {
       const low = parseInt($(tdElements[3]).text().replace(',', ''), 10);
       const close = parseInt($(tdElements[4]).text().replace(',', ''), 10);
 
-      // 之後爬蟲用
-      // if (index + 1 === tbody.find('tr').length) {
-      //   data.push([formattedDate, open, high, low, close]);
-      //   console.log('hi');
-      // }
       data.push([formattedDate, open, high, low, close]);
     });
 
