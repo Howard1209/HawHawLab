@@ -4,12 +4,13 @@ import dayjs from 'dayjs';
 
 export async function taiexScraping(req:Request, res: Response) {
   try {
-    const { password } = req.body;
-    if (password !== process.env.AWS_PASSWORD) {
+    const { id } = req.body;
+    if (id !== process.env.AWS_PASSWORD) {
     throw new Error("You are so bad!")
     }
 
-    const now = dayjs().format('YYYYMMDD')
+    // const now = dayjs().format('YYYYMMDD')
+    const now = '20230704'
     await webScrapingModel.taiexScraping(now);
     res.status(200).json('Success');
 

@@ -4,6 +4,7 @@ import pool from './databasePool.js';
 
 export async function taiexScraping(date:string) {  
   const url = `https://www.twse.com.tw/rwd/zh/TAIEX/MI_5MINS_HIST?date=${date}&response=html`;
+  console.log(url);
   
   axios.get(url)
   .then( async response => {
