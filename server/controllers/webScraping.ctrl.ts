@@ -22,3 +22,7 @@ export async function taiexScraping(req:Request, res: Response) {
     res.status(500).json({ errors: "Something is wrong" });
   }
 }
+
+export async function event(req:Request, res: Response) {
+  res.status(200).json('hello haw')
+}
