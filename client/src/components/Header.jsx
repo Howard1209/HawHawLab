@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { loginState, usernameState, userIdState } from '../atom/Atom';
+import { loginState, usernameState, userIdState, loginBtnState } from '../atom/Atom';
 import api from "../utils/api";
 
 const Header = () => {
-  const [isShowing, setIsShowing] = useState(false);
+  const [isShowing, setIsShowing] = useRecoilState(loginBtnState);
   const wrapperRef = useRef(null);
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useRecoilState(usernameState)
@@ -71,7 +71,7 @@ const Header = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [wrapperRef])
+  }, [setIsShowing, wrapperRef])
 
   useEffect(() => {
     if (username !== 'Sign In') {
@@ -128,7 +128,7 @@ const Header = () => {
         html.style.overflowY = "visible"
       }
     }
-  }, [isShowing, username])
+  }, [isShowing, setIsShowing, username])
 
   return(
     <>

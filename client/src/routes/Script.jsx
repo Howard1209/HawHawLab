@@ -10,7 +10,7 @@ import ScriptDoc from "../components/ScriptDoc"
 import api from "../utils/api";
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { usernameState} from '../atom/Atom';
+import { usernameState , loginBtnState} from '../atom/Atom';
 import { useSearchParams } from "react-router-dom";
 
 const explain = `// 請修改以下 variable 的 value
@@ -34,6 +34,7 @@ export default function Script() {
   const [data, setJsonData] = useState({});
   const [report, setReport] = useState({});
   const setUsername = useSetRecoilState(usernameState)
+  const setIsShowing = useSetRecoilState(loginBtnState);
   const [proportion, setProportion] = useState([40, 60])
   const [tabSelected, setTabSelected] = useState({
     currentTab: 1,
@@ -117,8 +118,7 @@ export default function Script() {
   useEffect(()=>{
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
-      toast.error('Please login first');
-      setUsername('Sign In');
+      setIsShowing(true);
       navigate('/');
       return
     }
@@ -133,7 +133,7 @@ export default function Script() {
       document.getElementById('strategyName').value = title;
     })
 
-  },[navigate, searchParams, setUsername])
+  },[navigate, searchParams, setIsShowing, setUsername])
 
   return (
     <>

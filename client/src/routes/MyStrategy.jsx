@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from 'recoil';
-import { userIdState} from '../atom/Atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userIdState, loginBtnState } from '../atom/Atom';
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaCodepen } from "react-icons/fa";
 import { HiOutlineScale } from "react-icons/hi";
@@ -11,6 +11,7 @@ import api from "../utils/api";
 const MyStrategy = () => {
   const navigate = useNavigate();
   const userId = useRecoilValue(userIdState);
+  const setIsShowing = useSetRecoilState(loginBtnState);
   const [strategy, setStrategy] = useState([]);
 
   const editStrategy = (id) => {
@@ -47,12 +48,12 @@ const MyStrategy = () => {
   useEffect(()=>{
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
-      toast.error('Please login first');
+      setIsShowing(true);
       navigate('/');
       return
     }
     getStrategy(userId)
-  },[navigate, userId])
+  },[navigate, setIsShowing, userId])
 
   return(
     <>
@@ -62,14 +63,14 @@ const MyStrategy = () => {
       <div className="text-3xl text-[#E7893C] text-center py-2">My Strategy</div>
       <div className=" max-h-[calc(100vh-97px)] overflow-auto">
       {strategy.length > 0 && strategy?.map((ele,i) => (
-         <div key={i} className="flex items-center mt-6 bg-[#1D1D1E] rounded-xl px-5 py-2 w-fit mx-auto">
+         <div key={i} className="flex items-center mt-6 bg-[#343435] rounded-xl px-5 py-2 w-fit mx-auto">
           <HiOutlineScale className="mr-5 text-2xl text-[#E7893C]"/>
           <div>
             <span className="text-2xl">{ele.title} </span>
             <div className="flex items-center mt-3 mb-1">
               <button type="button"
                 onClick={()=>editStrategy(ele.id)}
-                className="bg-[#434344] text-[#BABCBC] flex items-center rounded-lg px-2 mr-2 hover:text-[#30DEAB]">
+                className="bg-[#434344] text-[#BABCBC] flex items-center rounded-lg px-2 mr-2 hover:scale-110 hover:text-[#30DEAB]">
                 <FaCodepen/>
                 <span className="ml-1">Edit</span>
               </button>

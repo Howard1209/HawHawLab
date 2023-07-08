@@ -1,16 +1,17 @@
 import { MdOutlineNotStarted } from "react-icons/md";
 import { HomeChart } from "../components/HomeChart";
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSetRecoilState } from 'recoil';
+import { loginBtnState } from '../atom/Atom';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const setIsShowing = useSetRecoilState(loginBtnState);
   const navigateStrategy = () => {
     const jwtToken = window.localStorage.getItem('access_token');
     if (!jwtToken) {
-      toast.error('Please login first');
-      return;
+      setIsShowing(true);
     }
     navigate('/script')
   };

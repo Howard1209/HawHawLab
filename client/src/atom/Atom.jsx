@@ -14,3 +14,8 @@ export const userIdState = atom({
   key: 'userId',
   default: '',
 })
+
+export const loginBtnState = atom({
+  key: 'isShowing',
+  default: false,
+});

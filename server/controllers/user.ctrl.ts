@@ -44,11 +44,11 @@ export async function signIn(req: Request, res: Response) {
     const { email, password} = req.body;
     const user = await userModel.findUser(email);
     if (!user) {
-      throw new Error("user not exist");
+      throw new Error("User not exist");
     }
     const isValidPassword = argon2.verify(user.password, password);
     if (!isValidPassword) {
-      throw new Error("invalid password");
+      throw new Error("Invalid password");
     }
     const token = await signJWT(user.id);
     res
