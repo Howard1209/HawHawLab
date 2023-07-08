@@ -19,3 +19,8 @@ export const loginBtnState = atom({
   key: 'isShowing',
   default: false,
 });
+
+export const sidebarButtonState = atom({
+  key:'open',
+  value: true,
+})

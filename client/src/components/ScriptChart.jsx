@@ -193,7 +193,7 @@ export default function ScriptChart({data}){
 
   return(
     <>
-    <div className="h-[calc(100vh-92px)]">
+    <div className="h-[calc(100vh-92px)] overflow-auto">
       <div ref={chartContainerRef} style={{position:'relative'}}
         className="bg-[#1D1D1E] border border-[#1D1D1E] rounded-lg h-[60%]">
         { Object.keys(data).length > 0 &&
@@ -240,10 +240,10 @@ export default function ScriptChart({data}){
         }
       </div>
       <div id="report-area" className="flex flex-row gap-2 mt-2 justify-center h-[40%]">
-        <div className="basis-1/4 bg-[#1D1D1E] text-[#BABABC] rounded-lg pl-2 pr-2 pt-7 place-content-center">
+        <div className="basis-1/4 bg-[#1D1D1E] text-[#BABABC] rounded-lg pl-2 pr-2 pt-3 place-content-center">
           <Report data={data}/>
         </div>
-        <div className="basis-3/4 bg-[#1D1D1E] border border-[#1D1D1E] col-span-2 rounded-lg">
+        <div className="basis-3/4 bg-[#1D1D1E] border border-[#1D1D1E] rounded-lg">
           <HistogramInScript data={data}/>
         </div>
       </div>  

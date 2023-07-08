@@ -50,7 +50,7 @@ export default function HistogramInScript({data}) {
 
   return(
     <div id="bar"
-      className='bg-[#1D1D1E] h-[100%]'
+      className='bg-[#1D1D1E] h-[100%] w-full mx-auto'
     >
       <Chart 
       data= {{
@@ -79,6 +79,7 @@ export default function HistogramInScript({data}) {
         ],
       }}
       options={{
+        responsive: true,
         maintainAspectRatio:false,
         elements:{
           point:{

@@ -1,11 +1,21 @@
 import { OpenCombination, CloseCombination } from "./components";
+import { toast } from 'react-toastify';
 import api from "../utils/api";
 
 // eslint-disable-next-line react/prop-types
 function StrategyFrom({renderChart}) {
   const submitForm = async (e) => {
     e.preventDefault();
-    const result = await api.postData( e.target);
+    const data = e.target;
+    if (!data.openMethod || ! data.closeMethod) {
+      toast.error('Please complete the combination!');
+      return;
+    }
+    const result = await api.postData(e.target);
+    if (result.error) {
+      toast.error(result.error.toString());
+      return;
+    }
     renderChart(result);
   };
   
@@ -16,11 +26,11 @@ function StrategyFrom({renderChart}) {
         <form onSubmit={submitForm}>
           <div className="mb-2 bg-[#343435] rounded-lg h-fit w-fit p-1 py-auto">
             <label >Start date: </label>
-            <input name="startDate" type="date" min={"2022-01-01"} max={"2023-06-14"} required className="bg-[#343435]"/>
+            <input name="startDate" type="date" min={"2022-01-01"} required className="bg-[#343435]"/>
           </div>
           <div className="mb-2 bg-[#343435] rounded-lg h-fit w-fit p-1 py-auto">
             <label >End date: </label>
-            <input name="endDate" type="date"  max={"2023-07-04"} required className="bg-[#343435]"/>
+            <input name="endDate" type="date" required className="bg-[#343435]"/>
           </div>
           <div className="mb-2 bg-[#1D1D1E] border border-[#BABCBC] rounded-lg h-fit w-fit p-1 py-auto">
             <label >Stock ID: </label>

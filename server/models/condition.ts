@@ -59,7 +59,14 @@ export function checkCondition(
     };
     const numberParser = z.number();
     const total = numberParser.parse(stock[columnInSQL[currentMethod]]);
-    return (currentSymbol === 'greater') ? total > currentValue : total < currentValue;
+
+    if (currentSymbol === 'sold' && total > 0) {
+      return false;
+    }
+    if (currentSymbol === 'sold' && total < 0) {
+      return Math.abs(total) > currentValue;
+    }
+    return total > currentValue 
   };
 
   const evaluateTaiexCondition = (_currentMethod: string, _currentValue: string, currentSymbol: string) => {
@@ -70,11 +77,11 @@ export function checkCondition(
     return currentSymbol === result;  
   };
 
-  const spreadCondition = (_currentMethod: string, currentValue: string, currentSymbol:string) => {
-    const userSpreadPCT = parseFloat(currentValue);
-    const stockSpreadPCT = stock.spreadPCT;
-    return (currentSymbol === 'greater') ? stockSpreadPCT > userSpreadPCT : stockSpreadPCT < userSpreadPCT;
-  };
+  // const spreadCondition = (_currentMethod: string, currentValue: string, currentSymbol:string) => {
+  //   const userSpreadPCT = parseFloat(currentValue);
+  //   const stockSpreadPCT = stock.spreadPCT;
+  //   return (currentSymbol === 'greater') ? stockSpreadPCT > userSpreadPCT : stockSpreadPCT < userSpreadPCT;
+  // };
   
   interface MappingSchema {
     [key: string]: Function;
@@ -89,7 +96,7 @@ export function checkCondition(
     dealerSelf: evaluateInvestorCondition,
     investorsAll:evaluateInvestorCondition,
     taiex: evaluateTaiexCondition,
-    spreadPCT: spreadCondition,
+    // spreadPCT: spreadCondition,
   };
 
   if (Array.isArray(method) && Array.isArray(value) && Array.isArray(symbol)) {

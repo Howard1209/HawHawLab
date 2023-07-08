@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { VM, VMScript } from 'vm2';
 import { getStockData, getTaiexData, calculateProfitLoss } from '../models/stockInfo.js';
 import { calculateMovingAverages, getKD } from '../models/technicalAnalysis.js';
 import { execLoopText, closeTxt } from '../util/worker.js';

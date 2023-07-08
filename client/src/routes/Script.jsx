@@ -184,7 +184,7 @@ export default function Script() {
               </button>
             </div>
           </div>
-          <div id="chart-area" className="min-w-[350px] max-h-full duration-100">
+          <div id="chart-area" className="min-w-[350px] max-h-full">
             <ScriptDoc data={data} setReport={setReport}
              sendCode={sendCode} setProportion={setProportion} tabSelected={tabSelected} setTabSelected={setTabSelected}/>
           </div>

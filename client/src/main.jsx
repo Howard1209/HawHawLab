@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import TaiexChart from './routes/Taiex';
-import Backtesting from './routes/backtesting';
+import Backtesting from './routes/Form';
 import Script from "./routes/Script";
 import Landing from './routes/Home';
 import MyStrategy from './routes/MyStrategy';

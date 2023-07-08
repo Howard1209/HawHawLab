@@ -17,7 +17,7 @@ const Sidebar = ({ open, setOpen, location }) => {
     {name:"Home",link:'/',icon: MdOutlineDashboard},
     {name:"My Strategy",link:'/myStrategy',icon: VscBeaker},
     {name:"Create Strategy",link:'/script',icon: GoPlusCircle},
-    {name:"Stock Info",link:'/info',icon: AiOutlineAreaChart},
+    {name:"Stock Info",link:'/form',icon: AiOutlineAreaChart},
     {name:"Market Info",link:'/taiex',icon: VscVmActive},
     {name:"Dashboard",link:'/test',icon: MdOutlineDashboard}
   ];
@@ -32,6 +32,9 @@ const Sidebar = ({ open, setOpen, location }) => {
     navigate('/');
   };
 
+  if (location.pathname === '/form' || location.pathname === '/script') {
+    setOpen(false);
+  }
 
   useEffect(()=>{
     const jwt = window.localStorage.getItem('access_token');

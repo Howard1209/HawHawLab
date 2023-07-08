@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { RecoilRoot } from 'recoil';
 import { ToastContainer} from 'react-toastify';
 
+
 function App() {
   const [open, setOpen] = useState(true);
   let location = useLocation();
@@ -16,7 +17,7 @@ function App() {
         <Sidebar open={open} setOpen={setOpen} location={location} />
         <div className={open? 'w-[calc(100vw-192px)]': 'w-[calc(100vw-64px)]'}>
           <Header/>
-          <Outlet context={[open]}/>
+          <Outlet context={[open]} setOpen={setOpen}/>
         </div>
       </section>
       <ToastContainer

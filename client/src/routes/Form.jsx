@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import { LineStyle, createChart } from "lightweight-charts";
+import { useSetRecoilState } from 'recoil';
+import { loginBtnState } from '../atom/Atom';
+import { useNavigate } from 'react-router-dom';
 import Split from 'react-split'
 import StrategyFrom from "../components/Form";
 import Histogram from "./Histogram";
@@ -7,16 +10,23 @@ import Report from "./Report";
 
 export default function Backtesting() {
   const [data, setJsonData] = useState({});
+  const setIsShowing = useSetRecoilState(loginBtnState);
+  const navigate = useNavigate();
 
   const chartContainerRef = useRef();
   const [candlePrice, setCandlePrice] = useState(null);
   const [ma5Price, setMa5Price] = useState(null);
   const [ma10Price, setMa10Price] = useState(null);
   const [ma20Price, setMa20Price] = useState(null);
-
   const renderChart = (data) => setJsonData(data);
 
   useEffect(() => {
+    const jwtToken = window.localStorage.getItem('access_token');
+    if (!jwtToken) {
+      setIsShowing(true);
+      navigate('/');
+      return
+    }
 
     if (Object.keys(data).length > 0) {
       const chart = createChart(chartContainerRef.current, {
@@ -159,7 +169,7 @@ export default function Backtesting() {
         chart.remove();
       };    
     }
-  }, [data]);
+  }, [data, navigate, setIsShowing]);
   
 
   return (
@@ -173,7 +183,7 @@ export default function Backtesting() {
         <div className="form-area ml-1 bg-[#1D1D1E] rounded-lg pl-1">
           <StrategyFrom renderChart={renderChart}/>
         </div>
-        <div className="min-w-[350px] h-[calc(100vh-56px)] max-w-full">
+        <div className="min-w-[350px] h-[calc(100vh-56px)] max-w-full overflow-auto">
           <div ref={chartContainerRef} style={{position:'relative'}} className="h-[65%] mr-2 bg-[#1d1d1e] border border-[#1d1d1e] rounded-lg">
           { Object.keys(data).length > 0 &&
             <div style={{
@@ -183,7 +193,7 @@ export default function Backtesting() {
               <div className="flex">
                 <div className="mr-2">open: {candlePrice?.open}</div>
                 <div className="mr-2">close: {candlePrice?.close}</div>
-                <div className="mr-2">hugh: {candlePrice?.high}</div>
+                <div className="mr-2">high: {candlePrice?.high}</div>
                 <div className="mr-2">low: {candlePrice?.low}</div>
               </div>
               <div className="flex">
@@ -195,8 +205,8 @@ export default function Backtesting() {
           }
 
           </div>
-          <div id="report-area" className="grid grid-cols-3 gap-3 h-fit mt-2">
-            <div className="bg-[#1d1d1e] rounded-lg pl-2 pr-2 pt-3 place-content-center">
+          <div id="report-area" className="grid grid-cols-3 gap-3 mt-2 min-h-[35%]">
+            <div className="bg-[#1d1d1e] rounded-lg pl-2 pr-2 pt-3 place-content-center text-sm">
               <Report data={data}/>
             </div>
             <div className="bg-[#1d1d1e] col-span-2 rounded-lg mr-2">

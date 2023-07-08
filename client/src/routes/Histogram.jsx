@@ -45,10 +45,10 @@ export default function Histogram({data}) {
     acc.push(updatedSum);
     return acc;
   }, []);
-  
+
   return(
     
-    <div id="bar">
+    <div id="bar" className="w-full mx-auto">
       <Chart data= {{
         labels: perTrade?.map((ele) => ele.closeDay),
         datasets: [
@@ -72,6 +72,7 @@ export default function Histogram({data}) {
           },
         ],
         option: {
+          responsive: true,
           layout: {
             autoPadding: true
           }
