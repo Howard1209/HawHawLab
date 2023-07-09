@@ -12,6 +12,7 @@ export default function vmProcess(script:string){
     return vm.run(scriptVM);
   } catch(err ) {
     if (err instanceof Error) {
+      console.error(err);
       throw new Error(err.message)
     }
   }

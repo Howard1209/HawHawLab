@@ -74,7 +74,7 @@ export function HomeChart() {
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
         borderColor: '#71649C',
-        timeVisible: true,
+        timeVisible: false,
         rightOffset: 1,
         barSpacing: 15,
         minBarSpacing: 5,

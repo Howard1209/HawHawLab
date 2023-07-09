@@ -4,6 +4,36 @@ import classNames from 'classnames';
 import * as Accordion from '@radix-ui/react-accordion';
 import PropTypes from 'prop-types';
 
+const kdStrategy = `const close = stock.close;
+const k = kd.k;
+
+const buyCondition = k < 20;
+
+if (buyCondition ) {
+  action['buy'](close, 1)
+}
+
+const sellCondition = k > 80;
+
+if (sellCondition ) {
+  action['sell'](close, shares)
+}
+`;
+
+const actionMap = ` /**
+* fill in your condition in if ( )
+* chang the stock priceType as you already declare 
+* param{number} qty. In sell condition it shares(all stocks).
+*/
+if ( ) {
+  action['buy']( priceType, qty);
+}
+
+if ( ) {
+  action['sell']( priceType, shares);
+}
+`;
+
 function NestedList({sendCode}){
   const [type, setType] = useState(true);
 
@@ -32,14 +62,20 @@ function NestedList({sendCode}){
       {key: 'Low Index', value: `const ${type?'lowTaiex':'preLowTaiex'} = ${type?'taiex':'preTaiex'}.low;`},
   ];
 
-  const technical_indicators = [
+  const technicalIndicators = [
     {key: 'MA5', value: `const ${type?'ma5':'preMa5'} = ${type?'stock':'preStock'}.ma5;`},
     {key: 'MA10', value: `const ${type?'ma10':'preMa10'} = ${type?'stock':'preStock'}.ma10;`},
     {key: 'MA20', value: `const ${type?'ma20':'preMa20'} = ${type?'stock':'preStock'}.ma20;`},
-    {key: 'KD', value: `const ${type?'kd':'preKd'} = ${type?'kd':'preKD'}.k;`},
-
+    {key: 'KD', value: `const ${type?'k':'preKd'} = ${type?'kd':'preKD'}.k;`},
   ];
 
+  const action = [
+    {key: 'Buy & Sell', value: actionMap}
+  ];
+
+  const example = [
+    {key: 'KD strategy', value: kdStrategy},
+  ];
   return(
     <>
     <div className='flex gap-2'>
@@ -79,7 +115,15 @@ function NestedList({sendCode}){
         </AccordionItem>
         <AccordionItem value="item-4">
           <AccordionTrigger>Technical Indicators</AccordionTrigger>
-          {technical_indicators.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
+          {technicalIndicators.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
+        </AccordionItem>
+        <AccordionItem value="item-5">
+          <AccordionTrigger>Action</AccordionTrigger>
+          {action.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
+        </AccordionItem>
+        <AccordionItem value="item-6">
+          <AccordionTrigger>Example Strategy</AccordionTrigger>
+          {example.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
         </AccordionItem>
 
       </Accordion.Root>
@@ -114,7 +158,7 @@ const AccordionTrigger = forwardRef(({ children, className, ...props }, forwarde
     >
       {children}
       <AiOutlineDown
-        className="transition-transform duration-300 group-data-[state=open]:rotate-180"
+        className="ease-[cubic-bezier(0.87,_0,_0.13,_1)] transition-transform duration-300 group-data-[state=open]:rotate-180"
         aria-hidden
       />
     </Accordion.Trigger>
@@ -125,7 +169,7 @@ const AccordionTrigger = forwardRef(({ children, className, ...props }, forwarde
 const AccordionContent = forwardRef(({ children, className, ...props }, forwardedRef) => (
   <Accordion.Content
     className={classNames(
-      "text-[#BABCBC] cursor-pointer overflow-hidden text-[14px] bg-[#343435] hover:text-[#E7893C]",
+      "text-[#BABCBC] cursor-pointer data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden text-[14px] bg-[#343435] hover:text-[#E7893C]",
       className
     )}
     {...props}

@@ -13,19 +13,17 @@ import { useSetRecoilState } from 'recoil';
 import { usernameState , loginBtnState} from '../atom/Atom';
 import { useSearchParams } from "react-router-dom";
 
-const explain = `// 請修改以下 variable 的 value
-const startDate = '2023-06-01';
-const endDate = '2023-07-01';
+const explain =
+`const startDate = '2023-06-01';
+const endDate = '2023-07-11';
 const stockId = '2330';
-const ma = [5, 10, 20];
 const type = 'long'; // long or short
 
 // Do not revise exports
-exports = {startDate, endDate, stockId, ma, type};
+exports = {startDate, endDate, stockId, type};
 // The trigger you want to set up, it can be empty;
 
-// You can use Stock, preStock, taiex, preTaiex these object
-// Condition area
+// Loop area
 `;
 
 export default function Script() {

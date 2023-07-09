@@ -107,12 +107,10 @@ export default function Backtesting() {
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
         borderColor: '#71649C',
-        timeVisible: true,
-        // 右邊要空幾天
+        timeVisible: false,
         rightOffset: 2,
         barSpacing: 15,
         minBarSpacing: 5,
-        // 讓左側不要空
         fixLeftEdge: false
       });
       

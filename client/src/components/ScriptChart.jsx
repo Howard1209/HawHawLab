@@ -96,7 +96,7 @@ export default function ScriptChart({data}){
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
         borderColor: '#71649C',
-        timeVisible: true,
+        timeVisible: false,
         // 右邊要空幾天
         rightOffset: 2,
         barSpacing: 15,

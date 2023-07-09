@@ -15,9 +15,9 @@ export default async function backtestingScript(req: Request, res: Response){
       throw new Error('You made changes to condition area.')
     }
     
-    const {startDate, endDate, stockId, ma, type} = vmProcess(dimTxt);
+    const {startDate, endDate, stockId, type} = vmProcess(dimTxt);
     
-    if (! startDate && endDate && stockId && ma && type) {
+    if (! startDate && endDate && stockId && type) {
       throw new Error('You need to fill in the following information: startDate, endDate, stockId, ma, type.')
     }
   
@@ -28,7 +28,7 @@ export default async function backtestingScript(req: Request, res: Response){
     if (type !== 'long' && type !== 'short'){
       throw new Error('The type is error')
     }
-    
+    const ma = [5, 10, 20]
     const maxMa = Math.max(...ma); 
     const stockData = await getStockData(startDate, endDate, stockId, maxMa);
     const maData = calculateMovingAverages(stockData, ma).filter((obj) => obj.date >= startDate);
@@ -49,33 +49,32 @@ export default async function backtestingScript(req: Request, res: Response){
     const kdTxt = `const kdData = ${JSON.stringify(kdData)}\n`;
     
     const startMarker = "// The trigger you want to set up, it can be empty;\n";
-    const endMarker = "// Condition area\n";
+    const endMarker = "// Loop area\n";
     const startTxt = code.indexOf(startMarker) + startMarker.length;
     const endTxt = code.indexOf(endMarker);
     const triggerText = code.substring(startTxt, endTxt);
     if (code.substring(endTxt).trim() === "// Condition area") {
       throw new Error('The Condition area is empty')
     }
-        
+    
     const stockInfoText = `const stockInfo = ${JSON.stringify(stockInfo)};\n`+
     `const taiexInfo = ${JSON.stringify(taiexInfo)};\n`+ kdTxt +
     `const type = ${JSON.stringify(type)};\n`;
-      
-  
-    const startIndex = code.indexOf("// Condition area") + "// Condition area".length;
-    const execTxt = code.substring(startIndex);
-  
+    
+    const startIndex = code.indexOf("// Loop area") + "// loop area".length;
+    const execTxt = code.substring(startIndex).trim();
+    
     if (execTxt === '') {
-      throw new Error('You have an error in condition area.')
+      throw new Error('The loop area is empty.')
     }
-    
+
     const { transactions } = vmProcess(stockInfoText+ triggerText+ execLoopText+ execTxt+ closeTxt);
-    
+
     const { realizedProfitLoss, profitRecords, profitRecordsByDate } = calculateProfitLoss(transactions, type);
   
     const numberOfGains = profitRecords.filter(num => num > 0).length;
     const numberOfLosses = profitRecords.filter(num => num <= 0).length;
-    
+
     const report = {
       candleData: stockInfo,
       perTrade: transactions,

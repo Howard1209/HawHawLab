@@ -103,7 +103,7 @@ export default function ScriptDoc({data, setReport, sendCode, setProportion, tab
               }`}
               onClick={() => {
                 setTabSelected({ ...tabSelected, currentTab: 2 });
-                setProportion([70,30])
+                setProportion([70,30]);
               }}
             >
               <span>Grammar</span>
@@ -125,7 +125,10 @@ export default function ScriptDoc({data, setReport, sendCode, setProportion, tab
               aria-selected={`${
                 tabSelected.currentTab === 3 ? "true" : "false"
               }`}
-              onClick={() => setTabSelected({ ...tabSelected, currentTab: 3 })}
+              onClick={() => {
+                setTabSelected({ ...tabSelected, currentTab: 3 });
+                setProportion([70,30]);
+              }}
             >
               <span>Doc</span>
             </button>
@@ -157,7 +160,7 @@ export default function ScriptDoc({data, setReport, sendCode, setProportion, tab
             <NestedList sendCode={sendCode}/>
           </div>
           <div
-            className={`p-4 text-sm ${
+            className={`p-4 text-[#EEE] text-sm overflow-x-auto ${
               tabSelected.currentTab === 3 ? "" : "hidden"
             }`}
             id="tab-panel-3c"
@@ -166,9 +169,36 @@ export default function ScriptDoc({data, setReport, sendCode, setProportion, tab
             aria-labelledby="tab-label-3c"
             tabIndex="-1"
           >
-            <p className="text-[#EEE]">
-              寫腳本搞太久拉 GGG~~~
-            </p>
+            <p> Basic ma5 strategy !</p>
+            <p> Buy condition : Close price {">"} ma5 </p> 
+            <p> Sell condition : Close price {"<"} ma5 </p><br/>                 
+            <pre>
+              <code>
+              {'//'} Loop area<br/>
+              const close = stock.close;<br/>
+              const preClose = preStock.close<br/>
+              const open = stock.open;<br/>
+              const preMa5 = preStock.ma5;<br/>
+              const ma5 = stock.ma5;<br/><br/>
+              const buyCondition = preClose {">"} preMa5;<br/>
+              const sellCondition = close {"<"} ma5;<br/><br/>
+              </code>
+            </pre>
+            <pre>
+              <code>
+                {'/**'}<br/>
+                * fill in your condition in if ( )<br/>
+                * chang the stock priceType as you already declare<br/>
+                * param &#123;number&#123; qty. In sell condition it shares(all stocks).<br/>
+                */<br/>
+                if (buyCondition) &#123;<br/>
+                  action[&quot;buy&quot;](open,1);<br/>
+                &#125;<br/><br/>
+                if (sellCondition) &#123;<br/>
+                  action[&quot;sell&quot;](close, shares);<br/>
+                &#125;
+              </code>
+            </pre>
           </div>
         </div>
       </section>
