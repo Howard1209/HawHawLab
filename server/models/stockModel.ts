@@ -12,7 +12,6 @@ const StockListSchema = z.object({
 });
 
 export async function getStockList() {
-  // limit 隨著之後股票數量要改
   const results = await pool.query(
     `
     select stock_id, open, high, low, close, spread, spreadPCT, trading_volume from stock_info 

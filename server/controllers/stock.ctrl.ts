@@ -5,7 +5,7 @@ import { calculateMovingAverages } from '../models/technicalAnalysis.js';
 
 export async function getStockList(req: Request, res: Response) {
 try {
-    const data = await stock.getStockList()
+    const data = await stock.getStockList()    
     res.status(200).json({data});
 } catch (err) {
   if (err instanceof Error) {

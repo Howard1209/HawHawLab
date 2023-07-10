@@ -5,6 +5,4 @@ const router = Router();
 
 router.route("/webScraping").post(webScraping);
 
-// router.route("/stockScraping").post(stockScraping);
-
 export default router;
