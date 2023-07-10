@@ -16,7 +16,8 @@ export async function webScraping(req:Request, res: Response) {
     await webScrapingModel.taiexScraping(todayForTaiex)
 
     const todayForStock = dayjs().format('YYYY-MM-DD')
-    const previousDayFotStock = dayjs().subtract( 1 , 'day').format('YYYY-MM-DD');    
+    const previousDayFotStock = dayOfWeek !== 1 ? dayjs().subtract( 1 , 'day').format('YYYY-MM-DD'):
+    dayjs().subtract( 3 , 'day').format('YYYY-MM-DD');    
     await webScrapingModel.stockScraping(previousDayFotStock, todayForStock);
     
     res.status(200).json('Success');
