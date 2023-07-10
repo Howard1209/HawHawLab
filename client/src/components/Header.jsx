@@ -29,9 +29,8 @@ const Header = () => {
 
   const sentLogin = async (data) => {
     const result = isRegister? await api.postSignUp(data): await api.postSignIn(data);
-    if (result.errors) {
-      console.log(result.errors);
-      toast.error(result.errors);
+    if (result.error) {
+      toast.error(result.error);
       return;
     }
     window.localStorage.setItem('access_token', result.data.access_token);
@@ -50,8 +49,7 @@ const Header = () => {
     }
     async function getProfile(jwtToken){
       const result = await api.getProfile(jwtToken);
-      if (result.errors) {
-        console.log(result.errors);
+      if (result.error) {
         window.localStorage.removeItem('access_token')
         toast.error(result.error);
         return;  

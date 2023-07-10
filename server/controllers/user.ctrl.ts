@@ -35,7 +35,7 @@ export async function signUp(req:Request, res: Response) {
       res.status(400).json({error: err.message});
       return;
     }
-    res.status(500).json({ errors: "sign up failed" });
+    res.status(500).json({ error: "sign up failed" });
   }
 }
 
@@ -63,10 +63,10 @@ export async function signIn(req: Request, res: Response) {
       });
   } catch (err) {
     if (err instanceof Error) {
-      res.status(400).json({ errors: err.message });
+      res.status(400).json({ error: err.message });
       return;
     }
-    res.status(500).json({ errors: "sign in failed" });
+    res.status(500).json({ error: "sign in failed" });
   }
 }
 
