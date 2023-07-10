@@ -56,6 +56,7 @@ export async function getStockData (startDate:string, endDate:string, stockId:st
   `,[startDate, endDate, stockId, startDate, stockId, maxMa]);
   const stockData = z.array(stockDataSchema).parse(data);
   
+  // focus on time zone still not work
   const adjustedData = stockData.map((item) => {
     const adjustedDate = new Date(item.date);
     adjustedDate.setHours(adjustedDate.getHours() + 8); // Add 8 hours to the date

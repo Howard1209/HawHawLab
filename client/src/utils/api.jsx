@@ -132,6 +132,20 @@ const api = {
       body: JSON.stringify(updateInfo)
     });
     return await response.json();
+  },
+  async getStockList() {
+    const response = await fetch(`${this.hostname}/stockList`);
+    return await response.json();
+  },
+  async getStockDetailData(stockId) {
+    const response = await fetch((`${this.hostname}/stockDetail`), {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+      body: JSON.stringify({stockId})
+    });
+    return await response.json();
 
   }
 };

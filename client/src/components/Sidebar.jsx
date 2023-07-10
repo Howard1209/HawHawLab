@@ -19,7 +19,7 @@ const Sidebar = ({ open, setOpen, location }) => {
     {name:"Create Strategy",link:'/script',icon: GoPlusCircle},
     {name:"Stock Info",link:'/form',icon: AiOutlineAreaChart},
     {name:"Market Info",link:'/taiex',icon: VscVmActive},
-    {name:"Dashboard",link:'/test',icon: MdOutlineDashboard}
+    {name:"Dashboard",link:'/stock',icon: MdOutlineDashboard}
   ];
   const [isLogin , setIsLogin] = useRecoilState(loginState);
   const setUsername = useSetRecoilState(usernameState);
@@ -32,8 +32,10 @@ const Sidebar = ({ open, setOpen, location }) => {
     navigate('/');
   };
 
-  if (location.pathname === '/form' || location.pathname === '/script') {
-    setOpen(false);
+  if (location.pathname === '/form' || location.pathname === '/script' || location.pathname === '/stock') {
+    if (open) {
+      setOpen(!open)
+    }
   }
 
   useEffect(()=>{
@@ -49,7 +51,6 @@ const Sidebar = ({ open, setOpen, location }) => {
     <>
       <div className={`bg-[#1D1D1E] min-h-screen ${open ? 'w-48':'w-16'} duration-500 px-4 rounded z-50`}>
         <div className='py-3 flex justify-end'>
-        
           <HiMenuAlt3 size={26} id="sidebarButton" className='cursor-pointer text-[#BABCBC]' onClick={()=>setOpen(!open)}/>
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">

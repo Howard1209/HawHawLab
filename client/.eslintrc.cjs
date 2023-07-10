@@ -15,8 +15,8 @@ module.exports = {
       "warn", {
         "additionalHooks": "(useRecoilCallback|useRecoilTransaction_UNSTABLE)"
       }
-    ]
+    ],
     // 'react-no-unknown-property': 'false',
-    // 'react/prop-types': 'false'
+    'react/prop-types': 'false'
   },
 }

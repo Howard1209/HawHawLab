@@ -2,14 +2,18 @@ import { useState, useRef, useEffect } from "react"
 import ReactDOM from "react-dom"
 import { GoPerson } from "react-icons/go";
 import { MdAttachMoney, MdOutlineCancel } from "react-icons/md";
+import { FaCodepen, FaWpforms } from "react-icons/fa";
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginState, usernameState, userIdState, loginBtnState } from '../atom/Atom';
+import { useNavigate } from 'react-router-dom';
+
 import api from "../utils/api";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isShowing, setIsShowing] = useRecoilState(loginBtnState);
   const wrapperRef = useRef(null);
   const [isRegister, setIsRegister] = useState(false);
@@ -134,9 +138,17 @@ const Header = () => {
     <>
     <header className="App-header text-xl p-2 h-12 flex items-center bg-[#1D1D1E]
     rounded font-semibold w-[calc(100vw-178px)]z-50">
-      <p className="text-[#BABCBC]">HawHaw</p>
-      <MdAttachMoney className="text-[#E7893C] text-3xl"/>
-      <p className="text-[#BABCBC]">Lab</p>
+      <div className="flex cursor-pointer"
+      onClick={()=>navigate('/')}
+      >
+        <p className="text-[#BABCBC] pl-2 ">HawHaw</p>
+        <MdAttachMoney className="text-[#E7893C] text-3xl"/>
+        <p className="text-[#BABCBC]">Lab</p>
+      </div>
+      <div className="mx-auto flex cursor-pointer text-[#EEE] gap-6">
+        <FaCodepen onClick={()=>navigate('/script')} className="hover:text-[#E7893C] hover:scale-110"/>
+        <FaWpforms onClick={()=>navigate('/form')} className="hover:text-[#E7893C] hover:scale-110"/>
+      </div>
       <div onClick={() => {
         setIsShowing(true);
       }} className="flex rounded-3xl w-32 mr-1 ml-auto h-8 items-center justify-center

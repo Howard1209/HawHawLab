@@ -5,7 +5,6 @@ import Report from "../routes/Report";
 import PropTypes from 'prop-types';
 
 export default function ScriptChart({data}){
-  
   const chartContainerRef = useRef();
   const [candlePrice, setCandlePrice] = useState(null);
   const [ma5Price, setMa5Price] = useState(null);
