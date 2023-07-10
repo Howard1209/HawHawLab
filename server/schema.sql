@@ -28,6 +28,11 @@ CREATE TABLE `stock_info` (
   `investors_total` integer
 );
 
+CREATE TABLE `stock_list` (
+  `stock_id` varchar(10) PRIMARY KEY,
+  `name` varchar(255)
+);
+
 CREATE TABLE `users` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(50),
@@ -48,3 +53,20 @@ CREATE TABLE `strategy` (
 );
 
 ALTER TABLE `strategy` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `stock_info` ADD FOREIGN KEY (`stock_id`) REFERENCES `stock_list` (`stock_id`);
+
+INSERT INTO stock_list (stock_id, name) VALUES ('2330', '台積電');
+INSERT INTO stock_list (stock_id, name) VALUES ('4919', '新唐');
+INSERT INTO stock_list (stock_id, name) VALUES ('2618', '長榮航');
+INSERT INTO stock_list (stock_id, name) VALUES ('2376', '技嘉');
+INSERT INTO stock_list (stock_id, name) VALUES ('3035', '智原');
+INSERT INTO stock_list (stock_id, name) VALUES ('8086', '宏捷科');
+INSERT INTO stock_list (stock_id, name) VALUES ('2382', '廣達');
+INSERT INTO stock_list (stock_id, name) VALUES ('6288', '聯嘉');
+INSERT INTO stock_list (stock_id, name) VALUES ('3363', '上詮');
+INSERT INTO stock_list (stock_id, name) VALUES ('6285', '啟基');
+INSERT INTO stock_list (stock_id, name) VALUES ('1504', '東元');
+INSERT INTO stock_list (stock_id, name) VALUES ('2486', '一詮');
+INSERT INTO stock_list (stock_id, name) VALUES ('3707', '漢磊');
+INSERT INTO stock_list (stock_id, name) VALUES ('2368', '金像電');
+

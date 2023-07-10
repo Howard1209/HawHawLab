@@ -175,37 +175,37 @@ export function StockChart({stockData}) {
       <div style={{position:'absolute', top: 3, left: 30, zIndex: 20}}>
         <div className="flex items-center text-[#BABCBC]">
           <div className="text-xl mr-3">{stockData[0]?.stock_id}</div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span> O </span>
             <span style={{color:candlePrice?.close-candlePrice?.open>=0?'#26a69a':'#FF2647'}}>{candlePrice?.open}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span> H </span>
             <span style={{color:candlePrice?.close-candlePrice?.open>=0?'#26a69a':'#FF2647'}}>{candlePrice?.high}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span> L </span>
             <span style={{color:candlePrice?.close-candlePrice?.open>=0?'#26a69a':'#FF2647'}}>{candlePrice?.low}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span> C </span>
             <span style={{color:candlePrice?.close-candlePrice?.open>=0?'#26a69a':'#FF2647'}}>{candlePrice?.close}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span> V </span>
             <span className="text-[#E7893C]">{volume?.value/1000}k</span>
           </div>
         </div>
         <div className="flex text-[#BABCBC]">
-          <div className="mr-2">
-            <span>m5 </span>
+          <div className="mr-2 text-sm">
+            <span>ma5 </span>
             <span style={{color:"#d4c744"}}>{ma5Price?.value}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span>ma10 </span>
             <span style={{color:"#4499d4"}}>{ma10Price?.value}</span>
           </div>
-          <div className="mr-2">
+          <div className="mr-2 text-sm">
             <span>ma20 </span>
             <span style={{color:"#7f44d4"}}>{ma20Price?.value}</span>
           </div>

@@ -40,10 +40,8 @@ export async function stockScraping( previousDay:string, today:string) {
       params: {
         dataset: 'TaiwanStockPrice',
         data_id: stockId,
-        start_date:'2023-07-06',
-        end_date:'2023-07-07',
-        // start_date: previousDay,
-        // end_date: today,
+        start_date: previousDay,
+        end_date: today,
         token: process.env.FINMIND_TOKEN
       }
     });
@@ -84,10 +82,8 @@ export async function stockScraping( previousDay:string, today:string) {
       params: {
         dataset: 'TaiwanStockInstitutionalInvestorsBuySell',
         data_id: stockId,
-        start_date:'2023-07-06',
-        end_date:'2023-07-07',
-        // start_date: previousDay,
-        // end_date: today,
+        start_date: previousDay,
+        end_date: today,
         token: process.env.FINMIND_TOKEN
       }
     });

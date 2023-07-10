@@ -9,16 +9,19 @@ const StockListSchema = z.object({
   spread: z.number(),
   spreadPCT: z.number(),
   trading_volume: z.number(),
+  name: z.string()
 });
 
 export async function getStockList() {
   const results = await pool.query(
     `
-    select stock_id, open, high, low, close, spread, spreadPCT, trading_volume from stock_info 
+    SELECT si.stock_id, si.open, si.high, si.low, si.close, si.spread, si.spreadPCT, si.trading_volume, sl.name
+    FROM stock_info AS si
+    JOIN stock_list AS sl ON si.stock_id = sl.stock_id
     ORDER BY date DESC limit ${process.env.STOCKS};
     `
   );
-  const data = z.array(StockListSchema).parse(results[0]);
+  const data = z.array(StockListSchema).parse(results[0]);  
   return data;
 }
 
@@ -71,7 +74,7 @@ export async function getStockDetail(stockId:string) {
     SELECT * FROM stock_info 
     WHERE stock_id = ? 
     ORDER BY date DESC LIMIT 200
-    `,[stockId]);
+    `,[stockId]);  
   const data = z.array(StockDataSchema).parse(results[0]);
   
   const adjData = data.map((item) => {
