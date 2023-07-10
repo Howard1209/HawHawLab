@@ -136,12 +136,12 @@ const Header = () => {
     <>
     <header className="App-header text-xl p-2 h-12 flex items-center bg-[#1D1D1E]
     rounded font-semibold w-[calc(100vw-178px)]z-50">
-      <div className="flex cursor-pointer"
+      <div className="flex cursor-pointer text-[#EEE]"
       onClick={()=>navigate('/')}
       >
-        <p className="text-[#BABCBC] pl-2 ">HawHaw</p>
+        <p className="pl-2 ">HawHaw</p>
         <MdAttachMoney className="text-[#E7893C] text-3xl"/>
-        <p className="text-[#BABCBC]">Lab</p>
+        <p>Lab</p>
       </div>
       <div className="mx-auto flex cursor-pointer text-[#EEE] gap-6">
         <FaCodepen onClick={()=>navigate('/script')} className="hover:text-[#E7893C] hover:scale-110"/>
@@ -152,7 +152,7 @@ const Header = () => {
       }} className="flex rounded-3xl w-32 mr-1 ml-auto h-8 items-center justify-center
       bg-[#343435] text-[#BABCBC] cursor-pointer hover:text-[#30DEAB]">
         <GoPerson className="mr-2" size={23}/>
-        <span className="text-base">{username}</span>
+        <span className={`text-base ${username!== 'Sign In' && 'text-[#30DEAB]'}`}>{username}</span>
       </div>
 
       {isShowing && typeof document !== "undefined" && username === 'Sign In'

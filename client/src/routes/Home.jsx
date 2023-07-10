@@ -7,14 +7,6 @@ import { loginBtnState } from '../atom/Atom';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const setIsShowing = useSetRecoilState(loginBtnState);
-  const navigateStrategy = () => {
-    const jwtToken = window.localStorage.getItem('access_token');
-    if (!jwtToken) {
-      setIsShowing(true);
-    }
-    navigate('/script')
-  };
 
   return(
     <>
@@ -30,7 +22,7 @@ const Landing = () => {
             <MdOutlineNotStarted size={24}  className="mx-1 text-[#FF5972] absolute inline-flex animate-ping"/>
             <MdOutlineNotStarted size={24} className="mx-1 text-[#FF5972] relative "/>
           </div>
-          <div onClick={navigateStrategy} className="group mr-1 text-[#FFFFFF] cursor-pointer">GET STARTED</div>
+          <div onClick={() => navigate('/stock')} className="group mr-1 text-[#FFFFFF] cursor-pointer">GET STARTED</div>
         </div>
       </div>
       <div className="w-[67%] text-white px-6 pt-16 h-fit">

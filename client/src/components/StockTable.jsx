@@ -220,19 +220,19 @@ export function StockTable({stockData}) {
   return(
     <div className="block overflow-auto h-full text-xs border border-[#1D1D1E] rounded-md">
       <table className="h-full text-center w-full">
-        <thead className="sticky top-0 h-6 rounded-md font-medium w-full">
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Date</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Open</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">High</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Low</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Close</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Spread</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Spread %</th>
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Volume</th>
+        <thead className="sticky top-0 h-6 rounded-md font-medium w-full bg-[#1D1D1E]">
+          <th scope="col">Date</th>
+          <th scope="col">Open</th>
+          <th scope="col">High</th>
+          <th scope="col">Low</th>
+          <th scope="col">Close</th>
+          <th scope="col">Spread</th>
+          <th scope="col">Spread %</th>
+          <th scope="col">Volume</th>
         </thead>
         <tbody className="w-full">
           { stockData.map((stock, i) => ( 
-          <tr key={i} className="bg-[#343435] h-6 text-center border-[#343435] w-full">
+          <tr key={i} className="bg-[#343435] h-6 text-center w-full border-t border-[#434344]">
             <td className={`px-4`}>{stock?.date}</td>
             <td className="px-4">{stock?.open}</td>
             <td className="px-4">{stock?.high}</td>
@@ -254,16 +254,16 @@ export function InvestorTable({stockData}) {
     <div className="block overflow-auto h-full border border-[#1D1D1E] rounded-md text-xs">
       <table className="h-full w-full text-center">
         <thead className="w-full sticky top-0 h-6 rounded-md font-medium">
-          <th scope="col" className=" border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Date</th>
-          <th scope="col" className="px-4 border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Foreign Investors</th>
-          <th scope="col" className="px-4 border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Investment Trust</th>
-          <th scope="col" className="px-4 border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Dealer Self</th>
-          <th scope="col" className="px-4 border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Dealer Hedging</th>
-          <th scope="col" className="px-4 border-[#434344] border-l first:border-l-0  bg-[#1D1D1E]">Total</th>
+          <th scope="col" className="bg-[#1D1D1E]">Date</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Foreign Investors</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Investment Trust</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Dealer Self</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Dealer Hedging</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Total</th>
         </thead>
         <tbody className="w-full">
           { stockData.map((stock, i) => ( 
-          <tr key={i} className="w-full bg-[#343435] h-6 text-center border-[#434344]">
+          <tr key={i} className="w-full bg-[#343435] h-6 text-center border-t border-[#434344]">
             <td className={`px-5`}>{stock?.date}</td>
             <td className={`px-4 ${stock?.foreign_investors < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.foreign_investors}</td>
             <td className={`px-4 ${stock?.investment_trust < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.investment_trust}</td>

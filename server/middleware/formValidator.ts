@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 async function formValidator(req: Request, res: Response, next: NextFunction) {
   try {
     const { type, openCondition, closeCondition } = req.body;
-    console.log(req.body);
     
     if (type !== 'long' && type !== 'short') {
       res.status(403).json({error:"Type should be long or short"});

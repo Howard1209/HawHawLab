@@ -1,20 +1,21 @@
 import { LineStyle, createChart } from "lightweight-charts";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import api from "../utils/api";
 
 function TaiexChart() {
-  const navigate = useNavigate();
-  const navigateStrategy = () => { navigate('/strategy') };
+  const [open] = useOutletContext();
 
   const chartContainerRef = useRef();
+  const chartRef = useRef();
   const [candlePrice, setCandlePrice] = useState(null);
   const [ma5Price, setMa5Price] = useState(null);
   const [ma10Price, setMa10Price] = useState(null);
   const [ma20Price, setMa20Price] = useState(null);
   
   useEffect(() => {
-    const chart = createChart(chartContainerRef.current); 
+    chartRef.current = createChart(chartContainerRef.current); 
+    const chart = chartRef.current;
 
     api.getTaiexData().then(result => {
 
@@ -77,12 +78,10 @@ function TaiexChart() {
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
         borderColor: '#71649C',
-        timeVisible: true,
-        // 右邊要空幾天
+        timeVisible: false,
         rightOffset: 3,
         barSpacing: 15,
         minBarSpacing: 5,
-        // 讓左側不要空
         fixLeftEdge: true
       });
 
@@ -150,16 +149,25 @@ function TaiexChart() {
     };
   }, [])
 
+  useEffect(() => {
+    const handleResize = () => {
+      chartRef.current.applyOptions({
+        width: open ? chartContainerRef.current.clientWidth : chartContainerRef.current.clientWidth+124,
+      });
+    };
+    handleResize();
+  }, [open])
+
   return (
     <>
-      <h1 className="text-3xl font-bold mb-3 text-center text-zinc-200">
-        Welcome to HawHawLab!
+      <h1 className="text-3xl font-bold mt-3 text-center text-[#BABCBC]">
+      The TAIEX over the past year.
       </h1>
-      <div ref={chartContainerRef} style={{position:'relative'}}>
+      <div ref={chartContainerRef} style={{position:'relative'}} className="mt-3">
         <div style={{
           position:'absolute', top: 10, left: 30, zIndex: 20, color: 'white'
           }}>
-            <div>TAIEX 加權指數</div>
+            <div>TAIEX</div>
             <div className="flex">
               <div className="mr-2">open: {candlePrice?.open}</div>
               <div className="mr-2">open: {candlePrice?.close}</div>
@@ -172,9 +180,6 @@ function TaiexChart() {
               <div className="mr-2">ma20: {ma20Price?.value}</div>
             </div>
           </div>
-      </div>
-      <div className="flex justify-center">
-        <button onClick={navigateStrategy} className="bg-gray-300 mt-4 rounded px-1 py-1 "> Create your own Strategy</button>
       </div>
     </>
   )

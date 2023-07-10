@@ -3,8 +3,8 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { VscBeaker, VscVmActive } from "react-icons/vsc";
 import { AiOutlineAreaChart } from "react-icons/ai";
-import { GoPlusCircle } from "react-icons/go";
 import { TbLogout } from "react-icons/tb"
+import { FaCodepen, FaWpforms } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -16,10 +16,10 @@ const Sidebar = ({ open, setOpen, location }) => {
   const menus =[
     {name:"Home",link:'/',icon: MdOutlineDashboard},
     {name:"My Strategy",link:'/myStrategy',icon: VscBeaker},
-    {name:"Create Strategy",link:'/script',icon: GoPlusCircle},
-    {name:"Stock Info",link:'/form',icon: AiOutlineAreaChart},
+    {name:"Script Strategy",link:'/script',icon: FaCodepen},
+    {name:"Form Strategy",link:'/form',icon: FaWpforms},
+    {name:"Stock Info",link:'/stock',icon: AiOutlineAreaChart},
     {name:"Market Info",link:'/taiex',icon: VscVmActive},
-    {name:"Dashboard",link:'/stock',icon: MdOutlineDashboard}
   ];
   const [isLogin , setIsLogin] = useRecoilState(loginState);
   const setUsername = useSetRecoilState(usernameState);
@@ -82,8 +82,8 @@ const Sidebar = ({ open, setOpen, location }) => {
           ))
         }
         {isLogin &&
-          <div className="text-[#BABCBC] flex items-center text-sm gap-3.5 fort-medium p-2 cursor-pointer
-          hover:text-[#E7893C] transition-all hover:scale-105 rounded-md"
+          <div className="group text-[#BABCBC] flex items-center text-sm gap-3.5 fort-medium p-2 cursor-pointer
+          hover:text-[#bb3f52] transition-all hover:scale-105 rounded-md"
           onClick={sentLogout}
           >
             <div>
@@ -91,7 +91,16 @@ const Sidebar = ({ open, setOpen, location }) => {
             </div>
             <h2 className={`whitespace-pre duration-500 
               ${!open && 'opacity-0 translate-x-28 overflow-hidden'
-              }`}>Log out</h2>
+              }`}>Log out
+            </h2>
+            <h2 className={`${
+              open && "hidden"
+            } absolute left-36 bg-[#434344] font-semibold whitespace-pre text-[#BABABC]
+             rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1
+             group-hover:left-12 group-hover:duration-300 group-hover:w-fit `}
+            >
+              Log out
+            </h2>
           </div>         
         }
         </div>        
