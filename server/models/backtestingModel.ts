@@ -106,9 +106,9 @@ export async function getBacktestingReport(
     totalTradeTimes: totalTrades,
     numberOfGains,
     numberOfLosses,
-    totalProfit,
-    maximumProfit: Math.max(...profits),
-    maximumLoss: Math.min(...profits)
+    totalProfit: Math.round(totalProfit),
+    maximumProfit: Math.round(Math.max(...profits)),
+    maximumLoss: Math.round(Math.min(...profits))
   };
 
   return report;

@@ -125,5 +125,5 @@ function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], c
     sum += data[i].close;
   }
 
-  return sum / period;
+  return (sum / period);
 }

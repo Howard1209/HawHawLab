@@ -34,17 +34,17 @@ export function StockChart({stockData}) {
 
     const ma5Data = adjStockData.map(obj => ({
       time: obj.date,
-      value: obj.ma5
+      value: Math.round(obj.ma5*100)/100,
     }));
 
     const ma10Data = adjStockData.map(obj => ({
       time: obj.date,
-      value: obj.ma10
+      value: Math.round(obj.ma10*100)/100
     }));
 
     const ma20Data = adjStockData.map(obj => ({
       time: obj.date,
-      value: obj.ma20
+      value: Math.round(obj.ma20*100)/100
     }));
 
     const volumeData = adjStockData.map(obj => ({
@@ -233,14 +233,14 @@ export function StockTable({stockData}) {
         <tbody className="w-full">
           { stockData.map((stock, i) => ( 
           <tr key={i} className="bg-[#343435] h-6 text-center border-[#343435] w-full">
-            <td className={`px-5`}>{stock?.date}</td>
+            <td className={`px-4`}>{stock?.date}</td>
             <td className="px-4">{stock?.open}</td>
             <td className="px-4">{stock?.high}</td>
             <td className="px-4">{stock?.low}</td>
             <td className="px-4">{stock?.close}</td>
-            <td className={`px-6 ${stock?.spread < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.spread}</td>
-            <td className={`px-6 ${stock?.spread < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.spreadPCT}%</td>
-            <td className="px-6">{stock?.trading_volume}</td>
+            <td className={`px-4 ${stock?.spread < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.spread}</td>
+            <td className={`px-4 ${stock?.spread < 0 ?'text-[#FF5972]':'text-[#30DEAB]'}`}>{stock?.spreadPCT}%</td>
+            <td className="px-4">{stock?.trading_volume}</td>
           </tr> 
           ))}
         </tbody>

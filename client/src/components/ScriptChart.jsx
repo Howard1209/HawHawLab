@@ -44,17 +44,17 @@ export default function ScriptChart({data}){
 
       const ma5Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj.ma5
+        value: Math.round(obj.ma5*100)/100,
       }));
 
       const ma10Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj.ma10
+        value: Math.round(obj.ma10*100)/100,
       }));
 
       const ma20Data = stockData.map(obj => ({
         time: obj.date,
-        value: obj.ma20
+        value: Math.round(obj.ma20*100)/100,
       }));
 
       const volumeData = stockData.map(obj => ({

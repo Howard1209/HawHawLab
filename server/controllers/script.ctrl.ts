@@ -82,9 +82,9 @@ export default async function backtestingScript(req: Request, res: Response){
       totalTradeTimes: transactions.length,
       numberOfGains,
       numberOfLosses,
-      totalProfit: realizedProfitLoss,
-      maximumProfit: Math.max(...profitRecords),
-      maximumLoss: Math.min(...profitRecords),
+      totalProfit: Math.round(realizedProfitLoss),
+      maximumProfit: Math.round(Math.max(...profitRecords)),
+      maximumLoss: Math.round(Math.min(...profitRecords)),
       profitRecordsByDate
     };
     res.status(200).json({report});    
