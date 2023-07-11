@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as stock from '../models/stockModel.js'
-import { calculateMovingAverages } from '../models/technicalAnalysis.js';
+import { fixCalculateMA } from '../models/technicalAnalysis.js';
 
 
 export async function getStockList(req: Request, res: Response) {
@@ -20,7 +20,7 @@ try {
     const {stockId} = req.body;    
     const ma = [5, 10, 20];
     const data = await stock.getStockDetail(stockId);  
-    const maData = calculateMovingAverages(data, ma);
+    const maData = fixCalculateMA(data);    
 
     data.splice(0, Math.max(...ma)-1);
     

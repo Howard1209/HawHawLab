@@ -132,6 +132,7 @@ export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchem
   const closePrices = data.map(item => item.close);
   const closeDate = data.map((ele) => ele.date);
   const maData = [];
+
   for (let i = 19; i < closePrices.length; i++) {
     const arrMa5 = closePrices.slice(i-4, i+1);
     const sumMa5 = arrMa5.reduce((total, num) => total + num, 0);
@@ -145,7 +146,6 @@ export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchem
     const sumMa20 = arrMa20.reduce((total, num) => total + num, 0);
     const ma20 = sumMa20 / arrMa20.length;
 
-
     maData.push({
       date:closeDate[i],
       ma5,
@@ -153,5 +153,6 @@ export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchem
       ma20
     });
   }
+  
   return maData;
 }

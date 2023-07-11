@@ -40,12 +40,11 @@ export async function taiexData(req: Request, res: Response) {
   const endDate = dayjs().format('YYYY-MM-DD');
 
   const taiexData = await getTaiexData(startDate, endDate, maxMa);
-  const taiexMaData = calculateMA(taiexData, ma, startDate); 
-  const testMaData = fixCalculateMA(taiexData).filter((obj) => obj.date >= startDate);  
+  const taiexMaData = fixCalculateMA(taiexData).filter((obj) => obj.date >= startDate);  
   
   const adjTaiexData =  taiexData.filter((obj) => obj.date >= startDate).map((ele,index) => {
     const { date, ...rest } = ele;
-    return { ...rest, ...testMaData[index]};
+    return { ...rest, ...taiexMaData[index]};
   });
   console.log(adjTaiexData);
   
