@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import * as stock from '../models/stockModel.js'
-import { fixCalculateMA } from '../models/technicalAnalysis.js';
-
 
 export async function getStockList(req: Request, res: Response) {
 try {
@@ -18,16 +16,7 @@ try {
 export async function getStockDetail(req: Request, res: Response) {
 try {    
     const {stockId} = req.body;    
-    const ma = [5, 10, 20];
-    const data = await stock.getStockDetail(stockId);  
-    const maData = fixCalculateMA(data);    
-
-    data.splice(0, Math.max(...ma)-1);
-    
-    const stockInfo = data.map((ele, index) => {
-      const { date, ...rest } = ele;
-      return { ...rest, ...maData[index]};
-    });
+    const stockInfo = await stock.getStockDetail(stockId);  
     res.status(200).json({data:stockInfo});
 } catch (err) {
   if (err instanceof Error) {

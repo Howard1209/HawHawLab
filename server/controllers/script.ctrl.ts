@@ -39,10 +39,10 @@ export default async function backtestingScript(req: Request, res: Response){
     });
   
     const taiexData = await getTaiexData(startDate, endDate, maxMa);
-    const taiexMaData = calculateMovingAverages(taiexData, ma).filter((obj) => obj.date >= startDate);
+    // const taiexMaData = calculateMovingAverages(taiexData, ma).filter((obj) => obj.date >= startDate);
     const taiexInfo =  taiexData.filter((obj) => obj.date >= startDate).map((ele, index) => {
       const { date, ...rest } = ele;
-      return { ...rest, ...taiexMaData[index]};
+      // return { ...rest, ...taiexMaData[index]};
     });
   
     const kdData = getKD(stockData).filter((obj) => obj.date >= startDate);  

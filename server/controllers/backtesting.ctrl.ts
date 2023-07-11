@@ -18,11 +18,11 @@ try {
     });
     const kdArr = (openCondition.method === 'kd' || closeCondition.method === 'kd') ? getKD(stockData) : [];
     const taiexData = await getTaiexData(startDate, endDate, maxMa);
-    const taiexMaData = calculateMA(taiexData, ma, startDate); // 暫定大盤景氣我設定  
+    // const taiexMaData = calculateMA(taiexData, ma, startDate); // 暫定大盤景氣我設定  
   
-    const backtestingReport = await getBacktestingReport(startDate, adjStockDate, type, openCondition, closeCondition, taiexMaData, kdArr);
+    // const backtestingReport = await getBacktestingReport(startDate, adjStockDate, type, openCondition, closeCondition, taiexMaData, kdArr);
     
-    res.status(200).json(backtestingReport); 
+    res.status(200).json('backtestingReport'); 
   
 } catch (err) {
   if (err instanceof Error) {
@@ -40,13 +40,12 @@ export async function taiexData(req: Request, res: Response) {
   const endDate = dayjs().format('YYYY-MM-DD');
 
   const taiexData = await getTaiexData(startDate, endDate, maxMa);
-  const taiexMaData = fixCalculateMA(taiexData).filter((obj) => obj.date >= startDate);  
+  // const taiexMaData = fixCalculateMA(taiexData).filter((obj) => obj.date >= startDate);  
   
-  const adjTaiexData =  taiexData.filter((obj) => obj.date >= startDate).map((ele,index) => {
-    const { date, ...rest } = ele;
-    return { ...rest, ...taiexMaData[index]};
-  });
-  console.log(adjTaiexData);
-  
-  res.status(200).json({adjTaiexData});
+  // const adjTaiexData =  taiexData.filter((obj) => obj.date >= startDate).map((ele,index) => {
+  //   const { date, ...rest } = ele;
+  //   return { ...rest, ...taiexMaData[index]};
+  // });
+    
+  res.status(200).json({taiexData});
 }

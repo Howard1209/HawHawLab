@@ -15,7 +15,7 @@ export function HomeChart() {
 
     api.getTaiexData().then(result => {
 
-      const taiexData = result.adjTaiexData;
+      const taiexData = result.taiexData;
 
       const candleData = taiexData.map(obj => ({
         open: obj.open,

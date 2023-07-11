@@ -44,6 +44,9 @@ const StockDataSchema = z.object({
   dealer_self: z.number(),
   dealer_hedging: z.number(),
   investors_total: z.number(),
+  ma5: z.number(),
+  ma10: z.number(),
+  ma20: z.number(),
 });
 
 const AdjStockDataSchema = z.object({
@@ -65,15 +68,22 @@ const AdjStockDataSchema = z.object({
   dealer_self: z.number(),
   dealer_hedging: z.number(),
   investors_total: z.number(),
+  ma5: z.number(),
+  ma10: z.number(),
+  ma20: z.number(),
 });
 
 
 export async function getStockDetail(stockId:string) {
   const results = await pool.query(
     `
-    SELECT * FROM stock_info 
+    SELECT *,
+      CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS FLOAT) as ma5,
+      CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS FLOAT) as ma10,
+      CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS FLOAT) as ma20
+    FROM stock_info 
     WHERE stock_id = ? 
-    ORDER BY date DESC LIMIT 200
+    ORDER BY date DESC LIMIT 180
     `,[stockId]);  
   const data = z.array(StockDataSchema).parse(results[0]);
   

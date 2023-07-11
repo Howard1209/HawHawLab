@@ -76,6 +76,9 @@ const TaiexDataSchema = z.object({
   high: z.number(),
   low: z.number(),
   close: z.number(),
+  ma5: z.number(),
+  ma10: z.number(),
+  ma20: z.number()
 });
 
 export type AdjTaiexTaiexDataSchema = {
@@ -85,21 +88,36 @@ export type AdjTaiexTaiexDataSchema = {
   high: number;
   low: number;
   close: number;
+  ma5: number;
+  ma10: number;
+  ma20: number;
 }
 
 export async function getTaiexData (startDate:string, endDate:string, maxMa:number) {
-  const [data] = await pool.query(`
-  (
-    SELECT * FROM taiex WHERE date >= ? AND date <= ?
-  )
-  UNION ALL
-  (
-    SELECT * FROM taiex WHERE date < ?  ORDER BY date DESC LIMIT ?
-  )
-  ORDER BY date
-  ` , [startDate, endDate, startDate, maxMa]);
+  const results = await pool.query(
+  `
+  SELECT *, 
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS FLOAT) as ma5,
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS FLOAT) as ma10,
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS FLOAT) as ma20
+  FROM taiex 
+  WHERE date >= ? AND date <= ?
+  `,[startDate, endDate]); 
+
+  const taiexData = z.array(TaiexDataSchema).parse(results[0]);
   
-  const taiexData = z.array(TaiexDataSchema).parse(data);
+  // const [data] = await pool.query(`
+  // (
+  //   SELECT * FROM taiex WHERE date >= ? AND date <= ?
+  // )
+  // UNION ALL
+  // (
+  //   SELECT * FROM taiex WHERE date < ?  ORDER BY date DESC LIMIT ?
+  // )
+  // ORDER BY date
+  // ` , [startDate, endDate, startDate, maxMa]);
+  
+  // const taiexData = z.array(TaiexDataSchema).parse(data);
 
   const adjustedData: AdjTaiexTaiexDataSchema[] = taiexData.map((item) => {
     const adjDate = new Date(item.date);
