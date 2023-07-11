@@ -10,7 +10,7 @@ try {
 
     const maxMa = Math.max(...ma);
     const stockData = await getStockData(startDate, endDate, stockId, maxMa);
-    const taiexData = await getTaiexData(startDate, endDate, maxMa);
+    const taiexData = await getTaiexData(startDate, endDate);
   
     const backtestingReport = await getBacktestingReport(startDate, stockData, type, openCondition, closeCondition, taiexData);
     console.log(backtestingReport);
@@ -32,7 +32,7 @@ export async function taiexData(req: Request, res: Response) {
   const startDate = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
   const endDate = dayjs().format('YYYY-MM-DD');
 
-  const taiexData = await getTaiexData(startDate, endDate, maxMa);
+  const taiexData = await getTaiexData(startDate, endDate);
 
   res.status(200).json({taiexData});
 }
