@@ -27,7 +27,6 @@ export default function Backtesting() {
       navigate('/');
       return
     }
-
     if (Object.keys(data).length > 0) {
       const chart = createChart(chartContainerRef.current, {
         autoSize: true,

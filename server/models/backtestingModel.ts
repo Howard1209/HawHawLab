@@ -1,5 +1,5 @@
 import { checkCondition } from "./condition.js";
-import { getKD } from "./technicalAnalysis.js";
+import { type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
 import { type MaValues } from "./technicalAnalysis.js"
 
 export type StockDataSchema = {
@@ -41,8 +41,7 @@ export async function getBacktestingReport(
     symbol: string | string[],
     value: number | number[],
   },
-  taiexMaData: MaValues,
-  kdArr: {k:number, d:number}[]
+  taiexData: AdjTaiexTaiexDataSchema[],
   ) {
   let position = 'none';
   let openPrice = 0;
@@ -62,7 +61,7 @@ export async function getBacktestingReport(
     const stock = stockData[i];
     
     // open condition 如果是盤後選股都應該是隔天買，依照盤後選股理論，但使用者可以選擇要隔天open or close 買入。
-    if (position === 'none' && checkCondition(stockData[i-1], openCondition, i-1, kdArr[i-1], taiexMaData, position, openPrice)) {
+    if (position === 'none' && checkCondition(stockData[i-1], openCondition, i-1, taiexData[i-1], position, openPrice)) {
       position = 'trading';
       openPrice = stock.open;
       entryDates.push({ openDay: stock.date, price: openPrice });
@@ -72,8 +71,8 @@ export async function getBacktestingReport(
     if (position === 'trading') {
       const isLastDay = i + 1 === stockData.length;
       const isCloseConditionMet = useOpenStockPriceInClose
-        ? checkCondition(stockData[i-1], closeCondition, i-1, kdArr[i-1], taiexMaData, position, openPrice)
-        : checkCondition(stock, closeCondition, i, kdArr[i], taiexMaData, position, openPrice);
+        ? checkCondition(stockData[i-1], closeCondition, i-1, taiexData[i-1], position, openPrice)
+        : checkCondition(stock, closeCondition, i, taiexData[i], position, openPrice);
 
       if (isCloseConditionMet || isLastDay) {
         position = 'none';

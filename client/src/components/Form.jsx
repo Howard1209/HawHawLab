@@ -16,7 +16,8 @@ function StrategyFrom({renderChart}) {
       toast.error(result.error.toString());
       return;
     }
-    renderChart(result);
+    console.log(result);
+    renderChart(result.backtestingReport);
   };
   
   return (

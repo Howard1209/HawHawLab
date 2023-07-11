@@ -20,6 +20,9 @@ const stockDataSchema = z.object({
   dealer_self: z.number(),
   dealer_hedging: z.number(),
   investors_total: z.number(),
+  ma5:z.number(),
+  ma10:z.number(),
+  ma20:z.number(),
 });
 
 export type AdjStockDataSchema = {
@@ -41,19 +44,21 @@ export type AdjStockDataSchema = {
   dealer_self: number,
   dealer_hedging: number,
   investors_total: number,
+  ma5: number,
+  ma10: number
+  ma20: number
 }
 
 export async function getStockData (startDate:string, endDate:string, stockId:string, maxMa:number) {
   const [data] = await pool.query(`
-  (
-    SELECT * FROM stock_info WHERE date >= ? AND date <= ? AND stock_id = ?
-  )
-  UNION ALL
-  (
-    SELECT * FROM stock_info WHERE date < ? AND stock_id = ? ORDER BY date DESC LIMIT ?
-  )
-  ORDER BY date
-  `,[startDate, endDate, stockId, startDate, stockId, maxMa]);
+  SELECT *,
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS FLOAT) as ma5,
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS FLOAT) as ma10,
+    CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS FLOAT) as ma20
+  FROM stock_info
+  WHERE date >= ? AND date <= ? AND stock_id = ?
+  `,[startDate, endDate, stockId]);
+
   const stockData = z.array(stockDataSchema).parse(data);
   
   // focus on time zone still not work

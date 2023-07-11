@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { type StockDataSchema } from "./backtestingModel.js"; 
+import { type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
 
 function checkMaSituation(ma5:number, ma10:number, ma20:number) {
   if (ma5 > ma10 && ma10 > ma20) {
@@ -18,8 +19,7 @@ export function checkCondition(
     value : number | number[]
   },
   index: number,
-  kd: { k: number, d: number },
-  taiexMaData: {[period: number]: (number)[]},
+  taiexData: AdjTaiexTaiexDataSchema,
   position: string,
   openPrice: number
   ) {
@@ -40,11 +40,6 @@ export function checkCondition(
     const result = checkMaSituation(ma5, ma10, ma20);
     return currentSymbol === result;
   }
-
-  const evaluateKdCondition = (_currentMethod: string, currentValue: number, currentSymbol: string) => {
-    const kValue = kd.k;
-    return (currentSymbol === 'greater') ? kValue > currentValue : kValue < currentValue;
-  };
 
   interface ColumnInSQL {
     [key: string]: string;
@@ -70,18 +65,12 @@ export function checkCondition(
   };
 
   const evaluateTaiexCondition = (_currentMethod: string, _currentValue: string, currentSymbol: string) => {
-    const ma5 = taiexMaData[5][index];
-    const ma10 = taiexMaData[10][index];
-    const ma20 = taiexMaData[20][index];
+    const ma5 = taiexData.ma5;
+    const ma10 = taiexData.ma10;
+    const ma20 = taiexData.ma20;
     const result = checkMaSituation(ma5, ma10, ma20);
     return currentSymbol === result;  
   };
-
-  // const spreadCondition = (_currentMethod: string, currentValue: string, currentSymbol:string) => {
-  //   const userSpreadPCT = parseFloat(currentValue);
-  //   const stockSpreadPCT = stock.spreadPCT;
-  //   return (currentSymbol === 'greater') ? stockSpreadPCT > userSpreadPCT : stockSpreadPCT < userSpreadPCT;
-  // };
   
   interface MappingSchema {
     [key: string]: Function;
@@ -90,13 +79,11 @@ export function checkCondition(
   const mapping: MappingSchema = {
     close: evaluateMaCondition,
     ma:evaluateMaTypeCondition,
-    kd: evaluateKdCondition,
     investmentTrust: evaluateInvestorCondition,
     foreignInvestors:evaluateInvestorCondition,
     dealerSelf: evaluateInvestorCondition,
     investorsAll:evaluateInvestorCondition,
     taiex: evaluateTaiexCondition,
-    // spreadPCT: spreadCondition,
   };
 
   if (Array.isArray(method) && Array.isArray(value) && Array.isArray(symbol)) {
