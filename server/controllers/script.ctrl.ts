@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getStockData, getTaiexData, calculateProfitLoss } from '../models/stockInfo.js';
-import { calculateMovingAverages, getKD } from '../models/technicalAnalysis.js';
+import { getKD } from '../models/technicalAnalysis.js';
 import { execLoopText, closeTxt } from '../util/worker.js';
 import vmProcess from '../util/vm.js';
 
@@ -31,22 +31,23 @@ export default async function backtestingScript(req: Request, res: Response){
     const ma = [5, 10, 20]
     const maxMa = Math.max(...ma); 
     const stockData = await getStockData(startDate, endDate, stockId, maxMa);
-    const maData = calculateMovingAverages(stockData, ma).filter((obj) => obj.date >= startDate);
+    // const maData = calculateMovingAverages(stockData, ma).filter((obj) => obj.date >= startDate);
   
-    const stockInfo = stockData.filter((obj) => obj.date >= startDate).map((ele, index) => {
-      const { date, ...rest } = ele;
-      return { ...rest, ...maData[index]};
-    });
+    // const stockInfo = stockData.filter((obj) => obj.date >= startDate).map((ele, index) => {
+    //   const { date, ...rest } = ele;
+    //   return { ...rest, ...maData[index]};
+    // });
   
-    const taiexData = await getTaiexData(startDate, endDate, maxMa);
+    const taiexData = await getTaiexData(startDate, endDate);
     // const taiexMaData = calculateMovingAverages(taiexData, ma).filter((obj) => obj.date >= startDate);
-    const taiexInfo =  taiexData.filter((obj) => obj.date >= startDate).map((ele, index) => {
-      const { date, ...rest } = ele;
+    // const taiexInfo =  taiexData.filter((obj) => obj.date >= startDate).map((ele, index) => {
+    //   const { date, ...rest } = ele;
       // return { ...rest, ...taiexMaData[index]};
-    });
+    // });
   
     const kdData = getKD(stockData).filter((obj) => obj.date >= startDate);  
     const kdTxt = `const kdData = ${JSON.stringify(kdData)}\n`;
+    console.log(kdData);
     
     const startMarker = "// The trigger you want to set up, it can be empty;\n";
     const endMarker = "// Loop area\n";
@@ -57,8 +58,8 @@ export default async function backtestingScript(req: Request, res: Response){
       throw new Error('The Condition area is empty')
     }
     
-    const stockInfoText = `const stockInfo = ${JSON.stringify(stockInfo)};\n`+
-    `const taiexInfo = ${JSON.stringify(taiexInfo)};\n`+ kdTxt +
+    const stockInfoText = `const stockInfo = ${JSON.stringify(stockData)};\n`+
+    `const taiexInfo = ${JSON.stringify(taiexData)};\n`+ kdTxt +
     `const type = ${JSON.stringify(type)};\n`;
     
     const startIndex = code.indexOf("// Loop area") + "// loop area".length;
@@ -76,7 +77,7 @@ export default async function backtestingScript(req: Request, res: Response){
     const numberOfLosses = profitRecords.filter(num => num <= 0).length;
 
     const report = {
-      candleData: stockInfo,
+      candleData: stockData,
       perTrade: transactions,
       successRate: Number(((numberOfGains / profitRecords.length) * 100).toFixed(2)),
       totalTradeTimes: transactions.length,

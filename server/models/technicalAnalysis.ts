@@ -5,35 +5,35 @@ export type MaValues = {
   [period: number]: (number)[]
 };
 
-export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[], startDate: string) {
-  const maValues: MaValues = {};
-  const closePrices = data.map(item => item.close); 
-  const closeDate = data.map((ele) => ele.date);
+// export function calculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], maPeriods:number[], startDate: string) {
+//   const maValues: MaValues = {};
+//   const closePrices = data.map(item => item.close); 
+//   const closeDate = data.map((ele) => ele.date);
 
-  for (const maPeriod of maPeriods) {
-    const currentMaValues = [];
-    let sum = 0;
+//   for (const maPeriod of maPeriods) {
+//     const currentMaValues = [];
+//     let sum = 0;
 
-    for (let i = 0; i < closePrices.length; i++) {
-      const close = closePrices[i];
-      sum += close;
+//     for (let i = 0; i < closePrices.length; i++) {
+//       const close = closePrices[i];
+//       sum += close;
 
-      if (i >= maPeriod) {
-        sum -= closePrices[i - maPeriod];
-      }
-      if (new Date(closeDate[i]).getTime() < new Date(startDate).getTime()) {
-        continue;
-      }
-      if (i >= maPeriod - 1) {
-        const ma = sum / maPeriod;
-        currentMaValues.push(ma);
-      }
-    }
-    maValues[maPeriod] = currentMaValues;
-  }
+//       if (i >= maPeriod) {
+//         sum -= closePrices[i - maPeriod];
+//       }
+//       if (new Date(closeDate[i]).getTime() < new Date(startDate).getTime()) {
+//         continue;
+//       }
+//       if (i >= maPeriod - 1) {
+//         const ma = sum / maPeriod;
+//         currentMaValues.push(ma);
+//       }
+//     }
+//     maValues[maPeriod] = currentMaValues;
+//   }
   
-  return maValues;
-}
+//   return maValues;
+// }
 
 function calculateRSV(data:AdjStockDataSchema[], index:number, period:number) {
   const currentClose = data[index].close;
@@ -94,65 +94,65 @@ export function getKD(stockData:AdjStockDataSchema[]) {
 
 
 
-export function calculateMovingAverages(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], periods:number[]) {
-  const result = [];
+// export function calculateMovingAverages(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], periods:number[]) {
+//   const result = [];
 
-  for (let i = 0; i < data.length; i++) {
-    if (i >= Math.max(...periods) - 1) {
-      const maValues:{ [key:string]:number } = {};
+//   for (let i = 0; i < data.length; i++) {
+//     if (i >= Math.max(...periods) - 1) {
+//       const maValues:{ [key:string]:number } = {};
 
-      for (const period of periods) {
-        const maNumber = z.number().parse(period)
-        maValues[`ma${maNumber}`] = newCalculateMA(data, i, period);
-      }
+//       for (const period of periods) {
+//         const maNumber = z.number().parse(period)
+//         maValues[`ma${maNumber}`] = newCalculateMA(data, i, period);
+//       }
 
-      const entry = {
-        date: data[i].date,
-        ...maValues,
-      };
+//       const entry = {
+//         date: data[i].date,
+//         ...maValues,
+//       };
 
-      result.push(entry);
-    }
-  }
+//       result.push(entry);
+//     }
+//   }
 
-  return result;
-}
+//   return result;
+// }
 
-function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], currentIndex:number, period:number) {
-  let sum = 0;
+// function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], currentIndex:number, period:number) {
+//   let sum = 0;
 
-  for (let i = currentIndex; i > currentIndex - period; i--) {
-    sum += data[i].close;
-  }
+//   for (let i = currentIndex; i > currentIndex - period; i--) {
+//     sum += data[i].close;
+//   }
 
-  return (sum / period);
-}
+//   return (sum / period);
+// }
 
-export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[]) {
-  const closePrices = data.map(item => item.close);
-  const closeDate = data.map((ele) => ele.date);
-  const maData = [];
+// export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[]) {
+//   const closePrices = data.map(item => item.close);
+//   const closeDate = data.map((ele) => ele.date);
+//   const maData = [];
 
-  for (let i = 19; i < closePrices.length; i++) {
-    const arrMa5 = closePrices.slice(i-4, i+1);
-    const sumMa5 = arrMa5.reduce((total, num) => total + num, 0);
-    const ma5 = sumMa5 / arrMa5.length;
+//   for (let i = 19; i < closePrices.length; i++) {
+//     const arrMa5 = closePrices.slice(i-4, i+1);
+//     const sumMa5 = arrMa5.reduce((total, num) => total + num, 0);
+//     const ma5 = sumMa5 / arrMa5.length;
 
-    const arrMa10 = closePrices.slice(i-9, i+1);
-    const sumMa10 = arrMa10.reduce((total, num) => total + num, 0);
-    const ma10 = sumMa10 / arrMa10.length;
+//     const arrMa10 = closePrices.slice(i-9, i+1);
+//     const sumMa10 = arrMa10.reduce((total, num) => total + num, 0);
+//     const ma10 = sumMa10 / arrMa10.length;
 
-    const arrMa20 = closePrices.slice(i-19, i+1);
-    const sumMa20 = arrMa20.reduce((total, num) => total + num, 0);
-    const ma20 = sumMa20 / arrMa20.length;
+//     const arrMa20 = closePrices.slice(i-19, i+1);
+//     const sumMa20 = arrMa20.reduce((total, num) => total + num, 0);
+//     const ma20 = sumMa20 / arrMa20.length;
 
-    maData.push({
-      date:closeDate[i],
-      ma5,
-      ma10,
-      ma20
-    });
-  }
+//     maData.push({
+//       date:closeDate[i],
+//       ma5,
+//       ma10,
+//       ma20
+//     });
+//   }
   
-  return maData;
-}
+//   return maData;
+// }

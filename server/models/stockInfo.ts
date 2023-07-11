@@ -98,7 +98,7 @@ export type AdjTaiexTaiexDataSchema = {
   ma20: number;
 }
 
-export async function getTaiexData (startDate:string, endDate:string, maxMa:number) {
+export async function getTaiexData (startDate:string, endDate:string) {
   const results = await pool.query(
   `
   SELECT *, 
@@ -111,19 +111,6 @@ export async function getTaiexData (startDate:string, endDate:string, maxMa:numb
 
   const taiexData = z.array(TaiexDataSchema).parse(results[0]);
   
-  // const [data] = await pool.query(`
-  // (
-  //   SELECT * FROM taiex WHERE date >= ? AND date <= ?
-  // )
-  // UNION ALL
-  // (
-  //   SELECT * FROM taiex WHERE date < ?  ORDER BY date DESC LIMIT ?
-  // )
-  // ORDER BY date
-  // ` , [startDate, endDate, startDate, maxMa]);
-  
-  // const taiexData = z.array(TaiexDataSchema).parse(data);
-
   const adjustedData: AdjTaiexTaiexDataSchema[] = taiexData.map((item) => {
     const adjDate = new Date(item.date);
     adjDate.setHours(item.date.getHours() + 8);
