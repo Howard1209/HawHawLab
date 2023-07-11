@@ -127,3 +127,31 @@ function newCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[], c
 
   return (sum / period);
 }
+
+export function fixCalculateMA(data:(AdjStockDataSchema | AdjTaiexTaiexDataSchema)[]) {
+  const closePrices = data.map(item => item.close);
+  const closeDate = data.map((ele) => ele.date);
+  const maData = [];
+  for (let i = 19; i < closePrices.length; i++) {
+    const arrMa5 = closePrices.slice(i-4, i+1);
+    const sumMa5 = arrMa5.reduce((total, num) => total + num, 0);
+    const ma5 = sumMa5 / arrMa5.length;
+
+    const arrMa10 = closePrices.slice(i-9, i+1);
+    const sumMa10 = arrMa10.reduce((total, num) => total + num, 0);
+    const ma10 = sumMa10 / arrMa10.length;
+
+    const arrMa20 = closePrices.slice(i-19, i+1);
+    const sumMa20 = arrMa20.reduce((total, num) => total + num, 0);
+    const ma20 = sumMa20 / arrMa20.length;
+
+
+    maData.push({
+      date:closeDate[i],
+      ma5,
+      ma10,
+      ma20
+    });
+  }
+  return maData;
+}

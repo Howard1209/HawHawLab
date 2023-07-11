@@ -7,7 +7,7 @@ import vmProcess from '../util/vm.js';
 export default async function backtestingScript(req: Request, res: Response){
   try {
     const {code} = req.body;
-  
+    
     const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;\n");
     const dimTxt = code.substring(0, endIndex);
     

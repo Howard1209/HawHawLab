@@ -22,22 +22,22 @@ export function HomeChart() {
         high: obj.high,
         low: obj.low,
         close: obj.close,
-        time: obj.time
+        time: obj.date
       }));
       
       const ma5Data = taiexData.map(obj => ({
-        time: obj.time,
-        value: obj[5]
+        time: obj.date,
+        value: obj.ma5
       }));
 
       const ma10Data = taiexData.map(obj => ({
-        time: obj.time,
-        value: obj[10]
+        time: obj.date,
+        value: obj.ma10
       }));
 
       const ma20Data = taiexData.map(obj => ({
-        time: obj.time,
-        value: obj[20]
+        time: obj.date,
+        value: obj.ma20
       }));
 
       chart.applyOptions({

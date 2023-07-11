@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getBacktestingReport } from '../models/backtestingModel.js';
 import { getStockData, getTaiexData } from '../models/stockInfo.js';
-import { calculateMA, getKD } from '../models/technicalAnalysis.js';
+import { calculateMA, getKD, fixCalculateMA } from '../models/technicalAnalysis.js';
 import dayjs from 'dayjs';
 
 export async function backtesting(req: Request, res: Response) {
@@ -40,12 +40,14 @@ export async function taiexData(req: Request, res: Response) {
   const endDate = dayjs().format('YYYY-MM-DD');
 
   const taiexData = await getTaiexData(startDate, endDate, maxMa);
-  const taiexMaData = calculateMA(taiexData, ma, startDate);  
-
+  const taiexMaData = calculateMA(taiexData, ma, startDate); 
+  const testMaData = fixCalculateMA(taiexData).filter((obj) => obj.date >= startDate);  
+  
   const adjTaiexData =  taiexData.filter((obj) => obj.date >= startDate).map((ele,index) => {
     const { date, ...rest } = ele;
-    return { time: date, ...rest, 5: taiexMaData[5][index], 10: taiexMaData[10][index], 20: taiexMaData[20][index]};
+    return { ...rest, ...testMaData[index]};
   });
+  console.log(adjTaiexData);
   
   res.status(200).json({adjTaiexData});
 }
