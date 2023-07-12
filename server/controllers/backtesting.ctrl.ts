@@ -13,7 +13,6 @@ try {
     const taiexData = await getTaiexData(startDate, endDate);
   
     const backtestingReport = await getBacktestingReport(startDate, stockData, type, openCondition, closeCondition, taiexData);
-    console.log(backtestingReport);
     
     res.status(200).json({backtestingReport}); 
   

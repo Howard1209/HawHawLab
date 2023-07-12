@@ -47,7 +47,6 @@ export default async function backtestingScript(req: Request, res: Response){
   
     const kdData = getKD(stockData).filter((obj) => obj.date >= startDate);  
     const kdTxt = `const kdData = ${JSON.stringify(kdData)}\n`;
-    console.log(kdData);
     
     const startMarker = "// The trigger you want to set up, it can be empty;\n";
     const endMarker = "// Loop area\n";

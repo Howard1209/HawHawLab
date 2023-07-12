@@ -7,7 +7,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
     const token =
       tokenInHeaders?.replace("Bearer ", "") || req.cookies.jwtToken;
     if (!token) {
-      res.status(401).json({ errors: "invalid token" });
+      res.status(401).json({ error: "invalid token" });
       return;
     }
     const decoded = await verifyJWT(token);
@@ -15,10 +15,10 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
     next();
   } catch (err) {
     if (err instanceof Error) {
-      res.status(401).json({ errors: err.message });
+      res.status(401).json({ error: err.message });
       return;
     }
-    res.status(401).json({ errors: "authenticate failed" });
+    res.status(401).json({ error: "authenticate failed" });
   }
 }
 
