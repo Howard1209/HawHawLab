@@ -17,8 +17,8 @@ const Sidebar = ({ open, setOpen, location }) => {
   const menus =[
     {name:"Home",link:'/',icon: MdOutlineDashboard},
     {name:"My Strategy",link:'/myStrategy',icon: VscBeaker},
-    {name:"Script Strategy",link:'/script',icon: FaCodepen},
-    {name:"Form Strategy",link:'/form',icon: FaWpforms},
+    {name:"Strategy Script",link:'/script',icon: FaCodepen},
+    {name:"Strategy Form",link:'/form',icon: FaWpforms},
     {name:"Stock Info",link:'/stock',icon: AiOutlineAreaChart},
     {name:"Market Info",link:'/taiex',icon: VscVmActive},
   ];
@@ -31,7 +31,7 @@ const Sidebar = ({ open, setOpen, location }) => {
     setUsername('Sign In');
     setIsLogin(false);
     navigate('/');
-    
+    toast.success('See you soon!')
   };
 
   if (location.pathname === '/form' || location.pathname === '/script' || location.pathname === '/stock') {

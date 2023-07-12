@@ -257,7 +257,7 @@ export function InvestorTable({stockData}) {
           <th scope="col" className="bg-[#1D1D1E]">Date</th>
           <th scope="col" className="px-4 bg-[#1D1D1E]">Foreign Investors</th>
           <th scope="col" className="px-4 bg-[#1D1D1E]">Investment Trust</th>
-          <th scope="col" className="px-4 bg-[#1D1D1E]">Dealer Self</th>
+          <th scope="col" className="px-4 bg-[#1D1D1E]">Prop Desk</th>
           <th scope="col" className="px-4 bg-[#1D1D1E]">Dealer Hedging</th>
           <th scope="col" className="px-4 bg-[#1D1D1E]">Total</th>
         </thead>

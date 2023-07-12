@@ -22,7 +22,7 @@ function StrategyFrom({renderChart}) {
   
   return (
     <>
-      <div className="text-xl text-center my-2">Strategy From</div>
+      <div className="text-xl text-center my-2">Strategy Form</div>
       <div className="input pl-2 pr-4">
         <form onSubmit={submitForm}>
           <div className="mb-2 bg-[#343435] rounded-lg h-fit w-fit p-1 py-auto">
