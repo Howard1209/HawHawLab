@@ -69,4 +69,11 @@ INSERT INTO stock_list (stock_id, name) VALUES ('1504', '東元');
 INSERT INTO stock_list (stock_id, name) VALUES ('2486', '一詮');
 INSERT INTO stock_list (stock_id, name) VALUES ('3707', '漢磊');
 INSERT INTO stock_list (stock_id, name) VALUES ('2368', '金像電');
+INSERT INTO stock_list (stock_id, name) VALUES ('6282', '康舒');
+INSERT INTO stock_list (stock_id, name) VALUES ('3016', '嘉晶');
+INSERT INTO stock_list (stock_id, name) VALUES ('6188', '廣明');
+INSERT INTO stock_list (stock_id, name) VALUES ('6139', '亞翔');
+INSERT INTO stock_list (stock_id, name) VALUES ('2301', '光寶科');
+INSERT INTO stock_list (stock_id, name) VALUES ('6274', '台燿');
+
 

@@ -218,7 +218,7 @@ export function StockChart({stockData}) {
 export function StockTable({stockData}) {
 
   return(
-    <div className="block overflow-auto h-full text-xs border border-[#1D1D1E] rounded-md">
+    <div className="block overflow-auto h-full text-sm border border-[#1D1D1E] rounded-md">
       <table className="h-full text-center w-full">
         <thead className="sticky top-0 h-6 rounded-md font-medium w-full bg-[#1D1D1E]">
           <th scope="col">Date</th>
@@ -251,7 +251,7 @@ export function StockTable({stockData}) {
 
 export function InvestorTable({stockData}) {
   return(
-    <div className="block overflow-auto h-full border border-[#1D1D1E] rounded-md text-xs">
+    <div className="block overflow-auto h-full border border-[#1D1D1E] rounded-md text-sm">
       <table className="h-full w-full text-center">
         <thead className="w-full sticky top-0 h-6 rounded-md font-medium">
           <th scope="col" className="bg-[#1D1D1E]">Date</th>
