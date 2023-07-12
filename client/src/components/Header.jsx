@@ -24,7 +24,9 @@ const Header = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState,
+    formState: { errors, isSubmitSuccessful },
   } = useForm()
 
   const sentLogin = async (data) => {
@@ -38,8 +40,14 @@ const Header = () => {
     setUserId(result.data.user.id)
     setIsLogin(true);
     setIsShowing(false);
+    
   };
-
+  
+  useEffect(()=>{
+    if (formState.isSubmitSuccessful) {
+      reset();
+    }
+  },[formState, reset])
 
   useEffect(() => {
     const jwtToken = window.localStorage.getItem('access_token');

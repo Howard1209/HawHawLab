@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import api from "../utils/api";
+import { useSearchParams } from "react-router-dom";
 import { StockTable, InvestorTable, StockChart } from "../components/StockTable";
 
 function Stock() {
   const [stockList, setStockList] = useState([]);
   const [stockId, setStockId] = useState('2330')
   const [stockData, setStockData] = useState([]);
+  let [searchParams] = useSearchParams();
+
   const currentDate = new Date();
   const yesterdayDate = new Date();
   yesterdayDate.setDate(currentDate.getDate() - 1);
+
   const getStockList = async() => {
     const result = await api.getStockList();
     if (result.error) {
@@ -20,6 +24,7 @@ function Stock() {
   }
 
   const getStockDetail = async(id) => {
+    
     const result = await api.getStockDetailData(id);
     if (result.error) {
       toast.error(result.error);
@@ -58,9 +63,12 @@ function Stock() {
             </thead>
             <tbody>
               { stockList.map((stock, i) => (
-              <tr key={i} className={`${stockId === stock?.stock_id?'bg-[#434344]' :'bg-[#343435]'} text-sm text-center border-t border-[#434344]`}>
-                <td className={`cursor-pointer ${stockId === stock?.stock_id && 'text-[#E7893C]'}`} onClick={()=> getStockDetail(stock?.stock_id)}>{stock?.stock_id}</td>
-                <td className={`cursor-pointer ${stockId === stock?.stock_id && 'text-[#E7893C]'}`} onClick={()=> getStockDetail(stock?.stock_id)}>{stock?.name}</td>
+              <tr key={i}
+                className={`${stockId === stock?.stock_id?'bg-[#434344]' :'bg-[#343435]'} cursor-pointer text-sm text-center border-t border-[#434344]`}
+                onClick={()=> getStockDetail(stock?.stock_id)}
+              >
+                <td className={`${stockId === stock?.stock_id && 'text-[#E7893C]'}`} >{stock?.stock_id}</td>
+                <td className={`${stockId === stock?.stock_id && 'text-[#E7893C]'}`}>{stock?.name}</td>
                 <td className="px-2">{stock?.open}</td>
                 <td className="px-2">{stock?.high}</td>
                 <td className="px-2">{stock?.low}</td>

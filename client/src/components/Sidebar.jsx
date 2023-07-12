@@ -51,7 +51,11 @@ const Sidebar = ({ open, setOpen, location }) => {
     <>
       <div className={`bg-[#1D1D1E] min-h-screen ${open ? 'w-48':'w-16'} duration-500 px-4 rounded z-50`}>
         <div className='py-3 flex justify-end'>
-          <HiMenuAlt3 size={26} id="sidebarButton" className='cursor-pointer text-[#BABCBC]' onClick={()=>setOpen(!open)}/>
+          <HiMenuAlt3 size={26}
+            id="sidebarButton"
+            className='cursor-pointer text-[#BABCBC]'
+            onClick={()=>setOpen(!open)}
+          />
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">
         {menus?.map((menu,i) =>(
@@ -82,7 +86,7 @@ const Sidebar = ({ open, setOpen, location }) => {
           ))
         }
         {isLogin &&
-          <div className="group text-[#BABCBC] flex items-center text-sm gap-3.5 fort-medium p-2 cursor-pointer
+          <div className="mt-[calc(100vh-440px)] group text-[#BABCBC] flex items-center text-sm gap-3.5 fort-medium p-2 cursor-pointer
           hover:text-[#bb3f52] transition-all hover:scale-105 rounded-md"
           onClick={sentLogout}
           >
