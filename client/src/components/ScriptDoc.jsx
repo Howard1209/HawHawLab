@@ -79,7 +79,7 @@ export default function ScriptDoc({data, setReport, sendCode, setProportion, tab
               }`}
               onClick={() => {
                 setTabSelected({ ...tabSelected, currentTab: 1 });
-                setProportion([20,80])
+                setProportion([24,76])
               }}
             >
               <span>Report</span>

@@ -20,6 +20,24 @@ if (sellCondition ) {
 }
 `;
 
+const ma5Strategy = `const close = stock.close;
+const preClose = preStock.close
+const open = stock.open;
+const preMa5 = preStock.ma5;
+const ma5 = stock.ma5;
+
+const buyCondition = preClose > preMa5;
+const sellCondition = close < ma5;
+
+if (buyCondition) {
+  action["buy"](open,1);
+  }
+  
+  if (sellCondition) {
+  action["sell"](close, shares);
+  }
+`;
+
 const actionMap = ` /**
 * fill in your condition in if ( )
 * chang the stock priceType as you already declare 
@@ -60,13 +78,21 @@ function NestedList({sendCode}){
       {key: 'Close Index', value: `const ${type?'closeTaiex':'preCloseTaiex'} = ${type?'taiex':'preTaiex'}.close;`},
       {key: 'High Index', value: `const ${type?'highTaiex':'preHighTaiex'} = ${type?'taiex':'preTaiex'}.high;`},
       {key: 'Low Index', value: `const ${type?'lowTaiex':'preLowTaiex'} = ${type?'taiex':'preTaiex'}.low;`},
+      {key: 'MA5', value: `const ${type?'taiexMa5':'preTaiexMa5'} = ${type?'taiex':'preTaiex'}.ma5;`},
+      {key: 'MA10', value: `const ${type?'taiexMa10':'preTaiexMa10'} = ${type?'taiex':'preTaiex'}.ma10;`},
+      {key: 'MA20', value: `const ${type?'taiexMa20':'preTaiexMa20'} = ${type?'taiex':'preTaiex'}.ma20;`},
   ];
 
   const technicalIndicators = [
     {key: 'MA5', value: `const ${type?'ma5':'preMa5'} = ${type?'stock':'preStock'}.ma5;`},
     {key: 'MA10', value: `const ${type?'ma10':'preMa10'} = ${type?'stock':'preStock'}.ma10;`},
     {key: 'MA20', value: `const ${type?'ma20':'preMa20'} = ${type?'stock':'preStock'}.ma20;`},
-    {key: 'KD', value: `const ${type?'k':'preKd'} = ${type?'kd':'preKD'}.k;`},
+    {key: 'Close price above all MA',
+     value: `const ${type?'aboveAllMa':'preAboveAllMa'} = ${type?'stock.close > stock.ma5 && stock.close > stock.ma10 && stock.close > stock.ma20':'preStock.close > preStock.ma5 && preStock.close > preStock.ma10 && preStock.close > preStock.ma20'};`},
+    {key: 'Close price below all MA',
+     value: `const ${type?'belowAllMa':'preBelowAllMa'} = ${type?'stock.close < stock.ma5 && stock.close < stock.ma10 && stock.close < stock.ma20':'preStock.close < preStock.ma5 && preStock.close < preStock.ma10 && preStock.close < preStock.ma20'};`},
+    {key: 'MA bullish trend', value: `const ${type?'maBullish':'preMaBullish'} = ${type?'stock.ma5 > stock.ma10 && stock.ma10 > stock.ma20':'preStock.ma5 > preStock.ma10 && preStock.ma10 > preStock.ma20'};`},
+    {key: 'MA bearish trend', value: `const ${type?'maBearish':'preMaBearish'} = ${type?'stock.ma5 < stock.ma10 && stock.ma10 < stock.ma20':'preStock.ma5 < preStock.ma10 && preStock.ma10 < preStock.ma20'};`},
   ];
 
   const action = [
@@ -74,6 +100,7 @@ function NestedList({sendCode}){
   ];
 
   const example = [
+    {key: 'MA5 strategy', value: ma5Strategy},
     {key: 'KD strategy', value: kdStrategy},
   ];
   return(
@@ -103,6 +130,10 @@ function NestedList({sendCode}){
           <AccordionTrigger>Stock Info</AccordionTrigger>
           {stock.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >{key?.key}</AccordionContent>))}
         </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger>Technical Indicators</AccordionTrigger>
+          {technicalIndicators.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
+        </AccordionItem>
 
         <AccordionItem value="item-2">
           <AccordionTrigger>Institutional Investors </AccordionTrigger>
@@ -112,10 +143,6 @@ function NestedList({sendCode}){
         <AccordionItem value="item-3">
           <AccordionTrigger>Taiex Info</AccordionTrigger>
           {taiex.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
-        </AccordionItem>
-        <AccordionItem value="item-4">
-          <AccordionTrigger>Technical Indicators</AccordionTrigger>
-          {technicalIndicators.map((key, i) => (<AccordionContent key={i} onClick={()=>sendCode(key?.value)} >  {key?.key}</AccordionContent>))}
         </AccordionItem>
         <AccordionItem value="item-5">
           <AccordionTrigger>Action</AccordionTrigger>

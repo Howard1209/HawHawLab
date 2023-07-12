@@ -8,7 +8,8 @@ import { FaCodepen, FaWpforms } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { toast } from 'react-toastify';
 import { loginState, usernameState} from '../atom/Atom';
 
 
@@ -30,6 +31,7 @@ const Sidebar = ({ open, setOpen, location }) => {
     setUsername('Sign In');
     setIsLogin(false);
     navigate('/');
+    
   };
 
   if (location.pathname === '/form' || location.pathname === '/script' || location.pathname === '/stock') {

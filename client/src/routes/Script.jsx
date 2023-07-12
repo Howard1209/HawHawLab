@@ -14,7 +14,7 @@ import { usernameState , loginBtnState} from '../atom/Atom';
 import { useSearchParams } from "react-router-dom";
 
 const explain =
-`const startDate = '2023-06-01';
+`const startDate = '2023-03-01';
 const endDate = '2023-07-11';
 const stockId = '2330';
 const type = 'long'; // long or short
@@ -64,7 +64,7 @@ export default function Script() {
       toast.error(result.error);
       return;
     }
-    setProportion([20,80]);
+    setProportion([24,76]);
     setTabSelected({ ...tabSelected, currentTab: 1 });
     setJsonData(result.report);
     const {successRate, totalProfit, maximumLoss, maximumProfit} = result.report;
@@ -182,7 +182,7 @@ export default function Script() {
               </button>
             </div>
           </div>
-          <div id="chart-area" className="min-w-[350px] max-h-full">
+          <div id="chart-area" className="min-w-[350px] max-h-full w-full">
             <ScriptDoc data={data} setReport={setReport}
              sendCode={sendCode} setProportion={setProportion} tabSelected={tabSelected} setTabSelected={setTabSelected}/>
           </div>
