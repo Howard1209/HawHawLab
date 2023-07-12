@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import api from "../utils/api";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { StockTable, InvestorTable, StockChart } from "../components/StockTable";
 
 function Stock() {
   const [stockList, setStockList] = useState([]);
   const [stockId, setStockId] = useState('2330')
   const [stockData, setStockData] = useState([]);
+  const navigate = useNavigate();
   let [searchParams] = useSearchParams();
 
   const currentDate = new Date();
@@ -21,10 +22,11 @@ function Stock() {
       return;
     }
     setStockList(result.data)
-  }
+  };
 
   const getStockDetail = async(id) => {
-    
+    navigate(`/stock?stockId=${id}`)
+
     const result = await api.getStockDetailData(id);
     if (result.error) {
       toast.error(result.error);
@@ -32,11 +34,12 @@ function Stock() {
     }
     setStockId(id);
     setStockData(result.data.reverse());
-  }
+  };
   
   useEffect(() => {
     getStockList();
-    getStockDetail('2330');
+    const stockId = searchParams.get('stockId') || '2330';
+    getStockDetail(stockId);
   },[])
 
   return (
