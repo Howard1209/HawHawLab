@@ -8,6 +8,7 @@ import Script from "./routes/Script";
 import Landing from './routes/Home';
 import MyStrategy from './routes/MyStrategy';
 import Stock from "./routes/Stock";
+import NotFoundPage from "./routes/NotFound"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/script" element={ <Script /> } />
         <Route path="/myStrategy" element={<MyStrategy/>} />
       </Route>
+      <Route path="*" element={<NotFoundPage/>} />
     </Routes>
   </BrowserRouter>
 )
