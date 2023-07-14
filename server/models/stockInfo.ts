@@ -49,7 +49,7 @@ export type AdjStockDataSchema = {
   ma20: number
 }
 
-export async function getStockData (startDate:string, endDate:string, stockId:string, maxMa:number) {
+export async function getStockData (startDate:string, endDate:string, stockId:string) {
   const [data] = await pool.query(`
   SELECT *,
     CAST(avg(close) OVER(ORDER BY date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS FLOAT) as ma5,

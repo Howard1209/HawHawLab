@@ -6,10 +6,9 @@ import dayjs from 'dayjs';
 export async function backtesting(req: Request, res: Response) {
 
 try {
-    const { startDate, endDate, stockId, type, ma, openCondition, closeCondition } = req.body;
+    const { startDate, endDate, stockId, type, openCondition, closeCondition } = req.body;
 
-    const maxMa = Math.max(...ma);
-    const stockData = await getStockData(startDate, endDate, stockId, maxMa);
+    const stockData = await getStockData(startDate, endDate, stockId);
     const taiexData = await getTaiexData(startDate, endDate);
   
     const backtestingReport = await getBacktestingReport(startDate, stockData, type, openCondition, closeCondition, taiexData);

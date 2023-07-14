@@ -4,22 +4,6 @@ import classNames from 'classnames';
 import * as Accordion from '@radix-ui/react-accordion';
 import PropTypes from 'prop-types';
 
-const kdStrategy = `const close = stock.close;
-const k = kd.k;
-
-const buyCondition = k < 20;
-
-if (buyCondition ) {
-  action['buy'](close, 1)
-}
-
-const sellCondition = k > 80;
-
-if (sellCondition ) {
-  action['sell'](close, shares)
-}
-`;
-
 const ma5Strategy = `const close = stock.close;
 const preClose = preStock.close
 const open = stock.open;
@@ -101,7 +85,6 @@ function NestedList({sendCode}){
 
   const example = [
     {key: 'MA5 strategy', value: ma5Strategy},
-    {key: 'KD strategy', value: kdStrategy},
   ];
   return(
     <>

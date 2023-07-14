@@ -1,6 +1,5 @@
 import { checkCondition } from "./condition.js";
 import { type AdjTaiexTaiexDataSchema } from "./stockInfo.js";
-import { type MaValues } from "./technicalAnalysis.js"
 
 export type StockDataSchema = {
   [index: string]: number | string,
