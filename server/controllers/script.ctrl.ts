@@ -24,13 +24,18 @@ export default async function backtestingScript(req: Request, res: Response){
     if (startDate > endDate){
       throw new Error('The start date is greater than the end date.')
     }
+
+    if (String(stockId).length !== 4) {
+      throw new Error('The number of stockId should be 4')
+    }
     
     if (type !== 'long' && type !== 'short'){
       throw new Error('The type is error')
     }
+    
     const ma = [5, 10, 20]
     const maxMa = Math.max(...ma); 
-    const stockData = await getStockData(startDate, endDate, stockId, maxMa);
+    const stockData = await getStockData(startDate, endDate, String(stockId), maxMa);
     // const maData = calculateMovingAverages(stockData, ma).filter((obj) => obj.date >= startDate);
   
     // const stockInfo = stockData.filter((obj) => obj.date >= startDate).map((ele, index) => {

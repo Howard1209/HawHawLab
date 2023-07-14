@@ -7,6 +7,10 @@ function StrategyFrom({renderChart}) {
   const submitForm = async (e) => {
     e.preventDefault();
     const data = e.target;
+    if (data.startDate.value > data.endDate.value) {
+      toast.error("Start date can't not greater than end date");
+      return;
+    }
     if (!data.openMethod || ! data.closeMethod) {
       toast.error('Please complete the combination!');
       return;
@@ -16,7 +20,6 @@ function StrategyFrom({renderChart}) {
       toast.error(result.error.toString());
       return;
     }
-    console.log(result);
     renderChart(result.backtestingReport);
   };
   

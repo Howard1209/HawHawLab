@@ -12,11 +12,12 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { usernameState , loginBtnState} from '../atom/Atom';
 import { useSearchParams } from "react-router-dom";
+import { EditorSelection } from "@codemirror/state"
 
 const explain =
 `const startDate = '2023-03-01';
 const endDate = '2023-07-11';
-const stockId = '2330';
+const stockId = 2330;
 const type = 'long'; // long or short
 
 // Do not revise exports
@@ -42,20 +43,15 @@ export default function Script() {
   const codeRef = useRef(null);
 
   function sendCode(value){
-    if (codeRef.current) {
-      const cmLines = document.getElementsByClassName('cm-line');
-      const activeLine = document.querySelector('.cm-activeLine');
-      let activeLineIndex = 0;
-      for (let i = 0; i < cmLines.length; i++) {
-        if (cmLines[i] === activeLine) {
-          activeLineIndex = i;
-          break;
-        }
-      }
-      const text = code.split('\n');
-      text.splice((activeLineIndex + 1), 0, value);
-      setCode(text.join('\n'));
-    }
+    codeRef.current?.view.dispatch(
+      codeRef.current?.view.state.changeByRange((range) => ({
+        changes: [
+          {from: range.from, insert: '\n' },
+          { from: range.to, insert: value },
+        ],
+        range: EditorSelection.range(range.from, range.to),
+      })),
+    );
   }
 
   const submitCode = async() => {

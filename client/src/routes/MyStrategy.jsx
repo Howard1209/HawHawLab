@@ -61,12 +61,12 @@ const MyStrategy = () => {
       className="text-[#EEE] h-[calc(100vh-48px)] p-2"
     >
       <div className="text-3xl text-[#E7893C] text-center py-2">My Strategy</div>
-      <div className=" max-h-[calc(100vh-97px)] overflow-auto">
+      <div className=" max-h-[calc(100vh-97px)] overflow-y-auto">
       {strategy.length > 0 && strategy?.map((ele,i) => (
          <div key={i} className="flex items-center mt-6 bg-[#343435] rounded-xl px-5 py-2 w-fit mx-auto">
           <HiOutlineScale className="mr-5 text-2xl text-[#E7893C]"/>
-          <div>
-            <span className="text-2xl">{ele.title} </span>
+          <div className="w-32 ">
+            <p className="text-2xl truncate">{ele.title} </p>
             <div className="flex items-center mt-3 mb-1">
               <button type="button"
                 onClick={()=>editStrategy(ele.id)}

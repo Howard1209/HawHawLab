@@ -11,7 +11,6 @@ const router = Router();
 router.route("/strategy").post([
   body('startDate').exists().notEmpty(),
   body('endDate').exists().notEmpty(),
-  body('stockId').exists().notEmpty().isLength({max:4}),
   validator.handleResult,
   formValidator,
   backtesting

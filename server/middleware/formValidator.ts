@@ -2,8 +2,11 @@ import { Request, Response, NextFunction } from "express";
 
 async function formValidator(req: Request, res: Response, next: NextFunction) {
   try {
-    const { type, openCondition, closeCondition } = req.body;
-    
+    const { stockId, type, openCondition, closeCondition } = req.body;
+
+    if (stockId.length !== 4) {
+      throw new Error('The number of stockId should be 4')
+    }
     if (type !== 'long' && type !== 'short') {
       res.status(403).json({error:"Type should be long or short"});
       return;
@@ -16,14 +19,15 @@ async function formValidator(req: Request, res: Response, next: NextFunction) {
       res.status(403).json({error:"Please complete thr form in close combination"});
       return;
     }
+
     
     next();
   } catch (err) {
     if (err instanceof Error) {
-      res.status(401).json({ errors: err.message });
+      res.status(401).json({ error: err.message });
       return;
     }
-    res.status(401).json({ errors: "authenticate failed" });
+    res.status(401).json({ error: "authenticate failed" });
   }  
 }
 
