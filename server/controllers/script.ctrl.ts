@@ -1,11 +1,36 @@
 import { Request, Response } from 'express';
 import { getStockData, getTaiexData, calculateProfitLoss } from '../models/stockInfo.js';
 import { execLoopText, closeTxt } from '../util/worker.js';
+import { queue, sub } from '../models/redis.js';
 import vmProcess from '../util/vm.js';
 
 export default async function backtestingScript(req: Request, res: Response){
   try {
     const {code} = req.body;
+
+    const result = await queue.lpush("queues", JSON.stringify(code));
+
+    if (result) {
+      const subMessage = new Promise<{ report?: object; error?: object }> (( resolve, reject) => {
+        sub.subscribe("script", "error", (err) => {if (err) reject(err);});
+        sub.on("message", (channel, message) => {
+          console.log(`Received message from ${channel} channel.`);
+          sub.unsubscribe();
+          resolve(JSON.parse(message));
+        });  
+      });
+
+      const {report , error} = await subMessage;
+
+      if (error) {
+        res.status(400).json({error});
+        return
+      }
+      res.status(200).json({report});    
+      return
+    }
+    
+    console.log('redis is not working');
     
     const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;\n");
     const dimTxt = code.substring(0, endIndex);
@@ -79,6 +104,8 @@ export default async function backtestingScript(req: Request, res: Response){
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json({error: err.message});
+      return
     }
+    res.status(500).json({ error: "Internal server error" });
   }
 }
