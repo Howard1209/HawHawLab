@@ -7,13 +7,11 @@ dotenv.config();
 const queue = new Redis({
   port: 6379, // Redis port
   host: process.env.REDIS_HOST,
-  password: process.env.REDIS_PASSWORD,
 });
 
 const pub = new Redis({
   port: process.env.REDIS_PORT, // Redis port
   host: process.env.REDIS_HOST,
-  password: process.env.REDIS_PASSWORD,
 });
 
 const sleep = async (ms) => {
@@ -25,6 +23,7 @@ const worker = async () => {
   while (true) {
     try {
       const results = await queue.brpop("queues", 5);
+      console.log(results);
       if (Array.isArray(results)) {
         const report = await getReport(results[1])
         pub.publish("script", JSON.stringify({report}));

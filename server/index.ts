@@ -19,12 +19,12 @@ app.use("/api",[
   webScrapingRouter
 ]);
 
-// app.use(express.static("../../client/dist"));
+app.use(express.static("../../client/dist"));
 
-// const __dirname = path.resolve('../../client/dist/index.html');
-// app.get("*", (req , res) => {
-//   res.sendFile(__dirname)
-// });
+const __dirname = path.resolve('../../client/dist/index.html');
+app.get("*", (req , res) => {
+  res.sendFile(__dirname)
+});
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');

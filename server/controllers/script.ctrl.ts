@@ -9,7 +9,9 @@ export default async function backtestingScript(req: Request, res: Response){
     const {code} = req.body;
 
     const result = await queue.lpush("queues", JSON.stringify(code));
-
+    
+    console.log(result);
+    
     if (result) {
       const subMessage = new Promise<{ report?: object; error?: object }> (( resolve, reject) => {
         sub.subscribe("script", "error", (err) => {if (err) reject(err);});
