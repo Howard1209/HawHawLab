@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import * as stock from '../models/stockModel.js'
+import * as stock from '../models/stockModel.js';
+import * as cache from '../models/redis.js';
 
 export async function getStockList(req: Request, res: Response) {
 try {
@@ -14,9 +15,16 @@ try {
 }}
 
 export async function getStockDetail(req: Request, res: Response) {
-try {    
-    const {stockId} = req.body;    
-    const stockInfo = await stock.getStockDetail(stockId);  
+try {
+    const {stockId} = req.body;
+    const cachedStockInfo = await cache.get(stockId);
+    if (cachedStockInfo) {
+      const stockInfo = JSON.parse(cachedStockInfo);
+      res.status(200).json({data:stockInfo});
+      return
+    }
+    const stockInfo = await stock.getStockDetail(stockId);
+    await cache.set(stockId, JSON.stringify(stockInfo));
     res.status(200).json({data:stockInfo});
 } catch (err) {
   if (err instanceof Error) {
