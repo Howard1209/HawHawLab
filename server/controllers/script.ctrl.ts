@@ -9,9 +9,7 @@ export default async function backtestingScript(req: Request, res: Response){
     const {code} = req.body;
 
     const result = await queue.lpush("queues", JSON.stringify(code));
-    
-    console.log(result);
-    
+        
     if (result) {
       const subMessage = new Promise<{ report?: object; error?: object }> (( resolve, reject) => {
         sub.subscribe("script", "error", (err) => {if (err) reject(err);});
@@ -38,7 +36,7 @@ export default async function backtestingScript(req: Request, res: Response){
     const dimTxt = code.substring(0, endIndex);
     
     if (dimTxt === '') {
-      throw new Error('You made changes to condition area.')
+      throw new Error('You made changes in condition area.')
     }
     
     const {startDate, endDate, stockId, type} = vmProcess(dimTxt);
@@ -76,7 +74,10 @@ export default async function backtestingScript(req: Request, res: Response){
     `const taiexInfo = ${JSON.stringify(taiexData)};\n`+
     `const type = ${JSON.stringify(type)};\n`;
     
-    const startIndex = code.indexOf("// Loop area") + "// loop area".length;
+    const searchString = "// Loop area";
+    const startIndex = code.indexOf(searchString) + searchString.length;
+
+    // const startIndex = code.indexOf("// Loop area") + "// loop area".length;
     const execTxt = code.substring(startIndex).trim();
     
     if (execTxt === '') {

@@ -23,7 +23,6 @@ const worker = async () => {
   while (true) {
     try {
       const results = await queue.brpop("queues", 5);
-      console.log(results);
       if (Array.isArray(results)) {
         const report = await getReport(results[1])
         pub.publish("script", JSON.stringify({report}));

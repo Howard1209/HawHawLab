@@ -30,7 +30,6 @@ export async function set(key: string, value: string) {
     const now = dayjs();
     const targetTime = dayjs().set('hour', 23).set('minute', 30).set('second', 0);
     const diff = targetTime.diff(now, 'second');    
-    console.log(diff);
     
     const result = await cache.set(key, value, 'EX', diff);
     return result;
