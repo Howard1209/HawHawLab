@@ -11,23 +11,28 @@
 ---
 
 ## Table of Contents
-* [Technologies](#Technologies)
-* [Architecture](#Architecture)
-* [Database schema](#Database-schema)
-* [Main features](#Main-features)
-* [Demo accounts](#Demo-accounts)
+* [Technologies](#technologies)
+* [Architecture](#architecture)
+* [Database schema](#database-schema)
+* [Main features](#main-features)
+* [Demo accounts](#demo-accounts)
 
 ## Technologies
 ### Back-End
-![TypeScript](https://img.shields.io/badge/TypeScript-black?logo=typescript&logoColor=%233178C6)
-![JavaScript](https://img.shields.io/badge/JavaScript-black?logo=javascript)
-![Node.js](https://img.shields.io/badge/Node.js-black?logo=nodedotjs&logoColor=%23339933)
-![Express](https://img.shields.io/badge/Express-black?logo=express&logoColor=White)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![codemirror](https://img.shields.io/badge/CodeMirror-D30707?style=for-the-badge&logo=CodeMirror&logoColor=white)
+![jwt](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 * VM process
 * RESTful API
 ### Front-End
-![Static Badge](https://img.shields.io/badge/React-black?logo=react&logoColor=%2361DAFB)
-![Static Badge](https://img.shields.io/badge/Tailwind%20CSS-black?logo=tailwindcss&logoColor=%2306B6D4)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![React router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![tailwindcss](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![ChartJS](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
 
 ### Cloud Service (AWS)
 * EC2
@@ -38,8 +43,8 @@
 * Lambda
 
 ### Database
-![Static Badge](https://img.shields.io/badge/MySQL-black?logo=mysql&logoColor=%234479A1)
-![Static Badge](https://img.shields.io/badge/Redis-black?logo=redis&logoColor=%23DC382D)
+![mysql](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![redis](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white)
 
 ### Networking
 * HTTPS
@@ -47,9 +52,12 @@
 * Domain Name System (DNS)
 
 ### Tools
-* Version Control: Git, GitHub, Docker
-* Test: Jest
-* Agile: Trello
+![git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
+![github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+![docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
+![babel](https://img.shields.io/badge/Babel-F9DC3E?style=for-the-badge&logo=babel&logoColor=white)
+![trello](https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&logo=trello&logoColor=white)
 
 ### Others
 * Design Pattern: MVC
@@ -65,7 +73,7 @@
 ## Main features
 * Stock detail
     * Lookup historical stock prices and investment information.
-    * Automate the update process at 23:30 by utilizing AWS EventBridge and Lambda to refresh the current stock information.
+    * Automate the update process at 21:00 by utilizing AWS EventBridge and Lambda to refresh the current stock information.
 
 
 https://github.com/Howard1209/HawHawLab/assets/111356655/aad1ac64-d7d4-4429-a8fc-506096f5819a

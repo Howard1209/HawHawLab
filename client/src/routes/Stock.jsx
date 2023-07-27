@@ -11,10 +11,6 @@ function Stock() {
   const navigate = useNavigate();
   let [searchParams] = useSearchParams();
 
-  const currentDate = new Date();
-  const yesterdayDate = new Date();
-  yesterdayDate.setDate(currentDate.getDate() - 1);
-
   const getStockList = async() => {
     const result = await api.getStockList();
     if (result.error) {
@@ -49,7 +45,7 @@ function Stock() {
         <div className="w-full h-[50%] block overflow-auto border border-[#1D1D1E] rounded-md">
           <table className="w-full mt-2 rounded-md" cellSpacing="0">
             <caption className="caption-top mb-2">
-              Update Time : {yesterdayDate.toISOString().split('T')[0]} 23:30
+              Update Time : Every night at 9 pm.
             </caption>
             <thead className="sticky top-0 text-sm text-center font-medium bg-[#1D1D1E]">
               <tr>

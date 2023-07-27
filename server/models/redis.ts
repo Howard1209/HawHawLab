@@ -28,7 +28,7 @@ export async function get(key: string) {
 export async function set(key: string, value: string) {
   try {
     const now = dayjs();
-    const targetTime = dayjs().set('hour', 23).set('minute', 30).set('second', 0);
+    const targetTime = dayjs().set('hour', 21).set('minute', 1).set('second', 0);
     const diff = targetTime.diff(now, 'second');    
     
     const result = await cache.set(key, value, 'EX', diff);

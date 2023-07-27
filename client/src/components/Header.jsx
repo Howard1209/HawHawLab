@@ -231,6 +231,7 @@ const Header = () => {
                           type="email"
                           name="email"
                           placeholder="your email"
+                          defaultValue={"hh@gmail.com"}
                           className="peer relative h-10 w-full rounded border bg-[#1d1d1e] px-4 text-sm text-[#EEE] placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                         />
                         <label
@@ -249,6 +250,7 @@ const Header = () => {
                           type="password"
                           name="password"
                           placeholder="your password"
+                          defaultValue={"qwe1234"}
                           className="peer relative h-10 w-full rounded border bg-[#1d1d1e] border-slate-200 px-4 pr-12 text-sm text-[#EEE] placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-zinc-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                         />
                         <label
