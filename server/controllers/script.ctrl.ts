@@ -8,30 +8,31 @@ export default async function backtestingScript(req: Request, res: Response){
   try {
     const {code} = req.body;
 
-    const result = await queue.lpush("queues", JSON.stringify(code));
-        
-    if (result) {
-      const subMessage = new Promise<{ report?: object; error?: object }> (( resolve, reject) => {
-        sub.subscribe("script", "error", (err) => {if (err) reject(err);});
-        sub.on("message", (channel, message) => {
-          console.log(`Received message from ${channel} channel.`);
-          sub.unsubscribe();
-          resolve(JSON.parse(message));
-        });  
-      });
+    if (process.env.WORKER === 'open') {
+      const result = await queue.lpush("queues", JSON.stringify(code));
 
-      const {report , error} = await subMessage;
-
-      if (error) {
-        res.status(400).json({error});
+      if (result) {
+        const subMessage = new Promise<{ report?: object; error?: object }> (( resolve, reject) => {
+          sub.subscribe("script", "error", (err) => {if (err) reject(err);});
+          sub.on("message", (channel, message) => {
+            console.log(`Received message from ${channel} channel.`);
+            sub.unsubscribe();
+            resolve(JSON.parse(message));
+          });  
+        });
+  
+        const {report , error} = await subMessage;
+  
+        if (error) {
+          res.status(400).json({error});
+          return
+        }
+        res.status(200).json({report});    
         return
       }
-      res.status(200).json({report});    
-      return
+      console.log('redis is not working'); 
     }
-    
-    console.log('redis is not working');
-    
+
     const endIndex = code.indexOf("// The trigger you want to set up, it can be empty;\n");
     const dimTxt = code.substring(0, endIndex);
     
