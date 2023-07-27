@@ -71,13 +71,11 @@
 ![](https://i.imgur.com/WdidofN.png)
 
 ## Main features
-* Stock detail
-    * Lookup historical stock prices and investment information.
-    * Automate the update process at 21:00 by utilizing AWS EventBridge and Lambda to refresh the current stock information.
-
+* Stock Detail
+    * Access historical stock prices and investment information.
+    * Automated daily updates at 21:00 using AWS EventBridge and Lambda to refresh current stock information.
 
 https://github.com/Howard1209/HawHawLab/assets/111356655/aad1ac64-d7d4-4429-a8fc-506096f5819a
-
 
 * Login
     * Users can log in to access full features of the platform.
@@ -85,26 +83,17 @@ https://github.com/Howard1209/HawHawLab/assets/111356655/aad1ac64-d7d4-4429-a8fc
         * Perform CRUD (Create, Read, Update, Delete) operations on strategies.
 
 
-* Strategy script
-    * Empower users with a coding environment to create their own logic-based strategies using the VM (Virtual Machine) process.
-    * Offer a comprehensive grammar and documentation for users to reference.
-
+* Strategy Script
+    * Empower users with a coding environment to craft their custom logic-based trading strategies using the VM (Virtual Machine) process.
+    * Provide users with a comprehensive grammar and detailed documentation for easy reference.
 
 https://github.com/Howard1209/HawHawLab/assets/111356655/bff4ea66-f26a-4b8e-8953-8a99792af023
 
-
-
-* CRUD strategy
-
-
+* CRUD Strategy
 
 https://github.com/Howard1209/HawHawLab/assets/111356655/1601bffc-2a42-4123-a965-f6a2a1c1469b
 
-
-
 * Strategy Form
-
-
 
 https://github.com/Howard1209/HawHawLab/assets/111356655/d6c2d235-af70-41ea-bcd9-dd318fb1fbb3
 
