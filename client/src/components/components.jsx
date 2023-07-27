@@ -37,8 +37,8 @@ export function OpenCombination(){
     } else if (method !== 'ma' && method !== 'taiex') {
       return(
         <>
-        <option value="less">Less than</option>
         <option value="greater">Greater than</option>
+        <option value="less">Less than</option>
         </>
       )  
     } else {
@@ -58,6 +58,10 @@ export function OpenCombination(){
           <option value="ma10">MA10</option>
           <option value="ma20">MA20</option>
         </select>
+      )
+    } else if (method === 'ma' || method === 'taiex') {
+      return(
+        <input name="openValue" type="number" value={data.openValue} onChange={e=>handleChange(e,i)} disabled defaultValue='0' className="bg-[#343435] w-20 h-6 text-center"/>
       )
     } else{
       return(
@@ -80,16 +84,13 @@ export function OpenCombination(){
             <option value="close">Close</option>
             <option value="ma">MA</option>
             <option value="taiex">Taiex</option>
-            {/* <option value="kd">KD</option> */}
             <option value="investmentTrust">投信</option>
             <option value="foreignInvestors">外資</option>
-            {/* <option value="spreadPCT">漲跌幅</option> */}
           </select>
           <select name="openSymbol" className="bg-[#343435] w-[149px] h-6 text-center mr-1">
             {symbolSelection(data.openMethod ?? "close")}
           </select>
           {valueSelection(data.openMethod ?? "close", data, i) }
-          {/* <input name="openValue" value={data.openValue} onChange={e=>handleChange(e,i)} placeholder="type" className="bg-[#343435] w-20 h-6 text-center"/> */}
           <RxMinusCircled onClick={() => handleDelete(i)} className=" cursor-pointer text-xl mt-1 ml-2 text-[#FF5972] transition-all hover:scale-110"/>
         </div> 
         </> 
@@ -147,6 +148,7 @@ export function CloseCombination(){
       )  
     }
   }
+
   function valueSelection(method, data, i){
     if (method === 'close') {
       return(    
@@ -156,13 +158,16 @@ export function CloseCombination(){
           <option value="ma20">MA20</option>
         </select>
       )
+    } else if (method === 'ma' || method === 'taiex') {
+      return(
+        <input name="closeValue" type="number" value={data.closeValue} onChange={e=>handleChange(e,i)} disabled defaultValue='0' className="bg-[#343435] w-20 h-6 text-center"/>
+      )
     } else{
       return(
         <input name="closeValue" type="number" value={data.closeValue} onChange={e=>handleChange(e,i)} placeholder="number" defaultValue='0' min="0" className="bg-[#343435] w-20 h-6 text-center"/>
       )
     }
   }
-
 
   return(
     <>
