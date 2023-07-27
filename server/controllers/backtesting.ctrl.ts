@@ -25,7 +25,6 @@ try {
 }}
 
 export async function taiexData(req: Request, res: Response) {
-  const ma = [5, 10, 20];
   const startDate = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
   const endDate = dayjs().format('YYYY-MM-DD');
 
