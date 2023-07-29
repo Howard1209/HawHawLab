@@ -32,12 +32,12 @@ router.route("/user/saveStrategy").post([
   saveStrategy
 ]);
 
-router.route("/user/getStrategy").post(getAllStrategy);
+router.route("/user/getStrategyAll").post(getAllStrategy);
 
-router.route("/user/deleteStrategy").post(deleteStrategy);
+router.route("/user/strategy/:id").delete(deleteStrategy);
 
-router.route("/user/searchStrategy").post(searchStrategy);
+router.route("/user/strategy/:id").get(searchStrategy);
 
-router.route("/user/updateStrategy").post(updateStrategy);
+router.route("/user/strategy/:id").patch(updateStrategy);
 
 export default router;

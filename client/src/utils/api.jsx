@@ -93,8 +93,8 @@ const api = {
     });
     return await response.json();
   },
-  async getStrategy(userId) {
-    const response = await fetch((`${this.hostname}/user/getStrategy`), {
+  async getStrategyAll(userId) {
+    const response = await fetch((`${this.hostname}/user/getStrategyAll`), {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
@@ -104,31 +104,24 @@ const api = {
     return await response.json();
   },
   async deleteStrategy(id) {
-    const response = await fetch((`${this.hostname}/user/deleteStrategy`), {
+    const response = await fetch((`${this.hostname}/user/strategy/${id}`), {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      method: 'POST',
-      body: JSON.stringify({id})
+      method: 'DELETE',
     });
     return await response.json();
   },
   async searchStrategy(id) {
-    const response = await fetch((`${this.hostname}/user/searchStrategy`), {
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      method: 'POST',
-      body: JSON.stringify({id})
-    });
+    const response = await fetch(`${this.hostname}/user/strategy/${id}`);
     return await response.json();
   },
   async updateStrategy(updateInfo) {
-    const response = await fetch((`${this.hostname}/user/updateStrategy`), {
+    const response = await fetch((`${this.hostname}/user/strategy/${updateInfo.id}`), {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      method: 'POST',
+      method: 'PATCH',
       body: JSON.stringify(updateInfo)
     });
     return await response.json();
@@ -138,13 +131,7 @@ const api = {
     return await response.json();
   },
   async getStockDetailData(stockId) {
-    const response = await fetch((`${this.hostname}/stockDetail`), {
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      method: 'POST',
-      body: JSON.stringify({stockId})
-    });
+    const response = await fetch(`${this.hostname}/stockDetail/${stockId}`)
     return await response.json();
 
   }

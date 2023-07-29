@@ -25,11 +25,11 @@ const MyStrategy = () => {
       return;
     }
     toast.success('Delete success');
-    getStrategy(userId)
+    getStrategyAll(userId)
   }
 
-  const getStrategy = async(userId) => {
-    const result = await api.getStrategy(userId);
+  const getStrategyAll = async(userId) => {
+    const result = await api.getStrategyAll(userId);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -52,7 +52,7 @@ const MyStrategy = () => {
       navigate('/');
       return
     }
-    getStrategy(userId)
+    getStrategyAll(userId)
   },[navigate, setIsShowing, userId])
 
   return(

@@ -118,9 +118,9 @@ export async function getAllStrategy(req: Request, res: Response) {
 
 export async function deleteStrategy(req: Request, res: Response) {
   try {
-      const { id } = req.body;
-      await userModel.deleteStrategy(id);
-      res.status(200).json({message:'delete Success'});
+    const id = parseInt(req.params.id);
+    await userModel.deleteStrategy(id);
+    res.status(200).json({message:'delete Success'});
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json({ error: err.message });
@@ -132,7 +132,7 @@ export async function deleteStrategy(req: Request, res: Response) {
 
 export async function searchStrategy(req: Request, res: Response) {
   try {
-    const { id } = req.body;
+    const id = parseInt(req.params.id);
     const strategy = await userModel.searchStrategy(id);  
     res.status(200).json({strategy});
   } catch (err) {

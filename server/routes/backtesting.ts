@@ -19,7 +19,7 @@ router.route("/taiex").get(taiexData);
 router.route("/script").post(backtestingScript);
 
 router.route("/stockList").get(getStockList);
-router.route("/stockDetail").post(getStockDetail);
+router.route("/stockDetail/:stockId").get(getStockDetail);
 
 
 export default router;

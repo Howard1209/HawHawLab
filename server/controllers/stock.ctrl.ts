@@ -17,7 +17,7 @@ try {
 
 export async function getStockDetail(req: Request, res: Response) {
 try {
-    const {stockId} = req.body;
+    const {stockId} = req.params;
     const cachedStockInfo = await cache.get(stockId);
     if (cachedStockInfo) {
       const stockInfo = JSON.parse(cachedStockInfo);
